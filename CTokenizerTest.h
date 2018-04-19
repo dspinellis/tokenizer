@@ -16,6 +16,8 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testIdentifier);
 	CPPUNIT_TEST(testCharLiteral);
 	CPPUNIT_TEST(testStringLiteral);
+	CPPUNIT_TEST(testComment);
+	CPPUNIT_TEST(testCharacterToken);
 	CPPUNIT_TEST(testAND_EQUAL);
 	CPPUNIT_TEST(testARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
@@ -79,6 +81,48 @@ public:
 		CTokenizer ct2("\"he\\\"llo\"+");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
+	}
+
+	void testComment() {
+		CTokenizer ct(" /* block comment */ +");
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct.get_token());
+
+		CTokenizer ct2("// line comment\n +");
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
+
+		CTokenizer ct3("/* hi * / */\n+");
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct3.get_token());
+
+		CTokenizer ct4("/* hi ***/\n+");
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct4.get_token());
+	}
+
+	void testCharacterToken() {
+		CTokenizer ct("+ - * / =\t<\n> %()[]{}^|&~,.;:!#");
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'-', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'*', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'/', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'=', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'<', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'>', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'%', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'(', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)')', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'[', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)']', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'{', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'^', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'|', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'&', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'~', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)',', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'.', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)';', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)':', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'!', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
 	}
 
 	void testAND_EQUAL() {

@@ -293,7 +293,7 @@ CTokenizer::get_token()
 				break;
 			default:				/* / */
 				src.push(c1);
-				break;
+				return (int)c0;
 			}
 			break;
 		case '.':	/* . and ... */
