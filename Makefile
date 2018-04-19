@@ -13,7 +13,7 @@ all: tokenizer
 HFILES=$(wildcard *.h)
 OBJS=CTokenizer.o
 
-UnitTests: UnitTests.o $(OBJS)
+UnitTests: UnitTests.o $(OBJS) CToken.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
 
 test: UnitTests
@@ -22,7 +22,7 @@ test: UnitTests
 tokenizer: $(OBJS) tokenizer.o
 	$(CXX) $(LDFLAGS) tokenizer.o $(OBJS) -o $@
 
-CTokenizer.o: CToken.h
+UnitTests.o CTokenizer.o: CToken.h
 
 CToken.h: CTokenizer.cpp
 	./mktoken.pl C
