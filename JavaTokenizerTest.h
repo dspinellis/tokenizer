@@ -33,8 +33,10 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testOR_EQUAL);
 	CPPUNIT_TEST(testPLUS_EQUAL);
 	CPPUNIT_TEST(testPLUS_PLUS);
-	CPPUNIT_TEST(testRSHIFT);
-	CPPUNIT_TEST(testRSHIFT_EQUAL);
+	CPPUNIT_TEST(testRSHIFT_ARITHMETIC);
+	CPPUNIT_TEST(testRSHIFT_ARITHMETIC_EQUAL);
+	CPPUNIT_TEST(testRSHIFT_LOGICAL);
+	CPPUNIT_TEST(testRSHIFT_LOGICAL_EQUAL);
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
 	CPPUNIT_TEST_SUITE_END();
@@ -177,14 +179,28 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)JavaToken::PLUS_PLUS, ct.get_token());
 	}
 
-	void testRSHIFT() {
+	void testRSHIFT_ARITHMETIC() {
 		JavaTokenizer ct(">>2");
-		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT_ARITHMETIC, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)1502, ct.get_token());
 	}
 
-	void testRSHIFT_EQUAL() {
+	void testRSHIFT_LOGICAL() {
+		JavaTokenizer ct(">>>2");
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT_LOGICAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)1502, ct.get_token());
+	}
+
+	void testRSHIFT_ARITHMETIC_EQUAL() {
 		JavaTokenizer ct(">>=5");
-		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT_EQUAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT_ARITHMETIC_EQUAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)1502, ct.get_token());
+	}
+
+	void testRSHIFT_LOGICAL_EQUAL() {
+		JavaTokenizer ct(">>>=5");
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::RSHIFT_LOGICAL_EQUAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)1502, ct.get_token());
 	}
 
 	void testTIMES_EQUAL() {

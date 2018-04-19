@@ -184,11 +184,20 @@ JavaTokenizer::get_token()
 				return JavaToken::GREATER_EQUAL;
 			case '>':
 				src.get(c1);
-				if (c1 == '=')			/* >>= */
-					return JavaToken::RSHIFT_EQUAL;
-				else {				/* >> */
+				switch (c1) {
+				case '=':	/* >>= */
+					return JavaToken::RSHIFT_ARITHMETIC_EQUAL;
+				case '>':	/* >>> */
+					src.get(c2);
+					if (c2 == '=')
+						return JavaToken::RSHIFT_LOGICAL_EQUAL;
+					else {
+						src.push(c2);
+						return JavaToken::RSHIFT_LOGICAL;
+					}
+				default:
 					src.push(c1);
-					return JavaToken::RSHIFT;
+					return JavaToken::RSHIFT_ARITHMETIC;
 				}
 				break;
 			default:				/* > */
