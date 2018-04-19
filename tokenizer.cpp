@@ -15,6 +15,7 @@
  */
 
 #include <cstring>
+#include <string>
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -23,6 +24,7 @@
 #include "unistd.h"
 
 #include "CTokenizer.h"
+#include "JavaTokenizer.h"
 
 static bool output_endl = true;
 static bool output_filename = false;
@@ -30,12 +32,23 @@ static bool indentation_list = false;
 
 // Process and print the metrics of stdin
 static void
-process_file(const char *filename)
+process_file(const std::string lang, const std::string filename)
 {
 	CharSource cs;
-	CTokenizer ct(cs);
 
-	ct.tokenize();
+	if (lang == "" || lang == "Java") {
+		JavaTokenizer t(cs);
+		t.tokenize();
+	} else if (lang == "C") {
+		CTokenizer t(cs);
+		t.tokenize();
+	} else {
+		std::cerr << "Unknown language specified." << std::endl;
+		std::cerr << "The following languages are supported:" << std::endl;
+		std::cerr << "\tC" << std::endl;
+		std::cerr << "\tJava" << std::endl;
+		exit(1);
+	}
 }
 
 /* Calculate and print C metrics for the standard input */
@@ -44,8 +57,9 @@ main(int argc, char * const argv[])
 {
 	std::ifstream in;
 	int opt;
+	std::string lang = "";
 
-	while ((opt = getopt(argc, argv, "ain")) != -1)
+	while ((opt = getopt(argc, argv, "ail:n")) != -1)
 		switch (opt) {
 		case 'a':
 			output_filename = true;
@@ -53,17 +67,20 @@ main(int argc, char * const argv[])
 		case 'i':
 			indentation_list = true;
 			break;
+		case 'l':
+			lang = optarg;
+			break;
 		case 'n':
 			output_endl = false;
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-ain] [file ...]" << std::endl;
+				" [-ain] [-l lang] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
 	if (!argv[optind]) {
-		process_file("-");
+		process_file(lang, "-");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -76,7 +93,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_FAILURE);
 		}
 		std::cin.rdbuf(in.rdbuf());
-		process_file(argv[optind]);
+		process_file(lang, argv[optind]);
 		in.close();
 		optind++;
 	}
