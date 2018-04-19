@@ -84,6 +84,9 @@ public:
 		CTokenizer ct4("0.1");
 		CPPUNIT_ASSERT_EQUAL(1499, ct4.get_token());
 
+		CTokenizer ct4a(".1");
+		CPPUNIT_ASSERT_EQUAL(1499, ct4a.get_token());
+
 		CTokenizer ct5("1.1e300");
 		int v5 = ct5.get_token();
 		CPPUNIT_ASSERT(v5 > 1500);
