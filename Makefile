@@ -11,9 +11,9 @@ endif
 all: tokenizer
 
 HFILES=$(wildcard *.h)
-OBJS=CTokenizer.o TokenizerBase.o
+OBJS=CTokenizer.o JavaTokenizer.o TokenizerBase.o
 
-UnitTests: UnitTests.o $(OBJS) CToken.h
+UnitTests: UnitTests.o $(OBJS) CToken.h JavaToken.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
 
 test: UnitTests
@@ -23,9 +23,13 @@ tokenizer: $(OBJS) tokenizer.o
 	$(CXX) $(LDFLAGS) tokenizer.o $(OBJS) -o $@
 
 UnitTests.o CTokenizer.o: CToken.h
+UnitTests.o JavaTokenizer.o: JavaToken.h
 
 CToken.h: CTokenizer.cpp
 	./mktoken.pl C
+
+JavaToken.h: JavaTokenizer.cpp
+	./mktoken.pl Java
 
 clean:
 	rm -f *.o *.d *.exe tokenizer UnitTests

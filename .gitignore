@@ -13,3 +13,4 @@ UnitTests
 UnitTests.exe
 tokenizer.exe
 CToken.h
+JavaToken.h
