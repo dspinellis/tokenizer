@@ -14,6 +14,8 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST_SUITE(CTokenizerTest);
 	CPPUNIT_TEST(testKeyword);
 	CPPUNIT_TEST(testIdentifier);
+	CPPUNIT_TEST(testCharLiteral);
+	CPPUNIT_TEST(testStringLiteral);
 	CPPUNIT_TEST(testAND_EQUAL);
 	CPPUNIT_TEST(testARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
@@ -54,6 +56,29 @@ public:
 	void testIdentifier() {
 		CTokenizer ct("foo ");
 		CPPUNIT_ASSERT_EQUAL((int)CKeyword::IDENTIFIER, ct.get_token());
+	}
+
+	void testCharLiteral() {
+		CTokenizer ct("'a'");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct.get_token());
+		CTokenizer ct2("'\\\'a'+");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
+
+		CTokenizer ct3("'\\001'");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct3.get_token());
+
+		CTokenizer ct4("'\\xfa'");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct4.get_token());
+	}
+
+	void testStringLiteral() {
+		CTokenizer ct("\"hello\"");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct.get_token());
+
+		CTokenizer ct2("\"he\\\"llo\"+");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
 	}
 
 	void testAND_EQUAL() {

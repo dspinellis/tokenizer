@@ -423,6 +423,7 @@ CTokenizer::get_token()
 					break;
 				val += c0;
 			}
+			return CToken::CHAR_LITERAL;
 			break;
 		case '"':
 			bol.saw_non_space();
@@ -445,7 +446,7 @@ CTokenizer::get_token()
 					newline(true);
 				val += c0;
 			}
-			return CToken::IDENTIFIER;
+			return CToken::STRING_LITERAL;
 		/* Various numbers */
 		case '0': case '1': case '2': case '3': case '4':
 		case '5': case '6': case '7': case '8': case '9':
