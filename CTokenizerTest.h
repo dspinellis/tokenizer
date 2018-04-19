@@ -17,10 +17,14 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 public:
 	void testKeyword() {
 		CTokenizer ct("do ");
-		// std::cout << (int)CKeyword::DO << std::endl;
 		CPPUNIT_ASSERT_EQUAL(ct.get_token(), (int)CKeyword::DO);
-		CTokenizer ct2("do");
-		CPPUNIT_ASSERT_EQUAL(ct2.get_token(), (int)CKeyword::DO);
+
+		CTokenizer ct2("while");
+		CPPUNIT_ASSERT_EQUAL(ct2.get_token(), (int)CKeyword::WHILE);
+
+		CTokenizer ct3(";if");
+		(void)ct3.get_token();
+		CPPUNIT_ASSERT_EQUAL(ct3.get_token(), (int)CKeyword::IF);
 	}
 };
 #endif /*  CTOKENIZERTEST_H */
