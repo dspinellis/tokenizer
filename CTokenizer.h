@@ -34,7 +34,6 @@ private:
 	CKeyword ckeyword;
 public:
 	int get_token();		// Return a single token
-	void tokenize();		// Tokenize to stdout
 
 	// Construct from a character source
 	CTokenizer(CharSource &s) : TokenizerBase(s), scan_cpp_directive(false),

@@ -383,13 +383,3 @@ CTokenizer::get_token()
 		}
 	}
 }
-
-void
-CTokenizer::tokenize()
-{
-	int c;
-
-	while ((c = get_token()))
-		std::cout << c << ' ';
-	std::cout << std::endl;
-}
