@@ -32,7 +32,8 @@ static bool indentation_list = false;
 static void
 process_file(const char *filename)
 {
-	CTokenizer ct;
+	CharSource cs;
+	CTokenizer ct(cs);
 
 	ct.tokenize();
 }

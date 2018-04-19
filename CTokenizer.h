@@ -18,6 +18,7 @@
 #define CTOKENIZER_H
 
 #include <iostream>
+#include <sstream>
 
 #include "CharSource.h"
 #include "CKeyword.h"
@@ -25,10 +26,10 @@
 /** Collect quality metrics from C-like source code */
 class CTokenizer {
 private:
-	CharSource src;
+	std::stringstream string_src;	// Source for testing
+	CharSource src;			// Character source
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	bool scan_cpp_line;		// Line after a C preprocessor #
-	bool process_character();
 	bool continuation;		// True if a statement continuation line
 	/** True for keywords that don't end with semicolon */
 	bool saw_comment;		// True after a comment
@@ -37,8 +38,16 @@ private:
 	/** Called at every encountered newline */
 	void newline(bool in_non_code_block = false) {}
 public:
-	void tokenize();
-	CTokenizer() : scan_cpp_directive(false), scan_cpp_line(false),
-	saw_comment(false), saw_cpp_directive(false) {}
+	int get_token();		// Return a single token
+	void tokenize();		// Tokenize to stdout
+
+	// Construct from a character source
+	CTokenizer(CharSource &s) : src(s), scan_cpp_directive(false),
+	scan_cpp_line(false), saw_comment(false), saw_cpp_directive(false) {}
+
+	// Construct for a string source
+	CTokenizer(const std::string &s) : string_src(s), src(string_src),
+	scan_cpp_directive(false), scan_cpp_line(false), saw_comment(false),
+	saw_cpp_directive(false) {}
 };
 #endif /* CTOKENIZER_H */

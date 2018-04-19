@@ -19,6 +19,7 @@
 #include "BolStateTest.h"
 #include "CharSourceTest.h"
 #include "CKeywordTest.h"
+#include "CTokenizerTest.h"
 
 int
 main(int argc, char *argv[])
@@ -28,6 +29,7 @@ main(int argc, char *argv[])
 	runner.addTest(BolStateTest::suite());
 	runner.addTest(CharSourceTest::suite());
 	runner.addTest(CKeywordTest::suite());
+	runner.addTest(CTokenizerTest::suite());
 
 	runner.run();
 	return 0;
