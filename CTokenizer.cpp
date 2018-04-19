@@ -115,17 +115,6 @@ CTokenizer::get_token()
 				return (int)c0;
 			}
 			break;
-		case ':':
-			bol.saw_non_space();
-			src.get(c1);
-			switch (c1) {
-			case ':':		// C++ ::
-				return CToken::DOUBLE_COLON;
-			default:
-				src.push(c1);
-				return (int)c0;
-			}
-			break;
 		/* Simple single/double character tokens (e.g. !, !=) */
 		case '!':
 			bol.saw_non_space();

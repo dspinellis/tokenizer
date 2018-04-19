@@ -20,7 +20,6 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testBOOLEAN_AND);
 	CPPUNIT_TEST(testBOOLEAN_OR);
 	CPPUNIT_TEST(testDIV_EQUAL);
-	CPPUNIT_TEST(testDOUBLE_COLON);
 	CPPUNIT_TEST(testELIPSIS);
 	CPPUNIT_TEST(testEQUAL);
 	CPPUNIT_TEST(testGREATER_EQUAL);
@@ -108,11 +107,6 @@ public:
 	void testDIV_EQUAL() {
 		CTokenizer ct("/=5");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::DIV_EQUAL, ct.get_token());
-	}
-
-	void testDOUBLE_COLON() {
-		CTokenizer ct("::");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::DOUBLE_COLON, ct.get_token());
 	}
 
 	void testELIPSIS() {
