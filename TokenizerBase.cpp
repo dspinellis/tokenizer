@@ -24,11 +24,6 @@
 #include "CharSource.h"
 #include "TokenizerBase.h"
 
-static inline bool
-is_eol_char(char c) {
-	return (c == '\r' || c == '\n');
-}
-
 /*
  * Convert the passed number into an integer token value, in the range
  * 1000-2000, with 0 being 1500 and the rest being represented through
