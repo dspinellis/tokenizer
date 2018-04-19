@@ -45,6 +45,6 @@ public:
 		TokenizerBase(s), scan_cpp_directive(false),
 		scan_cpp_line(false) {}
 
-	~CTokenizer() {}
+	~CTokenizer();
 };
 #endif /* CTOKENIZER_H */

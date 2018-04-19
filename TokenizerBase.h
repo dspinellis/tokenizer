@@ -45,7 +45,7 @@ public:
 	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
 	saw_comment(false) {}
 
-	~TokenizerBase() {}
+	~TokenizerBase();
 
 	static int num_token(const std::string &val);
 	bool process_block_comment();

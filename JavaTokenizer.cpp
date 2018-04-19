@@ -322,3 +322,7 @@ JavaTokenizer::process_options(std::vector<std::string> opt)
 		}
 	}
 }
+
+JavaTokenizer::~JavaTokenizer()
+{
+}

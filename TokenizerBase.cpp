@@ -168,3 +168,7 @@ TokenizerBase::tokenize()
 		std::cout << c << ' ';
 	std::cout << std::endl;
 }
+
+TokenizerBase::~TokenizerBase()
+{
+}

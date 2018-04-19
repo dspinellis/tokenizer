@@ -55,7 +55,7 @@ public:
 		process_options(opt);
 	}
 
-	~JavaTokenizer() {}
+	~JavaTokenizer();
 
 	friend class JavaTokenizerTest;
 };

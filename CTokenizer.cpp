@@ -372,3 +372,7 @@ CTokenizer::get_token()
 		}
 	}
 }
+
+CTokenizer::~CTokenizer()
+{
+}
