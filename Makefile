@@ -11,7 +11,7 @@ endif
 all: tokenizer
 
 HFILES=$(wildcard *.h)
-OBJS=CTokenizer.o
+OBJS=CTokenizer.o TokenizerBase.o
 
 UnitTests: UnitTests.o $(OBJS) CToken.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@

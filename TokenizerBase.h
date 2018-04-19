@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014 Diomidis Spinellis
+ * Copyright 2014-2018 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,37 +14,44 @@
  *   limitations under the License.
  */
 
-#ifndef CTOKENIZER_H
-#define CTOKENIZER_H
+#ifndef TOKENIZERBASE_H
+#define TOKENIZERBASE_H
 
 #include <iostream>
 #include <sstream>
 
 #include "CharSource.h"
 #include "CKeyword.h"
-#include "TokenizerBase.h"
+#include "BolState.h"
 
 /** Collect quality metrics from C-like source code */
-class CTokenizer : public TokenizerBase {
-private:
-	bool scan_cpp_directive;	// Keyword after a C preprocessor #
-	bool scan_cpp_line;		// Line after a C preprocessor #
+class TokenizerBase {
+protected:
+	std::stringstream string_src;	// Source for testing
+	CharSource src;			// Character source
 	/** True for keywords that don't end with semicolon */
-	bool saw_cpp_directive;		// True after c preprocessor directive
-	CKeyword ckeyword;
+	bool saw_comment;		// True after a comment
+	/** Called at every encountered newline */
+	void newline(bool in_non_code_block = false) {}
+	BolState bol;			// Beginning of line state
 public:
-	int get_token();		// Return a single token
+	virtual int get_token() = 0;	// Return a single token
 	void tokenize();		// Tokenize to stdout
 
 	// Construct from a character source
-	CTokenizer(CharSource &s) : TokenizerBase(s), scan_cpp_directive(false),
-	scan_cpp_line(false), saw_cpp_directive(false) {}
+	TokenizerBase(CharSource &s) : src(s), saw_comment(false) {}
 
 	// Construct for a string source
-	CTokenizer(const std::string &s) : TokenizerBase(s),
-	scan_cpp_directive(false), scan_cpp_line(false),
-	saw_cpp_directive(false) {}
+	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
+	saw_comment(false) {}
 
-	~CTokenizer() {}
+	~TokenizerBase() {}
+
+	static int num_token(const std::string &val);
+	bool process_block_comment();
+	bool process_line_comment();
+	bool process_char_literal();
+	bool process_string_literal();
+	int process_number(std::string &val);
 };
-#endif /* CTOKENIZER_H */
+#endif /* TOKENIZERBASE_H */

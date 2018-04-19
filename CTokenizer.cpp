@@ -25,39 +25,12 @@
 #include "CTokenizer.h"
 #include "CToken.h"
 
-static inline bool
-is_eol_char(char c) {
-	return (c == '\r' || c == '\n');
-}
-
-/*
- * Convert the passed number into an integer token value, in the range
- * 1000-2000, with 0 being 1500 and the rest being represented through
- * base 10 logarithms.
- */
-static int
-num_token(const std::string &val)
-{
-	const int BASE = 1500;
-
-	double d = strtod(val.c_str(), NULL);
-	if (d == 0)
-		return BASE;
-	d = log(d) / log(10);
-	if (d >= 0)
-		d = ceil(d) + 1;
-	if (d < 0)
-		d = floor(d);
-	return BASE + d;
-}
-
 inline int
 CTokenizer::get_token()
 {
 	char c0, c1, c2;
 	std::string val;
 	CKeyword::IdentifierType key;
-	BolState bol;
 
 	for (;;) {
 		if (!src.get(c0))
@@ -261,35 +234,12 @@ CTokenizer::get_token()
 			case '=':				/* /= */
 				return CToken::DIV_EQUAL;
 			case '*':				/* Block comment */
-				src.get(c1);
-				for (;;) {
-					while (c1 != '*') {
-						if (!isspace(c0) && bol.at_bol_space())
-							bol.saw_non_space();
-						if (!src.get(c1))
-							return 0;
-						if (c1 == '\n')
-							newline(true);
-					}
-					if (!isspace(c1) && bol.at_bol_space())
-						bol.saw_non_space();
-					if (!src.get(c1))
-						return 0;
-					if (c1 == '/')
-						break;
-					else if (c1 == '\n')
-							newline();
-				}
+				if (!process_block_comment())
+					return 0;
 				break;
 			case '/':				/* Line comment */
-				src.get(c1);
-				for (;;) {
-					if (c1 == '\n')
-						break;
-					if (!src.get(c1))
-						return 0;
-				}
-				src.push(c1);
+				if (!process_line_comment())
+					return 0;
 				break;
 			default:				/* / */
 				src.push(c1);
@@ -301,7 +251,7 @@ CTokenizer::get_token()
 			src.get(c1);
 			if (isdigit(c1)) {
 				val = std::string(".") + (char)(c1);
-				goto number;
+				return process_number(val);
 			}
 			if (c1 != '.') {
 				src.push(c1);
@@ -321,9 +271,15 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '\'':
-				goto char_literal;
+				if (process_char_literal())
+					return CToken::CHAR_LITERAL;
+				else
+					return 0;
 			case '"':
-				goto string_literal;
+				if (process_string_literal())
+					return CToken::STRING_LITERAL;
+				else
+					return 0;
 			default:
 				src.push(c1);
 				goto identifier;
@@ -406,69 +362,21 @@ CTokenizer::get_token()
 			break;
 		case '\'':
 			bol.saw_non_space();
-		char_literal:
-			val = "";
-			for (;;) {
-				if (!src.get(c0))
-					return 0;
-				if (c0 == '\\') {
-					// Consume one character after the backslash
-					// ... to deal with the '\'' problem
-					val += '\\';
-					src.get(c0);
-					val += c0;
-					continue;
-				}
-				if (c0 == '\'')
-					break;
-				val += c0;
-			}
-			return CToken::CHAR_LITERAL;
-			break;
+			if (process_char_literal())
+				return CToken::CHAR_LITERAL;
+			else
+				return 0;
 		case '"':
-			bol.saw_non_space();
-		string_literal:
-			val = "";
-			for (;;) {
-				if (!src.get(c0))
-					return 0;
-				if (c0 == '\\') {
-					val += '\\';
-					// Consume one character after the backslash
-					src.get(c0);
-					if (c0 == '\n')
-						newline(true);
-					val += c0;
-					continue;
-				} else if (c0 == '"')
-					break;
-				else if (c0 == '\n')
-					newline(true);
-				val += c0;
-			}
-			return CToken::STRING_LITERAL;
+			if (process_string_literal())
+				return CToken::STRING_LITERAL;
+			else
+				return 0;
 		/* Various numbers */
 		case '0': case '1': case '2': case '3': case '4':
 		case '5': case '6': case '7': case '8': case '9':
 			bol.saw_non_space();
 			val = c0;
-		number:
-			for (;;) {
-				src.get(c0);
-				if (c0 == 'e' || c0 == 'E') {
-					val += c0;
-					src.get(c0);
-					if (c0 == '+' || c0 == '-') {
-						val += c0;
-						continue;
-					}
-				}
-				if (!isalnum(c0) && c0 != '.' && c0 != '_')
-					break;
-				val += c0;
-			}
-			src.push(c0);
-			return num_token(val);
+			return process_number(val);
 		default:
 			bol.saw_non_space();
 			return (int)(c0);
