@@ -16,7 +16,6 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testIdentifier);
 	CPPUNIT_TEST(testCharacterToken);
 	CPPUNIT_TEST(testAND_EQUAL);
-	CPPUNIT_TEST(testARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
 	CPPUNIT_TEST(testBOOLEAN_OR);
 	CPPUNIT_TEST(testDIV_EQUAL);
@@ -92,11 +91,6 @@ public:
 	void testAND_EQUAL() {
 		JavaTokenizer ct("&=3");
 		CPPUNIT_ASSERT_EQUAL((int)JavaToken::AND_EQUAL, ct.get_token());
-	}
-
-	void testARROW() {
-		JavaTokenizer ct("->a");
-		CPPUNIT_ASSERT_EQUAL((int)JavaToken::ARROW, ct.get_token());
 	}
 
 	void testBOOLEAN_AND() {

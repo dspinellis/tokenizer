@@ -80,8 +80,6 @@ JavaTokenizer::get_token()
 				return JavaToken::MINUS_MINUS;
 			case '=':
 				return JavaToken::MINUS_EQUAL;
-			case '>':
-				return JavaToken::ARROW;
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -108,17 +106,6 @@ JavaTokenizer::get_token()
 				return JavaToken::BOOLEAN_OR;
 			case '=':
 				return JavaToken::OR_EQUAL;
-			default:
-				src.push(c1);
-				return (int)c0;
-			}
-			break;
-		case ':':
-			bol.saw_non_space();
-			src.get(c1);
-			switch (c1) {
-			case ':':		// C++ ::
-				return JavaToken::DOUBLE_COLON;
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -263,36 +250,16 @@ JavaTokenizer::get_token()
 				return (int)c0;
 			}
 			return JavaToken::ELIPSIS;
-			// Elipsis
-		/* Could be a long character or string */
-		case 'L':
-			bol.saw_non_space();
-			src.get(c1);
-			switch (c1) {
-			case '\'':
-				if (process_char_literal())
-					return JavaToken::CHAR_LITERAL;
-				else
-					return 0;
-			case '"':
-				if (process_string_literal())
-					return JavaToken::STRING_LITERAL;
-				else
-					return 0;
-			default:
-				src.push(c1);
-				goto identifier;
-			}
+		/* XXX Can also be non-ASCII */
 		case '_': case 'a': case 'b': case 'c': case 'd': case 'e':
 		case 'f': case 'g': case 'h': case 'i': case 'j': case 'k':
 		case 'l': case 'm': case 'n': case 'o': case 'p': case 'q':
 		case 'r': case 's': case 't': case 'u': case 'v': case 'w':
 		case 'x': case 'y': case 'z': case 'A': case 'B': case 'C':
 		case 'D': case 'E': case 'F': case 'G': case 'H': case 'I':
-		case 'J': case 'K': case 'M': case 'N': case 'O': case 'P':
-		case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V':
-		case 'W': case 'X': case 'Y': case 'Z':
-		identifier:
+		case 'J': case 'K': case 'L': case 'M': case 'N': case 'O':
+		case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U':
+		case 'V': case 'W': case 'X': case 'Y': case 'Z':
 			bol.saw_non_space();
 			val = c0;
 			for (;;) {
