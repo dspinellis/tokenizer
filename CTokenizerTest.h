@@ -18,6 +18,7 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testStringLiteral);
 	CPPUNIT_TEST(testComment);
 	CPPUNIT_TEST(testCharacterToken);
+	CPPUNIT_TEST(testNumber);
 	CPPUNIT_TEST(testAND_EQUAL);
 	CPPUNIT_TEST(testARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
@@ -102,6 +103,45 @@ public:
 		CTokenizer ct4("/* hi ***/\n+");
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct4.get_token());
 	}
+
+	void testNumber() {
+		CTokenizer ct("0");
+		CPPUNIT_ASSERT_EQUAL(1500, ct.get_token());
+
+		CTokenizer ct1("1");
+		CPPUNIT_ASSERT_EQUAL(1501, ct1.get_token());
+
+		CTokenizer ct2("1.1");
+		CPPUNIT_ASSERT_EQUAL(1502, ct2.get_token());
+
+		CTokenizer ct3("10");
+		CPPUNIT_ASSERT_EQUAL(1502, ct3.get_token());
+
+		CTokenizer ct3a("100");
+		CPPUNIT_ASSERT_EQUAL(1503, ct3a.get_token());
+
+		CTokenizer ct4("0.1");
+		CPPUNIT_ASSERT_EQUAL(1499, ct4.get_token());
+
+		CTokenizer ct5("1.1e300");
+		int v5 = ct5.get_token();
+		CPPUNIT_ASSERT(v5 > 1500);
+		CPPUNIT_ASSERT(v5 < 2000);
+
+		CTokenizer ct6("1.1E-300f");
+		int v6 = ct6.get_token();
+		CPPUNIT_ASSERT(v6 < 1500);
+		CPPUNIT_ASSERT(v5 > 1000);
+
+		CTokenizer ct7("0.1f+");
+		CPPUNIT_ASSERT_EQUAL(1499, ct7.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct7.get_token());
+
+		CTokenizer ct8("0.1d+");
+		CPPUNIT_ASSERT_EQUAL(1499, ct8.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'+', ct8.get_token());
+	}
+
 
 	void testCharacterToken() {
 		CTokenizer ct("+ - * / =\t<\n> %()[]{}^|&~,.;:!#");
