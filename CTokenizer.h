@@ -31,7 +31,6 @@ private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	bool scan_cpp_line;		// Line after a C preprocessor #
 	/** True for keywords that don't end with semicolon */
-	bool saw_cpp_directive;		// True after c preprocessor directive
 	CKeyword ckeyword;
 public:
 	int get_token();		// Return a single token
@@ -39,12 +38,12 @@ public:
 	// Construct from a character source
 	CTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
 		TokenizerBase(s), scan_cpp_directive(false),
-		scan_cpp_line(false), saw_cpp_directive(false) {}
+		scan_cpp_line(false) {}
 
 	// Construct for a string source
 	CTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
 		TokenizerBase(s), scan_cpp_directive(false),
-		scan_cpp_line(false), saw_cpp_directive(false) {}
+		scan_cpp_line(false) {}
 
 	~CTokenizer() {}
 };
