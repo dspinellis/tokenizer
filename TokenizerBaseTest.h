@@ -72,6 +72,9 @@ public:
 		CTokenizer ct1("1");
 		CPPUNIT_ASSERT_EQUAL(1501, ct1.get_token());
 
+		CTokenizer ct1a("0x1");
+		CPPUNIT_ASSERT_EQUAL(1501, ct1a.get_token());
+
 		CTokenizer ct2("1.1");
 		CPPUNIT_ASSERT_EQUAL(1502, ct2.get_token());
 
