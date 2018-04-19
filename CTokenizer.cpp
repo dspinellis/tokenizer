@@ -398,7 +398,7 @@ CTokenizer::get_token()
 				 * Use same token ids for global scope identifiers
 				 * Use unique token ids for identifiers in each scope
 				 */
-				return CToken::IDENTIFIER;
+				return CKeyword::IDENTIFIER;
 			case CKeyword::LAST:
 				assert(false);
 			}

@@ -24,7 +24,8 @@
 class CKeyword {
 public:
 	enum IdentifierType {
-		BREAK = 256,
+		IDENTIFIER = 256,	// Plain identifier (not a keyword)
+		BREAK,
 		CASE,
 		CONST,
 		CONTINUE,
@@ -62,8 +63,7 @@ public:
 		LONG,
 		SHORT,
 		SIZEOF,
-		IDENTIFIER,	// Plain identifier (not a keyword)
-		LAST,	// Plain identifier (not a keyword)
+		LAST,		// Last value (295)
 	};
 private:
 	// Keyword map
