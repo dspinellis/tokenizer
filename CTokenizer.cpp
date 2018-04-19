@@ -266,13 +266,15 @@ CTokenizer::get_token()
 					while (c1 != '*') {
 						if (!isspace(c0) && bol.at_bol_space())
 							bol.saw_non_space();
-						src.get(c1);
+						if (!src.get(c1))
+							return 0;
 						if (c1 == '\n')
 							newline(true);
 					}
 					if (!isspace(c1) && bol.at_bol_space())
 						bol.saw_non_space();
-					src.get(c1);
+					if (!src.get(c1))
+						return 0;
 					if (c1 == '/')
 						break;
 					else if (c1 == '\n')
@@ -284,7 +286,8 @@ CTokenizer::get_token()
 				for (;;) {
 					if (c1 == '\n')
 						break;
-					src.get(c1);
+					if (!src.get(c1))
+						return 0;
 				}
 				src.push(c1);
 				break;
@@ -406,7 +409,8 @@ CTokenizer::get_token()
 		char_literal:
 			val = "";
 			for (;;) {
-				src.get(c0);
+				if (!src.get(c0))
+					return 0;
 				if (c0 == '\\') {
 					// Consume one character after the backslash
 					// ... to deal with the '\'' problem
@@ -425,7 +429,8 @@ CTokenizer::get_token()
 		string_literal:
 			val = "";
 			for (;;) {
-				src.get(c0);
+				if (!src.get(c0))
+					return 0;
 				if (c0 == '\\') {
 					val += '\\';
 					// Consume one character after the backslash

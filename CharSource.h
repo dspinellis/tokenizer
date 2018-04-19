@@ -26,13 +26,18 @@ private:
 public:
 	CharSource(std::istream &s = std::cin) : in(s), nchar(0) {}
 
-	/** Obtain the next character from the source */
+	/*
+	 * Obtain the next character from the source.
+	 * On EOF return false and set c to 0.
+	 */
 	bool get(char &c) {
 		if (pushed_char.empty()) {
 			if (in.get(c))
 				nchar++;
-			else
+			else {
+				c = 0;
 				return false;
+			}
 		} else {
 			c = pushed_char.top();
 			pushed_char.pop();
