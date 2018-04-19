@@ -63,6 +63,7 @@ public:
 	void testCharLiteral() {
 		CTokenizer ct("'a'");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct.get_token());
+
 		CTokenizer ct2("'\\\'a'+");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
@@ -72,6 +73,8 @@ public:
 
 		CTokenizer ct4("'\\xfa'");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct4.get_token());
+		CTokenizer ct5("L'a'");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct5.get_token());
 	}
 
 	void testStringLiteral() {
@@ -81,6 +84,9 @@ public:
 		CTokenizer ct2("\"he\\\"llo\"+");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
+
+		CTokenizer ct3("L\"hello\"");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct3.get_token());
 	}
 
 	void testComment() {
