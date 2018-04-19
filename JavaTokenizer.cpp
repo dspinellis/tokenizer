@@ -304,3 +304,21 @@ JavaTokenizer::get_token()
 		}
 	}
 }
+
+void
+JavaTokenizer::process_options(std::vector<std::string> opt)
+{
+	for (auto &o : opt) {
+		if (o == "class")
+			processing_type = PT_CLASS;
+		else if (o == "method")
+			processing_type = PT_METHOD;
+		else if (o == "statement")
+			processing_type = PT_STATEMENT;
+		else {
+			std::cerr << "Unsupported processing option [" << o <<
+				"]" << std::endl;
+			std::cerr << "Valid options are one of class, method, statement" << std::endl;
+		}
+	}
+}

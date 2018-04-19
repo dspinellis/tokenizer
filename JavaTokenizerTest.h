@@ -38,6 +38,7 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testRSHIFT_LOGICAL_EQUAL);
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
+	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -206,5 +207,14 @@ public:
 		JavaTokenizer ct("^=0xff");
 		CPPUNIT_ASSERT_EQUAL((int)JavaToken::XOR_EQUAL, ct.get_token());
 	}
+
+	void testOptions() {
+		JavaTokenizer ct("foo ", {"method"});
+		CPPUNIT_ASSERT_EQUAL(JavaTokenizer::PT_METHOD, ct.get_processing_type());
+
+		JavaTokenizer ct2("foo ", {"statement"});
+		CPPUNIT_ASSERT_EQUAL(JavaTokenizer::PT_STATEMENT, ct2.get_processing_type());
+	}
+
 };
 #endif /*  JAVATOKENIZERTEST_H */

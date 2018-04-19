@@ -29,17 +29,34 @@
 class JavaTokenizer : public TokenizerBase {
 private:
 	JavaKeyword java_keyword;
+	enum ProcessingType {
+		PT_CLASS,		// Output vector for whole class
+		PT_METHOD,		// Output vector for each method
+		PT_STATEMENT,		// Output vector for each statement
+	} processing_type;
+
+	void process_options(std::vector<std::string> opt);
+
+	enum ProcessingType get_processing_type() const {
+		return processing_type;
+	}
 public:
 	int get_token();		// Return a single token
 
 	// Construct from a character source
 	JavaTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s) {}
+		TokenizerBase(s), processing_type(PT_CLASS) {
+		process_options(opt);
+	}
 
 	// Construct for a string source
 	JavaTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s) {}
+		TokenizerBase(s), processing_type(PT_CLASS) {
+		process_options(opt);
+	}
 
 	~JavaTokenizer() {}
+
+	friend class JavaTokenizerTest;
 };
 #endif /* JAVATOKENIZER_H */

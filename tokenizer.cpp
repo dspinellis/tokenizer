@@ -60,7 +60,7 @@ main(int argc, char * const argv[])
 	std::ifstream in;
 	int opt;
 	std::string lang = "";
-	std::vector<std::string> processing_opt = {""};
+	std::vector<std::string> processing_opt;
 
 	while ((opt = getopt(argc, argv, "ail:o:n")) != -1)
 		switch (opt) {
