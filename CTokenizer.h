@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "CharSource.h"
 #include "CKeyword.h"
@@ -36,13 +37,14 @@ public:
 	int get_token();		// Return a single token
 
 	// Construct from a character source
-	CTokenizer(CharSource &s) : TokenizerBase(s), scan_cpp_directive(false),
-	scan_cpp_line(false), saw_cpp_directive(false) {}
+	CTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
+		TokenizerBase(s), scan_cpp_directive(false),
+		scan_cpp_line(false), saw_cpp_directive(false) {}
 
 	// Construct for a string source
-	CTokenizer(const std::string &s) : TokenizerBase(s),
-	scan_cpp_directive(false), scan_cpp_line(false),
-	saw_cpp_directive(false) {}
+	CTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
+		TokenizerBase(s), scan_cpp_directive(false),
+		scan_cpp_line(false), saw_cpp_directive(false) {}
 
 	~CTokenizer() {}
 };

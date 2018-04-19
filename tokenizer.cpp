@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iostream>
 #include <ostream>
+#include <vector>
 
 #include "errno.h"
 #include "unistd.h"
@@ -32,15 +33,16 @@ static bool indentation_list = false;
 
 // Process and print the metrics of stdin
 static void
-process_file(const std::string lang, const std::string filename)
+process_file(const std::string lang, const std::vector<std::string> opt,
+		std::string filename)
 {
 	CharSource cs;
 
 	if (lang == "" || lang == "Java") {
-		JavaTokenizer t(cs);
+		JavaTokenizer t(cs, opt);
 		t.tokenize();
 	} else if (lang == "C") {
-		CTokenizer t(cs);
+		CTokenizer t(cs, opt);
 		t.tokenize();
 	} else {
 		std::cerr << "Unknown language specified." << std::endl;
@@ -58,8 +60,9 @@ main(int argc, char * const argv[])
 	std::ifstream in;
 	int opt;
 	std::string lang = "";
+	std::vector<std::string> processing_opt = {""};
 
-	while ((opt = getopt(argc, argv, "ail:n")) != -1)
+	while ((opt = getopt(argc, argv, "ail:o:n")) != -1)
 		switch (opt) {
 		case 'a':
 			output_filename = true;
@@ -70,17 +73,20 @@ main(int argc, char * const argv[])
 		case 'l':
 			lang = optarg;
 			break;
+		case 'o':
+			processing_opt.push_back(optarg);
+			break;
 		case 'n':
 			output_endl = false;
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-ain] [-l lang] [file ...]" << std::endl;
+				" [-ain] [-l lang] [-o opt] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
 	if (!argv[optind]) {
-		process_file(lang, "-");
+		process_file(lang, processing_opt, "-");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -93,7 +99,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_FAILURE);
 		}
 		std::cin.rdbuf(in.rdbuf());
-		process_file(lang, argv[optind]);
+		process_file(lang, processing_opt, argv[optind]);
 		in.close();
 		optind++;
 	}

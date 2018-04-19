@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "CharSource.h"
 #include "JavaKeyword.h"
@@ -32,10 +33,12 @@ public:
 	int get_token();		// Return a single token
 
 	// Construct from a character source
-	JavaTokenizer(CharSource &s) : TokenizerBase(s) {}
+	JavaTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
+		TokenizerBase(s) {}
 
 	// Construct for a string source
-	JavaTokenizer(const std::string &s) : TokenizerBase(s) {}
+	JavaTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
+		TokenizerBase(s) {}
 
 	~JavaTokenizer() {}
 };
