@@ -1,5 +1,6 @@
 # All warnings, treat warnings as errors, generate dependencies in .d files
-CXXFLAGS=-Wall -Werror -MD
+# offer C++11 features
+CXXFLAGS=-Wall -Werror -MD -std=c++11
 
 ifdef DEBUG
 LDFLAGS=-g
