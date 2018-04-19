@@ -1,10 +1,14 @@
+sudo: required
+
 language: cpp
+
+install:
+  - sudo apt-get install libcppunit-dev
 
 script: make test
 
 os:
   - linux
-  - osx
 
 compiler:
   - gcc
