@@ -13,6 +13,7 @@
 class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST_SUITE(CTokenizerTest);
 	CPPUNIT_TEST(testKeyword);
+	CPPUNIT_TEST(testIdentifier);
 	CPPUNIT_TEST(testAND_EQUAL);
 	CPPUNIT_TEST(testARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
@@ -48,6 +49,11 @@ public:
 		CTokenizer ct3(";if");
 		(void)ct3.get_token();
 		CPPUNIT_ASSERT_EQUAL((int)CKeyword::IF, ct3.get_token());
+	}
+
+	void testIdentifier() {
+		CTokenizer ct("foo ");
+		CPPUNIT_ASSERT_EQUAL((int)CKeyword::IDENTIFIER, ct.get_token());
 	}
 
 	void testAND_EQUAL() {
