@@ -39,6 +39,8 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
 	CPPUNIT_TEST(testOptions);
+	CPPUNIT_TEST(testSameScope);
+	CPPUNIT_TEST(testDifferentScope);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -56,9 +58,7 @@ public:
 
 	void testIdentifier() {
 		JavaTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL((int)JavaToken::IDENTIFIER, ct.get_token());
-		JavaTokenizer ct2("Foo");
-		CPPUNIT_ASSERT_EQUAL((int)JavaToken::CLASS_NAME, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct.get_token());
 	}
 
 	void testCharacterToken() {
@@ -216,5 +216,19 @@ public:
 		CPPUNIT_ASSERT_EQUAL(JavaTokenizer::PT_STATEMENT, ct2.get_processing_type());
 	}
 
+	void testSameScope() {
+		JavaTokenizer ct("foo { foo");
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'{', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+	}
+
+	void testDifferentScope() {
+		JavaTokenizer ct("{ foo } foo");
+		CPPUNIT_ASSERT_EQUAL((int)'{', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, ct.get_token());
+	}
 };
 #endif /*  JAVATOKENIZERTEST_H */

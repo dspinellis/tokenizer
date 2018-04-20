@@ -24,6 +24,7 @@
 #include "CharSource.h"
 #include "JavaKeyword.h"
 #include "TokenizerBase.h"
+#include "SymbolTable.h"
 
 /** Collect quality metrics from C-like source code */
 class JavaTokenizer : public TokenizerBase {
@@ -40,6 +41,7 @@ private:
 	enum ProcessingType get_processing_type() const {
 		return processing_type;
 	}
+	SymbolTable symbols;
 public:
 	int get_token();		// Return a single token
 

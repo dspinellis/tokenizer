@@ -46,11 +46,11 @@ JavaTokenizer::get_token()
 			break;
 		case '{':
 			bol.saw_non_space();
-			//scoped_identifier.push_back(IdMap());
+			symbols.enter_scope();
 			return (int)c0;
 		case '}':
 			bol.saw_non_space();
-			//scoped_identifier.pop_back(IdMap());
+			symbols.exit_scope();
 			return (int)c0;
 		case ';':
 			bol.saw_non_space();
@@ -272,14 +272,8 @@ JavaTokenizer::get_token()
 			key = java_keyword.identifier_type(val);
 			if (key != JavaKeyword::IDENTIFIER)
 				return key;
-			else if (isupper(val[0]))
-				return JavaToken::CLASS_NAME;
 			else
-				return JavaToken::IDENTIFIER;
-				/*
-				 * TODO:
-				 * Classify identifiers more thoroughly
-				 */
+				return symbols.value(val);
 			break;
 		case '\'':
 			bol.saw_non_space();
