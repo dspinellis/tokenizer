@@ -25,7 +25,7 @@
 #include "CSharpToken.h"
 
 inline int
-CSharpTokenizer::get_token()
+CSharpTokenizer::get_token_real()
 {
 	char c0, c1, c2;
 	std::string val;
@@ -324,6 +324,18 @@ CSharpTokenizer::process_options(std::vector<std::string> opt)
 			std::cerr << "Valid options are one of file, method, statement" << std::endl;
 		}
 	}
+}
+
+inline int
+CSharpTokenizer::get_token()
+{
+	int token;
+
+	do {
+		token = get_token_real();
+	} while (previous_token == CSharpToken::DOC_COMMENT && token == CSharpToken::DOC_COMMENT);
+	previous_token = token;
+	return token;
 }
 
 CSharpTokenizer::~CSharpTokenizer()

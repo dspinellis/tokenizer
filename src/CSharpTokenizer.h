@@ -44,8 +44,11 @@ private:
 	}
 	SymbolTable symbols;
 	NestedClassState nesting;
+	int get_token_real();		// Return a single token
+	int previous_token;		// Previously returned token
 public:
-	int get_token();		// Return a single token
+	// Return a single token coalescing together multiple line doc comments
+	int get_token();
 
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,

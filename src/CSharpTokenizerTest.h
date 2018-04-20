@@ -223,7 +223,9 @@ public:
 	void testDOC_COMMENT() {
 		CSharpTokenizer ct("/// hi\n");
 		CPPUNIT_ASSERT_EQUAL((int)CSharpToken::DOC_COMMENT, ct.get_token());
-		// TODO Also test folding of multiple comments
+		CSharpTokenizer ct2("\t/// hi\n\t/// there\n =>");
+		CPPUNIT_ASSERT_EQUAL((int)CSharpToken::DOC_COMMENT, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)CSharpToken::LAMBDA, ct2.get_token());
 	}
 
 	void testLINE_COMMENT() {
