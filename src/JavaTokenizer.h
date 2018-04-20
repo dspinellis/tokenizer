@@ -30,7 +30,7 @@ class JavaTokenizer : public TokenizerBase {
 private:
 	JavaKeyword java_keyword;
 	enum ProcessingType {
-		PT_CLASS,		// Output vector for whole class
+		PT_FILE,		// Output vector for whole class
 		PT_METHOD,		// Output vector for each method
 		PT_STATEMENT,		// Output vector for each statement
 	} processing_type;
@@ -45,13 +45,13 @@ public:
 
 	// Construct from a character source
 	JavaTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), processing_type(PT_CLASS) {
+		TokenizerBase(s), processing_type(PT_FILE) {
 		process_options(opt);
 	}
 
 	// Construct for a string source
 	JavaTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), processing_type(PT_CLASS) {
+		TokenizerBase(s), processing_type(PT_FILE) {
 		process_options(opt);
 	}
 

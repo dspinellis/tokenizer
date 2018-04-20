@@ -309,8 +309,8 @@ void
 JavaTokenizer::process_options(std::vector<std::string> opt)
 {
 	for (auto &o : opt) {
-		if (o == "class")
-			processing_type = PT_CLASS;
+		if (o == "file")
+			processing_type = PT_FILE;
 		else if (o == "method")
 			processing_type = PT_METHOD;
 		else if (o == "statement")
@@ -318,7 +318,7 @@ JavaTokenizer::process_options(std::vector<std::string> opt)
 		else {
 			std::cerr << "Unsupported processing option [" << o <<
 				"]" << std::endl;
-			std::cerr << "Valid options are one of class, method, statement" << std::endl;
+			std::cerr << "Valid options are one of file, method, statement" << std::endl;
 		}
 	}
 }
