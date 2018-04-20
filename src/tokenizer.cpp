@@ -35,10 +35,10 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 	CharSource cs;
 
 	if (lang == "" || lang == "Java") {
-		JavaTokenizer t(cs, opt);
+		JavaTokenizer t(cs, filename, opt);
 		t.tokenize();
 	} else if (lang == "C") {
-		CTokenizer t(cs, opt);
+		CTokenizer t(cs, filename, opt);
 		t.tokenize();
 	} else {
 		std::cerr << "Unknown language specified." << std::endl;

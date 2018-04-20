@@ -34,16 +34,18 @@ protected:
 	/** Called at every encountered newline */
 	void newline(bool in_non_code_block = false) {}
 	BolState bol;			// Beginning of line state
+	std::string input_file;		// Input file name
 public:
 	virtual int get_token() = 0;	// Return a single token
 	void tokenize();		// Tokenize to stdout
 
 	// Construct from a character source
-	TokenizerBase(CharSource &s) : src(s), saw_comment(false) {}
+	TokenizerBase(CharSource &s, const std::string &file_name) :
+		src(s), saw_comment(false), input_file(file_name) {}
 
 	// Construct for a string source
 	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
-	saw_comment(false) {}
+	saw_comment(false), input_file("(string)") {}
 
 	~TokenizerBase();
 

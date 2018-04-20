@@ -44,8 +44,9 @@ public:
 	int get_token();		// Return a single token
 
 	// Construct from a character source
-	JavaTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), processing_type(PT_FILE) {
+	JavaTokenizer(CharSource &s, const std::string &file_name,
+			std::vector<std::string> opt = {}) :
+		TokenizerBase(s, file_name), processing_type(PT_FILE) {
 		process_options(opt);
 	}
 

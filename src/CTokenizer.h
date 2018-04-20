@@ -36,9 +36,10 @@ public:
 	int get_token();		// Return a single token
 
 	// Construct from a character source
-	CTokenizer(CharSource &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), scan_cpp_directive(false),
-		scan_cpp_line(false) {}
+	CTokenizer(CharSource &s, const std::string &file_name,
+			std::vector<std::string> opt = {}) :
+		TokenizerBase(s, file_name), scan_cpp_directive(false),
+		scan_cpp_line(false) { }
 
 	// Construct for a string source
 	CTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
