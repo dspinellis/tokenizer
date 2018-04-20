@@ -42,8 +42,13 @@ public:
 	NestedClassState() {
 		state.push(OUTER);
 	}
+
 	/** Called when a class(-like) token is encountered */
 	void saw_class();
+
+	/** Called when a class(-like) token possibly encountered can no longer be used to define a class */
+	void unsaw_class();
+
 
 	/** Called when an opening brace is encountered */
 	void saw_open_brace();
@@ -51,7 +56,7 @@ public:
 	/** Called when an closing brace is encountered */
 	void saw_close_brace();
 
-	/** Return true if processing a method body */
+	/** Return true if processing a method or function body */
 	bool in_method() const { return state.top() == IN_METHOD; }
 };
 #endif /* NESTEDCLASSSTATE_H */

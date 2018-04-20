@@ -56,6 +56,11 @@ CppTokenizer::get_token()
 			return (int)c0;
 		case ';':
 			bol.saw_non_space();
+			/*
+			 * class might have been used as a forwar declaration
+			 * or an elaborated type.
+			 */
+			nesting.unsaw_class();
 			return (int)c0;
 		/*
 		 * Double character C tokens with more than 2 different outcomes
@@ -185,6 +190,8 @@ CppTokenizer::get_token()
 		/* Operators starting with < or > */
 		case '>':
 			bol.saw_non_space();
+			// class might have been used as a template argument
+			nesting.unsaw_class();
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */

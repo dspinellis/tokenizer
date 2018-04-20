@@ -24,12 +24,22 @@ void NestedClassState::saw_class()
 	state.push(SAW_CLASS);
 }
 
+/** Called when a class(-like) token possibly encountered can
+ * no longer be used to define a class
+ */
+void NestedClassState::unsaw_class()
+{
+	if (state.top() == SAW_CLASS)
+		state.pop();
+}
+
 /** Called when an opening brace is encountered */
 void NestedClassState::saw_open_brace()
 {
 	switch (state.top()) {
 	case OUTER:
-		/* Should not happen; ignore */
+		// C++ functions
+		state.push(IN_METHOD);
 		break;
 	case SAW_CLASS:
 		state.top() = IN_CLASS;

@@ -11,39 +11,36 @@ class NestedClassStateTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testMethodPersist);
 	CPPUNIT_TEST(testNestedClassInMethod);
 	CPPUNIT_TEST(testNestedClassInClass);
+	CPPUNIT_TEST(testCppTemplateFunction);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testClassTransition() {
 		NestedClassState n;
 		CPPUNIT_ASSERT(!n.in_method());
+		n.saw_class();
+		CPPUNIT_ASSERT(!n.in_method());
 		n.saw_open_brace();
-		  CPPUNIT_ASSERT(!n.in_method());
-		  n.saw_class();
-		  CPPUNIT_ASSERT(!n.in_method());
 		  n.saw_open_brace();
-		    n.saw_open_brace();
-		      CPPUNIT_ASSERT(n.in_method());
-		    n.saw_close_brace();
-		  CPPUNIT_ASSERT(!n.in_method());
+		    CPPUNIT_ASSERT(n.in_method());
+		  n.saw_close_brace();
+		CPPUNIT_ASSERT(!n.in_method());
 	}
 
 	void testMethodPersist() {
 		NestedClassState n;
 		CPPUNIT_ASSERT(!n.in_method());
+		n.saw_class();
+		CPPUNIT_ASSERT(!n.in_method());
 		n.saw_open_brace();
 		  CPPUNIT_ASSERT(!n.in_method());
-		  n.saw_class();
-		  CPPUNIT_ASSERT(!n.in_method());
 		  n.saw_open_brace();
-		    CPPUNIT_ASSERT(!n.in_method());
+		    CPPUNIT_ASSERT(n.in_method());
 		    n.saw_open_brace();
 		      CPPUNIT_ASSERT(n.in_method());
-		      n.saw_open_brace();
-		        CPPUNIT_ASSERT(n.in_method());
-		      n.saw_close_brace();
-		      CPPUNIT_ASSERT(n.in_method());
-		      n.saw_close_brace();
-		    CPPUNIT_ASSERT(!n.in_method());
+		    n.saw_close_brace();
+		    CPPUNIT_ASSERT(n.in_method());
+		    n.saw_close_brace();
+		  CPPUNIT_ASSERT(!n.in_method());
 	}
 
 	void testNestedClassInMethod() {
@@ -113,6 +110,18 @@ public:
 		  n.saw_close_brace();
 		  // Back to outer class
 		  CPPUNIT_ASSERT(!n.in_method());
+	}
+
+	void testCppTemplateFunction() {
+		NestedClassState n;
+		CPPUNIT_ASSERT(!n.in_method());
+		// template <class T>
+		n.saw_class();
+		n.unsaw_class();
+		n.saw_open_brace();
+		  CPPUNIT_ASSERT(n.in_method());
+		n.saw_close_brace();
+		CPPUNIT_ASSERT(!n.in_method());
 	}
 };
 #endif /*  NESTEDCLASSSTATETEST_H */
