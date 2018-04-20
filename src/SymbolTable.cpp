@@ -21,7 +21,7 @@
 
 // Return a symbol's value, adding it if needed
 int
-SymbolTable::symbol_value(std::string symbol)
+SymbolTable::value(std::string symbol)
 {
 	Table::value_type &current_map = table.front();
 	Map::iterator lb = current_map.lower_bound(symbol);

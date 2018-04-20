@@ -38,7 +38,7 @@ public:
 	SymbolTable() : next_symbol_value(TokenId::IDENTIFIER), table(1) {}
 
 	/** Return a symbol's value, adding it if needed */
-	int symbol_value(std::string symbol);
+	int value(std::string symbol);
 	void enter_scope();
 	void exit_scope();
 	/** Return the current scope depth, with 0 being the outer scope */

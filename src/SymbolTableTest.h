@@ -16,33 +16,33 @@ public:
 	void testSingle() {
 		SymbolTable s;
 
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.symbol_value("bar"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.symbol_value("bar"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
 	}
 
 	void testScope() {
 		SymbolTable s;
 
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
 
 		s.enter_scope();
 		// Look value at outer scope
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
 		// New entry at inner scope
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.symbol_value("bar"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.symbol_value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
 
 		s.exit_scope();
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
 		// New entry at outer scope
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 2, s.symbol_value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 2, s.value("bar"));
 		s.enter_scope();
 		// Lookup at outer scope
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
-		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 2, s.symbol_value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 2, s.value("bar"));
 	}
 
 	void testScopeDepth() {
