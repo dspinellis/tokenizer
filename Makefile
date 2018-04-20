@@ -33,7 +33,7 @@ JavaToken.h: JavaTokenizer.cpp
 	./mktoken.pl Java
 
 clean:
-	rm -f *.o *.d *.exe tokenizer UnitTests
+	rm -f *.o *.d *.exe tokenizer UnitTests CToken.h JavaToken.h
 
 # Pull-in dependencies generated with -MD
 -include $(OBJS:.o=.d)
