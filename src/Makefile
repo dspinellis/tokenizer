@@ -20,8 +20,8 @@ GENERATED_HEADERS=$(KEYWORD_HEADERS) $(TOKEN_HEADERS)
 all: $(GENERATED_HEADERS) tokenizer
 
 
-OBJS=CTokenizer.o JavaTokenizer.o CSharpTokenizer.o TokenizerBase.o \
-     SymbolTable.o TokenId.o NestedClassState.o
+OBJS=CTokenizer.o CppTokenizer.o JavaTokenizer.o CSharpTokenizer.o \
+     TokenizerBase.o SymbolTable.o TokenId.o NestedClassState.o
 
 UnitTests: UnitTests.o $(OBJS) CToken.h JavaToken.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
