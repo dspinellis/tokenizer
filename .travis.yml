@@ -5,7 +5,7 @@ language: cpp
 install:
   - sudo apt-get install libcppunit-dev
 
-script: make test
+script: cd src && make test
 
 os:
   - linux

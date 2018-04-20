@@ -3,3 +3,10 @@
 # tokenizer
 
 Tokenize source code into integer vectors.
+
+## Building
+
+```
+cd src
+make
+```
