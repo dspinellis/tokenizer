@@ -13,29 +13,30 @@ else
 CXXFLAGS+=-O2
 endif
 
-all: tokenizer
+KEYWORD_HEADERS=$(patsubst %-keyword.txt,%Keyword.h,$(wildcard *-keyword.txt))
+TOKEN_HEADERS=$(patsubst %-keyword.txt,%Token.h,$(wildcard *-keyword.txt))
+GENERATED_HEADERS=$(KEYWORD_HEADERS) $(TOKEN_HEADERS)
 
-HFILES=$(wildcard *.h)
+all: $(GENERATED_HEADERS) tokenizer
+
+
 OBJS=CTokenizer.o JavaTokenizer.o TokenizerBase.o SymbolTable.o TokenId.o \
      NestedClassState.o
 
 UnitTests: UnitTests.o $(OBJS) CToken.h JavaToken.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
 
-test: UnitTests
+test: $(GENERATED_HEADERS) UnitTests
 	./UnitTests
 
-tokenizer: $(OBJS) tokenizer.o
+tokenizer: $(GENERATED_HEADERS) $(OBJS) tokenizer.o
 	$(CXX) $(LDFLAGS) tokenizer.o $(OBJS) -o $@
 
-UnitTests.o CTokenizer.o: CToken.h
-UnitTests.o JavaTokenizer.o: JavaToken.h
+%Token.h: %Tokenizer.cpp
+	./mktoken.pl $(patsubst %Token.h,%,$@)
 
-CToken.h: CTokenizer.cpp
-	./mktoken.pl C
-
-JavaToken.h: JavaTokenizer.cpp
-	./mktoken.pl Java
+%Keyword.h: %-keyword.txt
+	./mkkeyword.pl $(patsubst %Keyword.h,%,$@)
 
 install: all
 	@mkdir -p $(DESTDIR)$(MANPREFIX)
@@ -44,7 +45,7 @@ install: all
 	install -m 644 tokenizer.1 $(DESTDIR)$(MANPREFIX)/
 
 clean:
-	rm -f *.o *.d *.exe tokenizer UnitTests CToken.h JavaToken.h
+	rm -f *.o *.d *.exe tokenizer UnitTests *Token.h *Keyword.h
 
 # Pull-in dependencies generated with -MD
 -include $(OBJS:.o=.d)

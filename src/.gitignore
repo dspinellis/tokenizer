@@ -12,5 +12,5 @@ tags
 UnitTests
 UnitTests.exe
 tokenizer.exe
-CToken.h
-JavaToken.h
+*Token.h
+*Keyword.h
