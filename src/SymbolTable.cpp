@@ -16,6 +16,7 @@
 
 #include <map>
 #include <list>
+#include <string>
 
 #include "SymbolTable.h"
 
