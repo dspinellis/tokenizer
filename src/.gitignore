@@ -11,6 +11,7 @@ QualityMetricNames.h
 tags
 UnitTests
 UnitTests.exe
+tokenizer
 tokenizer.exe
 *Token.h
 *Keyword.h
