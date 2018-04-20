@@ -1,0 +1,89 @@
+.TH TOKENIZER 1 2018-04-20
+.SH NAME
+\fBtokenizer\fR \(en convert source code into integer vectors
+.SH SYNOPSIS
+\fBtokenizer\fR [\fB\-o \fIopt\fR] [\fB\-l \fIlang\fR] [\fIfile ...\fR]
+.SH DESCRIPTION
+The \fBtokenizer\fR utility converts source code specified as files in
+its command line or provided through its standard input into integer
+vectors.
+.IP \(bu
+Language keywords and multi-character tokens (e.g. \fC+=\fP) are represented
+through unique integers.
+.IP \(bu
+Numbers are mapped into integers on a logarithmic scale.
+.IP \(bu
+Other constants (e.g. characters and strings) are represented as an integer
+representing the corresponding type.
+.IP \(bu
+Identifiers are mapped into integers through some lightweight semantic
+processing.
+.IP \(bu
+Comments are mapped into a single integer.
+.IP \(bu
+Whitespace is not shown in the output.
+.IP \(bu
+All other characters are represented by the corresponding ASCII code.
+
+.SH OPTIONS
+The behavior of the \fBtokenizer\fR utility can be controlled
+through the following command-line options.
+.RS 3
+
+.TP 4
+.BI "-l " lang
+Specify the input language.
+Currently the following languages are supported:
+\fIJava\fP, \fIC\fP.
+
+.TP
+.BI "-o " opt
+Specify a language-specific processing option.
+Multiple \fB-o\fP arguments may be provided.
+The following processing options are supported.
+.RS 3
+
+.TP 8
+.B file
+Output a single vector for the whole file.
+
+.TP
+.B method
+Output a vector for the contents of each method.
+
+.TP
+.B statement
+Output a vector for each statement.
+.LP
+.RE
+.RE
+
+.SH EXAMPLES
+.PP
+Process a file with default options.
+.ft C
+.nf
+tokenizer file.c
+.ft P
+.fi
+
+.PP
+Process a file specifying a vector per method.
+.ft C
+.nf
+tokenizer -l Java -o method File.java
+.ft P
+.fi
+
+.SH DIAGNOSTICS
+An error is displayed when an end of file is encountered while processing
+a block comment or a character or string literal.
+
+.SH AUTHORS
+Written by Diomidis Spinellis.
+
+.SH BUGS
+Continuation lines are not supported.
+.PP
+The processing context may get confused by unbalanced braces occurring in
+C preprocessor macro definitions.

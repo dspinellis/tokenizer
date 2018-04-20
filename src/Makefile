@@ -1,3 +1,7 @@
+PREFIX ?= /usr/local
+BINPREFIX ?= "$(PREFIX)/bin"
+MANPREFIX ?= "$(PREFIX)/share/man/man1"
+
 # All warnings, treat warnings as errors, generate dependencies in .d files
 # offer C++11 features
 CXXFLAGS=-Wall -Werror -MD -std=c++11
@@ -31,6 +35,12 @@ CToken.h: CTokenizer.cpp
 
 JavaToken.h: JavaTokenizer.cpp
 	./mktoken.pl Java
+
+install: all
+	@mkdir -p $(DESTDIR)$(MANPREFIX)
+	@mkdir -p $(DESTDIR)$(BINPREFIX)
+	install tokenizer $(DESTDIR)$(BINPREFIX)/
+	install -m 644 tokenizer.1 $(DESTDIR)$(MANPREFIX)/
 
 clean:
 	rm -f *.o *.d *.exe tokenizer UnitTests CToken.h JavaToken.h
