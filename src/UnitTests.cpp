@@ -22,6 +22,7 @@
 #include "CTokenizerTest.h"
 #include "JavaTokenizerTest.h"
 #include "TokenizerBaseTest.h"
+#include "SymbolTableTest.h"
 
 int
 main(int argc, char *argv[])
@@ -34,6 +35,7 @@ main(int argc, char *argv[])
 	runner.addTest(TokenizerBaseTest::suite());
 	runner.addTest(CTokenizerTest::suite());
 	runner.addTest(JavaTokenizerTest::suite());
+	runner.addTest(SymbolTableTest::suite());
 
 	runner.run();
 	return 0;

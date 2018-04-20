@@ -14,28 +14,14 @@
  *   limitations under the License.
  */
 
-#ifndef TOKEIND_H
-#define TOKEIND_H
+#include "TokenId.h"
 
 /**
  * Numeric identifiers used for representing tokens.
+ * These need to be defined as well as declared until C++17
  */
-class TokenId {
-public:
-	// 0-255 ASCII characters
-	static constexpr int CHARACTER = 0;
-
-	// Language's keywords
-	static constexpr int KEYWORD = 300;
-
-	// Multi-character operators and other non-keyword tokens (e.g. elipsis)
-	static constexpr int OTHER_TOKEN = 600;
-
-	// Numbers on a log_10 scale are centered around this value
-	// and extend +-400 around it
-	static constexpr int NUMBER_ZERO = 1500;
-
-	// Identifiers are dynamically allocated from this number upward
-	static constexpr int IDENTIFIER = 2000;
-};
-#endif /* TOKEIND_H */
+constexpr int TokenId::CHARACTER;
+constexpr int TokenId::KEYWORD;
+constexpr int TokenId::OTHER_TOKEN;
+constexpr int TokenId::NUMBER_ZERO;
+constexpr int TokenId::IDENTIFIER;
