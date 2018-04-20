@@ -27,10 +27,6 @@
 #include "CTokenizer.h"
 #include "JavaTokenizer.h"
 
-static bool output_endl = true;
-static bool output_filename = false;
-static bool indentation_list = false;
-
 // Process and print the metrics of stdin
 static void
 process_file(const std::string lang, const std::vector<std::string> opt,
@@ -62,26 +58,17 @@ main(int argc, char * const argv[])
 	std::string lang = "";
 	std::vector<std::string> processing_opt;
 
-	while ((opt = getopt(argc, argv, "ail:o:n")) != -1)
+	while ((opt = getopt(argc, argv, "l:o:")) != -1)
 		switch (opt) {
-		case 'a':
-			output_filename = true;
-			break;
-		case 'i':
-			indentation_list = true;
-			break;
 		case 'l':
 			lang = optarg;
 			break;
 		case 'o':
 			processing_opt.push_back(optarg);
 			break;
-		case 'n':
-			output_endl = false;
-			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-ain] [-l lang] [-o opt] [file ...]" << std::endl;
+				" [-l lang] [-o opt] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
