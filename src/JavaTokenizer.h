@@ -25,6 +25,7 @@
 #include "JavaKeyword.h"
 #include "TokenizerBase.h"
 #include "SymbolTable.h"
+#include "NestedClassState.h"
 
 /** Collect quality metrics from C-like source code */
 class JavaTokenizer : public TokenizerBase {
@@ -42,6 +43,7 @@ private:
 		return processing_type;
 	}
 	SymbolTable symbols;
+	NestedClassState nesting;
 public:
 	int get_token();		// Return a single token
 
@@ -57,6 +59,8 @@ public:
 		TokenizerBase(s), processing_type(PT_FILE) {
 		process_options(opt);
 	}
+
+	void tokenize();
 
 	~JavaTokenizer();
 

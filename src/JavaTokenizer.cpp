@@ -47,10 +47,12 @@ JavaTokenizer::get_token()
 		case '{':
 			bol.saw_non_space();
 			symbols.enter_scope();
+			nesting.saw_open_brace();
 			return (int)c0;
 		case '}':
 			bol.saw_non_space();
 			symbols.exit_scope();
+			nesting.saw_close_brace();
 			return (int)c0;
 		case ';':
 			bol.saw_non_space();
@@ -270,10 +272,17 @@ JavaTokenizer::get_token()
 			}
 			src.push(c0);
 			key = java_keyword.identifier_type(val);
-			if (key != JavaKeyword::IDENTIFIER)
-				return key;
-			else
+			switch (key) {
+			case JavaKeyword::IDENTIFIER:
 				return symbols.value(val);
+			case JavaKeyword::CLASS:
+			case JavaKeyword::INTERFACE:
+			case JavaKeyword::ENUM:
+				nesting.saw_class();
+				return key;
+			default:
+				return key;
+			}
 			break;
 		case '\'':
 			bol.saw_non_space();
@@ -319,4 +328,38 @@ JavaTokenizer::process_options(std::vector<std::string> opt)
 
 JavaTokenizer::~JavaTokenizer()
 {
+}
+
+void
+JavaTokenizer::tokenize()
+{
+	int c;
+	bool previously_in_method = false;
+
+	while ((c = get_token())) {
+		switch (processing_type) {
+		case PT_FILE:
+			std::cout << c << '\t';
+			break;
+		case PT_METHOD:
+			if (previously_in_method && !nesting.in_method())
+				std::cout << c << std::endl;
+			if (nesting.in_method())
+				std::cout << c << '\t';
+			break;
+		case PT_STATEMENT:
+			if (previously_in_method && !nesting.in_method())
+				std::cout << c << std::endl;
+			if (nesting.in_method()) {
+				if (c == ';')
+					std::cout << c << std::endl;
+				else
+					std::cout << c << '\t';
+			}
+			break;
+		}
+		previously_in_method = nesting.in_method();
+	}
+
+	std::cout << std::endl;
 }

@@ -43,7 +43,7 @@ protected:
 	}
 public:
 	virtual int get_token() = 0;	// Return a single token
-	void tokenize();		// Tokenize to stdout
+	virtual void tokenize();	// Tokenize to stdout
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name) :

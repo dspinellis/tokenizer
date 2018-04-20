@@ -42,7 +42,7 @@ public:
 	NestedClassState() {
 		state.push(OUTER);
 	}
-	/** Called when a class token is encountered */
+	/** Called when a class(-like) token is encountered */
 	void saw_class();
 
 	/** Called when an opening brace is encountered */
