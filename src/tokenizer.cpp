@@ -25,6 +25,7 @@
 #include "unistd.h"
 
 #include "CTokenizer.h"
+#include "CSharpTokenizer.h"
 #include "JavaTokenizer.h"
 
 // Process and print the metrics of stdin
@@ -40,10 +41,14 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 	} else if (lang == "C") {
 		CTokenizer t(cs, filename, opt);
 		t.tokenize();
+	} else if (lang == "CSharp" || lang == "C#") {
+		CSharpTokenizer t(cs, filename, opt);
+		t.tokenize();
 	} else {
 		std::cerr << "Unknown language specified." << std::endl;
 		std::cerr << "The following languages are supported:" << std::endl;
 		std::cerr << "\tC" << std::endl;
+		std::cerr << "\tCSharp (or C#)" << std::endl;
 		std::cerr << "\tJava" << std::endl;
 		exit(1);
 	}
