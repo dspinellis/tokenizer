@@ -10,6 +10,7 @@ class SymbolTableTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST_SUITE(SymbolTableTest);
 	CPPUNIT_TEST(testSingle);
 	CPPUNIT_TEST(testScope);
+	CPPUNIT_TEST(testScopeDepth);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testSingle() {
@@ -43,5 +44,15 @@ public:
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.symbol_value("foo"));
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 2, s.symbol_value("bar"));
 	}
+
+	void testScopeDepth() {
+		SymbolTable s;
+		CPPUNIT_ASSERT_EQUAL(0, s.scope_depth());
+		s.enter_scope();
+		CPPUNIT_ASSERT_EQUAL(1, s.scope_depth());
+		s.exit_scope();
+		CPPUNIT_ASSERT_EQUAL(0, s.scope_depth());
+	}
+
 };
 #endif /*  SYMBOLTABLETEST_H */

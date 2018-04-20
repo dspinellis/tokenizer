@@ -41,5 +41,7 @@ public:
 	int symbol_value(std::string symbol);
 	void enter_scope();
 	void exit_scope();
+	/** Return the current scope depth, with 0 being the outer scope */
+	int scope_depth() const { return table.size() - 1; }
 };
 #endif /* SYMBOLTABLE_H */
