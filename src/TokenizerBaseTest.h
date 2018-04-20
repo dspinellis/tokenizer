@@ -51,17 +51,25 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct3.get_token());
 	}
 
+	/*
+	 * Test comment processing, rather than comment tokens
+	 * Comment tokens are tested in the language parsers
+	 */
 	void testComment() {
 		CTokenizer ct(" /* block comment */ +");
+		(void)ct.get_token();
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct.get_token());
 
 		CTokenizer ct2("// line comment\n +");
+		(void)ct2.get_token();
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
 
 		CTokenizer ct3("/* hi * / */\n+");
+		(void)ct3.get_token();
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct3.get_token());
 
 		CTokenizer ct4("/* hi ***/\n+");
+		(void)ct4.get_token();
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct4.get_token());
 	}
 

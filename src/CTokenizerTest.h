@@ -37,6 +37,9 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testRSHIFT_EQUAL);
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
+	CPPUNIT_TEST(testLINE_COMMENT);
+	CPPUNIT_TEST(testDOC_COMMENT);
+	CPPUNIT_TEST(testBLOCK_COMMENT);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -198,5 +201,21 @@ public:
 		CTokenizer ct("^=0xff");
 		CPPUNIT_ASSERT_EQUAL((int)CToken::XOR_EQUAL, ct.get_token());
 	}
+
+	void testBLOCK_COMMENT() {
+		CTokenizer ct("/* hi */");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::BLOCK_COMMENT, ct.get_token());
+	}
+
+	void testLINE_COMMENT() {
+		CTokenizer ct("// hi\n");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::LINE_COMMENT, ct.get_token());
+	}
+
+	void testDOC_COMMENT() {
+		CTokenizer ct("/** hi */");
+		CPPUNIT_ASSERT_EQUAL((int)CToken::DOC_COMMENT, ct.get_token());
+	}
+
 };
 #endif /*  CTOKENIZERTEST_H */

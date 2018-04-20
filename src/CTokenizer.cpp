@@ -223,11 +223,20 @@ CTokenizer::get_token()
 			case '=':				/* /= */
 				return CToken::DIV_EQUAL;
 			case '*':				/* Block comment */
-				if (!process_block_comment())
+				c2 = src.char_after();
+				if (process_block_comment()) {
+					if (c2 == '*' || c2 == '!')
+						return CToken::DOC_COMMENT;
+					else
+						return CToken::BLOCK_COMMENT;
+
+				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
-				if (!process_line_comment())
+				if (process_line_comment())
+					return CToken::LINE_COMMENT;
+				else
 					return 0;
 				break;
 			default:				/* / */

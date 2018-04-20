@@ -38,6 +38,9 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testRSHIFT_LOGICAL_EQUAL);
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
+	CPPUNIT_TEST(testLINE_COMMENT);
+	CPPUNIT_TEST(testJAVADOC_COMMENT);
+	CPPUNIT_TEST(testBLOCK_COMMENT);
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
@@ -206,6 +209,21 @@ public:
 	void testXOR_EQUAL() {
 		JavaTokenizer ct("^=0xff");
 		CPPUNIT_ASSERT_EQUAL((int)JavaToken::XOR_EQUAL, ct.get_token());
+	}
+
+	void testBLOCK_COMMENT() {
+		JavaTokenizer ct("/* hi */");
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::BLOCK_COMMENT, ct.get_token());
+	}
+
+	void testJAVADOC_COMMENT() {
+		JavaTokenizer ct("/** hi */");
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::JAVADOC_COMMENT, ct.get_token());
+	}
+
+	void testLINE_COMMENT() {
+		JavaTokenizer ct("// hi\n");
+		CPPUNIT_ASSERT_EQUAL((int)JavaToken::LINE_COMMENT, ct.get_token());
 	}
 
 	void testOptions() {
