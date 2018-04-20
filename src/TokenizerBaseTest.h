@@ -67,22 +67,22 @@ public:
 
 	void testNumber() {
 		CTokenizer ct("0");
-		CPPUNIT_ASSERT_EQUAL(1500, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO, ct.get_token());
 
 		CTokenizer ct1("1");
-		CPPUNIT_ASSERT_EQUAL(1501, ct1.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO + 1, ct1.get_token());
 
 		CTokenizer ct1a("0x1");
-		CPPUNIT_ASSERT_EQUAL(1501, ct1a.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO + 1, ct1a.get_token());
 
 		CTokenizer ct2("1.1");
-		CPPUNIT_ASSERT_EQUAL(1502, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO + 2, ct2.get_token());
 
 		CTokenizer ct3("10");
-		CPPUNIT_ASSERT_EQUAL(1502, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO + 2, ct3.get_token());
 
 		CTokenizer ct3a("100");
-		CPPUNIT_ASSERT_EQUAL(1503, ct3a.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_ZERO + 3, ct3a.get_token());
 
 		CTokenizer ct4("0.1");
 		CPPUNIT_ASSERT_EQUAL(1499, ct4.get_token());
@@ -92,12 +92,12 @@ public:
 
 		CTokenizer ct5("1.1e300");
 		int v5 = ct5.get_token();
-		CPPUNIT_ASSERT(v5 > 1500);
+		CPPUNIT_ASSERT(v5 > TokenId::NUMBER_ZERO);
 		CPPUNIT_ASSERT(v5 < 2000);
 
 		CTokenizer ct6("1.1E-300f");
 		int v6 = ct6.get_token();
-		CPPUNIT_ASSERT(v6 < 1500);
+		CPPUNIT_ASSERT(v6 < TokenId::NUMBER_ZERO);
 		CPPUNIT_ASSERT(v5 > 1000);
 
 		CTokenizer ct7("0.1f+");
