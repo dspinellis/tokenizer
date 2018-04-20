@@ -294,41 +294,7 @@ CTokenizer::get_token()
 			src.push(c0);
 			key = ckeyword.identifier_type(val);
 			switch (key) {
-			case CKeyword::FOR:
-			case CKeyword::WHILE:
-			case CKeyword::CASE:
-			case CKeyword::CONST:
-			case CKeyword::DEFAULT:
-			case CKeyword::GOTO:
-			case CKeyword::REGISTER:
-			case CKeyword::SIGNED:
-			case CKeyword::STATIC:
-			case CKeyword::TYPEDEF:
-			case CKeyword::ENUM:
-			case CKeyword::INLINE:
-			case CKeyword::NOALIAS:
-			case CKeyword::RESTRICT:
-			case CKeyword::STRUCT:
-			case CKeyword::UNION:
-			case CKeyword::UNSIGNED:
-			case CKeyword::VOID:
-			case CKeyword::VOLATILE:
-			case CKeyword::DO:
-			case CKeyword::SWITCH:
-			case CKeyword::BREAK:
-			case CKeyword::CONTINUE:
-			case CKeyword::RETURN:
-			case CKeyword::AUTO:
-			case CKeyword::CHAR:
-			case CKeyword::DOUBLE:
-			case CKeyword::EXTERN:
-			case CKeyword::FLOAT:
-			case CKeyword::INT:
-			case CKeyword::LONG:
-			case CKeyword::SHORT:
-			case CKeyword::SIZEOF:
-			case CKeyword::ELSE:
-			case CKeyword::IF:
+			default:
 				return key;
 			case CKeyword::IFDEF:
 			case CKeyword::ELIF:
@@ -344,6 +310,7 @@ CTokenizer::get_token()
 				 * Use unique token ids for identifiers in each scope
 				 */
 				return CKeyword::IDENTIFIER;
+			case CKeyword::FIRST:
 			case CKeyword::LAST:
 				assert(false);
 			}

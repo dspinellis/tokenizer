@@ -25,12 +25,12 @@ print $out qq(
 #ifndef ${lang}TOKEN_H
 #define ${lang}TOKEN_H
 
-#include "${lang}Keyword.h"
+#include "TokenId.h"
 
 class ${lang}Token {
 public:
 	enum TokenNum {
-		FIRST = ${lang}Keyword::LAST,
+		FIRST = TokenId::OTHER_TOKEN,
 );
 
 while (<$in>) {

@@ -23,16 +23,17 @@
 #include "BolState.h"
 #include "CharSource.h"
 #include "TokenizerBase.h"
+#include "TokenId.h"
 
 /*
  * Convert the passed number into an integer token value, in the range
- * 1000-2000, with 0 being 1500 and the rest being represented through
- * base 10 logarithms.
+ * NUMBER_ZERO +- 500, with 0 being NUMBER_ZERO and the rest being
+ * represented through base 10 logarithms.
  */
 int
 TokenizerBase::num_token(const std::string &val)
 {
-	const int BASE = 1500;
+	const int BASE = TokenId::NUMBER_ZERO;
 
 	double d = strtod(val.c_str(), NULL);
 	if (d == 0)

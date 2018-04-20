@@ -20,11 +20,14 @@
 #include <map>
 #include <string>
 
+#include "TokenId.h"
+
 /** Classify identifiers into Java keywords */
 class JavaKeyword {
 public:
 	enum IdentifierType {
-		IDENTIFIER = 256,	// Plain identifier (not a keyword)
+		FIRST = TokenId::KEYWORD,
+		IDENTIFIER,		// Plain identifier (not a keyword)
 		ABSTRACT,
 		ASSERT,
 		BOOLEAN,
