@@ -56,15 +56,19 @@ TokenizerBase::process_block_comment()
 		while (c1 != '*') {
 			if (!isspace(c1) && bol.at_bol_space())
 				bol.saw_non_space();
-			if (!src.get(c1))
+			if (!src.get(c1)) {
+				error("EOF encountered while processing a block comment");
 				return false;
+			}
 			if (c1 == '\n')
 				newline(true);
 		}
 		if (!isspace(c1) && bol.at_bol_space())
 			bol.saw_non_space();
-		if (!src.get(c1))
+		if (!src.get(c1)) {
+			error("EOF encountered while processing a block comment");
 			return false;
+		}
 		if (c1 == '/')
 			break;
 		else if (c1 == '\n')
@@ -97,8 +101,10 @@ TokenizerBase::process_char_literal()
 	char c0;
 
 	for (;;) {
-		if (!src.get(c0))
+		if (!src.get(c0)) {
+			error("EOF encountered while processing a character literal");
 			return false;
+		}
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			// ... to deal with the '\'' problem
@@ -119,8 +125,10 @@ TokenizerBase::process_string_literal()
 
 	bol.saw_non_space();
 	for (;;) {
-		if (!src.get(c0))
+		if (!src.get(c0)) {
+			error("EOF encountered while processing a string literal");
 			return false;
+		}
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);

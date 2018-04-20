@@ -32,20 +32,28 @@ protected:
 	/** True for keywords that don't end with semicolon */
 	bool saw_comment;		// True after a comment
 	/** Called at every encountered newline */
-	void newline(bool in_non_code_block = false) {}
+	void newline(bool in_non_code_block = false) { line_number++; }
 	BolState bol;			// Beginning of line state
 	std::string input_file;		// Input file name
+	int line_number;		// Input line number
+	// Report an error message
+	void error(const std::string &msg) {
+		std::cerr << input_file << '(' << line_number << "): " <<
+			msg << std::endl;
+	}
 public:
 	virtual int get_token() = 0;	// Return a single token
 	void tokenize();		// Tokenize to stdout
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name) :
-		src(s), saw_comment(false), input_file(file_name) {}
+		src(s), saw_comment(false), input_file(file_name),
+		line_number(1) {}
 
 	// Construct for a string source
 	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
-	saw_comment(false), input_file("(string)") {}
+	saw_comment(false), input_file("(string)"),
+	line_number(1) {}
 
 	~TokenizerBase();
 
