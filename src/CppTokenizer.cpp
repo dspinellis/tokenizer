@@ -308,6 +308,7 @@ CppTokenizer::get_token()
 			case CppKeyword::IDENTIFIER:
 				return symbols.value(val);
 			case CppKeyword::CLASS:
+			case CppKeyword::STRUCT:
 				nesting.saw_class();
 				return key;
 			// Alternative representations of standard tokens
