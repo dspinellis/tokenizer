@@ -41,6 +41,7 @@ CppTokenizer::get_token()
 		 * ANSI 3.1.5 p. 32 and 3.1.6 p. 33
 		 */
 		case '\n':
+			scan_cpp_line = false;
 			break;
 		case ' ': case '\t': case '\v': case '\f': case '\r':
 			break;
@@ -187,6 +188,13 @@ CppTokenizer::get_token()
 				return (int)c0;
 			}
 			break;
+		case '#':
+			if (bol.at_bol_space()) {
+				scan_cpp_directive = true;
+				scan_cpp_line = true;
+			}
+			bol.saw_non_space();
+			return (int)c0;
 		/* Operators starting with < or > */
 		case '>':
 			bol.saw_non_space();
@@ -305,6 +313,14 @@ CppTokenizer::get_token()
 			src.push(c0);
 			key = cpp_keyword.identifier_type(val);
 			switch (key) {
+			case CppKeyword::IFDEF:
+			case CppKeyword::ELIF:
+			case CppKeyword::INCLUDE:
+				if (scan_cpp_directive)
+					return key;
+				else
+					return symbols.value(val);
+				break;
 			case CppKeyword::IDENTIFIER:
 				return symbols.value(val);
 			case CppKeyword::CLASS:
@@ -337,6 +353,7 @@ CppTokenizer::get_token()
 			default:
 				return key;
 			}
+			scan_cpp_directive = false;
 			break;
 		case '\'':
 			bol.saw_non_space();
@@ -345,6 +362,7 @@ CppTokenizer::get_token()
 			else
 				return 0;
 		case '"':
+			bol.saw_non_space();
 			if (process_string_literal())
 				return CppToken::STRING_LITERAL;
 			else

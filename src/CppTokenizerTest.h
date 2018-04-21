@@ -57,6 +57,7 @@ class CppTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
+	CPPUNIT_TEST(testCppKeyword);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -322,6 +323,16 @@ public:
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, ct.get_token());
+	}
+
+	void testCppKeyword() {
+		CppTokenizer ct("# include ");
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)CppKeyword::INCLUDE, ct.get_token());
+
+		CppTokenizer ct2("int include ");
+		CPPUNIT_ASSERT_EQUAL((int)CppKeyword::INT, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
 	}
 };
 #endif /*  CPPTOKENIZERTEST_H */

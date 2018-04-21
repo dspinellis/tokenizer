@@ -28,6 +28,8 @@
 /** Collect quality metrics from C-like source code */
 class CppTokenizer : public TokenizerBase {
 private:
+	bool scan_cpp_directive;	// Keyword after a C preprocessor #
+	bool scan_cpp_line;		// Line after a C preprocessor #
 	CppKeyword cpp_keyword;
 public:
 	int get_token();		// Return a single token
@@ -35,13 +37,15 @@ public:
 	// Construct from a character source
 	CppTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name) {
+		TokenizerBase(s, file_name), scan_cpp_directive(false),
+		scan_cpp_line(false) {
 		process_options(opt);
 	}
 
 	// Construct for a string source
 	CppTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s) {
+		TokenizerBase(s), scan_cpp_directive(false),
+		scan_cpp_line(false) {
 		process_options(opt);
 	}
 
