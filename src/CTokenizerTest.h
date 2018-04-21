@@ -43,6 +43,7 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
 	CPPUNIT_TEST(testCppKeyword);
+	CPPUNIT_TEST(testPasteOperator);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -243,6 +244,13 @@ public:
 		CTokenizer ct2("int include ");
 		CPPUNIT_ASSERT_EQUAL((int)CKeyword::INT, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
+	}
+
+	void testPasteOperator() {
+		CTokenizer ct("a ## b");
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)CToken::TOKEN_PASTE, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER + 1, ct.get_token());
 	}
 };
 #endif /*  CTOKENIZERTEST_H */

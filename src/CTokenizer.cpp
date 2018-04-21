@@ -171,6 +171,11 @@ CTokenizer::get_token()
 			}
 			break;
 		case '#':
+			src.get(c1);
+			if (c1 == '#')
+				return CToken::TOKEN_PASTE;
+			else
+				src.push(c1);
 			if (bol.at_bol_space()) {
 				scan_cpp_directive = true;
 				scan_cpp_line = true;
