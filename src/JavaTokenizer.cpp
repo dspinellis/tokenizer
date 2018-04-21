@@ -317,58 +317,6 @@ JavaTokenizer::get_token()
 	}
 }
 
-void
-JavaTokenizer::process_options(std::vector<std::string> opt)
-{
-	for (auto &o : opt) {
-		if (o == "file")
-			processing_type = PT_FILE;
-		else if (o == "method")
-			processing_type = PT_METHOD;
-		else if (o == "statement")
-			processing_type = PT_STATEMENT;
-		else {
-			std::cerr << "Unsupported processing option [" << o <<
-				"]" << std::endl;
-			std::cerr << "Valid options are one of file, method, statement" << std::endl;
-		}
-	}
-}
-
 JavaTokenizer::~JavaTokenizer()
 {
-}
-
-void
-JavaTokenizer::tokenize()
-{
-	int c;
-	bool previously_in_method = false;
-
-	while ((c = get_token())) {
-		switch (processing_type) {
-		case PT_FILE:
-			std::cout << c << '\t';
-			break;
-		case PT_METHOD:
-			if (previously_in_method && !nesting.in_method())
-				std::cout << c << std::endl;
-			if (nesting.in_method())
-				std::cout << c << '\t';
-			break;
-		case PT_STATEMENT:
-			if (previously_in_method && !nesting.in_method())
-				std::cout << c << std::endl;
-			if (nesting.in_method()) {
-				if (c == ';')
-					std::cout << c << std::endl;
-				else
-					std::cout << c << '\t';
-			}
-			break;
-		}
-		previously_in_method = nesting.in_method();
-	}
-
-	std::cout << std::endl;
 }

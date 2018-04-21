@@ -24,26 +24,11 @@
 #include "CharSource.h"
 #include "CSharpKeyword.h"
 #include "TokenizerBase.h"
-#include "SymbolTable.h"
-#include "NestedClassState.h"
 
 /** Collect quality metrics from C-like source code */
 class CSharpTokenizer : public TokenizerBase {
 private:
 	CSharpKeyword java_keyword;
-	enum ProcessingType {
-		PT_FILE,		// Output vector for whole class
-		PT_METHOD,		// Output vector for each method
-		PT_STATEMENT,		// Output vector for each statement
-	} processing_type;
-
-	void process_options(std::vector<std::string> opt);
-
-	enum ProcessingType get_processing_type() const {
-		return processing_type;
-	}
-	SymbolTable symbols;
-	NestedClassState nesting;
 	int get_token_real();		// Return a single token
 	int previous_token;		// Previously returned token
 public:
@@ -53,17 +38,15 @@ public:
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name), processing_type(PT_FILE) {
+		TokenizerBase(s, file_name) {
 		process_options(opt);
 	}
 
 	// Construct for a string source
 	CSharpTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), processing_type(PT_FILE) {
+		TokenizerBase(s) {
 		process_options(opt);
 	}
-
-	void tokenize();
 
 	~CSharpTokenizer();
 

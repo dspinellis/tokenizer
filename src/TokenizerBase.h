@@ -19,10 +19,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "CharSource.h"
 #include "CKeyword.h"
 #include "BolState.h"
+#include "SymbolTable.h"
+#include "NestedClassState.h"
 
 /** Collect quality metrics from C-like source code */
 class TokenizerBase {
@@ -41,6 +44,19 @@ protected:
 		std::cerr << input_file << '(' << line_number << "): " <<
 			msg << std::endl;
 	}
+	enum ProcessingType {
+		PT_FILE,		// Output vector for whole class
+		PT_METHOD,		// Output vector for each method
+		PT_STATEMENT,		// Output vector for each statement
+	} processing_type;
+
+	void process_options(std::vector<std::string> opt);
+
+	enum ProcessingType get_processing_type() const {
+		return processing_type;
+	}
+	SymbolTable symbols;
+	NestedClassState nesting;
 public:
 	virtual int get_token() = 0;	// Return a single token
 	virtual void tokenize();	// Tokenize to stdout
@@ -48,12 +64,12 @@ public:
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name) :
 		src(s), saw_comment(false), input_file(file_name),
-		line_number(1) {}
+		line_number(1), processing_type(PT_FILE) {}
 
 	// Construct for a string source
 	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
 	saw_comment(false), input_file("(string)"),
-	line_number(1) {}
+	line_number(1), processing_type(PT_FILE) {}
 
 	~TokenizerBase();
 
