@@ -40,6 +40,8 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testLINE_COMMENT);
 	CPPUNIT_TEST(testDOC_COMMENT);
 	CPPUNIT_TEST(testBLOCK_COMMENT);
+	CPPUNIT_TEST(testSameScope);
+	CPPUNIT_TEST(testDifferentScope);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -56,7 +58,7 @@ public:
 
 	void testIdentifier() {
 		CTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL((int)CKeyword::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct.get_token());
 	}
 
 	void testCharacterToken() {
@@ -217,5 +219,19 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)CToken::DOC_COMMENT, ct.get_token());
 	}
 
+	void testSameScope() {
+		CTokenizer ct("foo { foo");
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'{', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+	}
+
+	void testDifferentScope() {
+		CTokenizer ct("{ foo } foo");
+		CPPUNIT_ASSERT_EQUAL((int)'{', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, ct.get_token());
+	}
 };
 #endif /*  CTOKENIZERTEST_H */

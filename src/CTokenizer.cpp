@@ -48,14 +48,17 @@ CTokenizer::get_token()
 			break;
 		case '{':
 			bol.saw_non_space();
-			//scoped_identifier.push_back(IdMap());
+			symbols.enter_scope();
+			nesting.saw_open_brace();
 			return (int)c0;
 		case '}':
 			bol.saw_non_space();
-			//scoped_identifier.pop_back(IdMap());
+			symbols.exit_scope();
+			nesting.saw_close_brace();
 			return (int)c0;
 		case ';':
 			bol.saw_non_space();
+			nesting.unsaw_class();
 			return (int)c0;
 		/*
 		 * Double character C tokens with more than 2 different outcomes
@@ -303,25 +306,23 @@ CTokenizer::get_token()
 			src.push(c0);
 			key = ckeyword.identifier_type(val);
 			switch (key) {
-			default:
-				return key;
 			case CKeyword::IFDEF:
 			case CKeyword::ELIF:
 			case CKeyword::INCLUDE:
 				if (scan_cpp_directive)
 					return key;
-				/* FALLTHROUGH */
+				else
+					return symbols.value(val);
+				break;
 			case CKeyword::IDENTIFIER:
-				/*
-				 * TODO:
-				 * Use consistent token ids for all C library identifiers
-				 * Use same token ids for global scope identifiers
-				 * Use unique token ids for identifiers in each scope
-				 */
-				return CKeyword::IDENTIFIER;
+				return symbols.value(val);
 			case CKeyword::FIRST:
 			case CKeyword::LAST:
 				assert(false);
+			case CKeyword::STRUCT:
+				nesting.saw_class();
+			default:
+				return key;
 			}
 			scan_cpp_directive = false;
 			break;
