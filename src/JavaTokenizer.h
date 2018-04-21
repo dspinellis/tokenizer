@@ -35,15 +35,11 @@ public:
 	// Construct from a character source
 	JavaTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name) {
-		process_options(opt);
-	}
+		TokenizerBase(s, file_name, opt) { }
 
 	// Construct for a string source
 	JavaTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s) {
-		process_options(opt);
-	}
+		TokenizerBase(s, opt) { }
 
 	~JavaTokenizer();
 

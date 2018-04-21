@@ -38,15 +38,11 @@ public:
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name) {
-		process_options(opt);
-	}
+		TokenizerBase(s, file_name, opt) {}
 
 	// Construct for a string source
 	CSharpTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s) {
-		process_options(opt);
-	}
+		TokenizerBase(s, opt) {}
 
 	~CSharpTokenizer();
 

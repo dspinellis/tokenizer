@@ -37,17 +37,13 @@ public:
 	// Construct from a character source
 	CppTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name), scan_cpp_directive(false),
-		scan_cpp_line(false) {
-		process_options(opt);
-	}
+		TokenizerBase(s, file_name, opt), scan_cpp_directive(false),
+		scan_cpp_line(false) {}
 
 	// Construct for a string source
 	CppTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s), scan_cpp_directive(false),
-		scan_cpp_line(false) {
-		process_options(opt);
-	}
+		TokenizerBase(s, opt), scan_cpp_directive(false),
+		scan_cpp_line(false) {}
 
 	~CppTokenizer();
 

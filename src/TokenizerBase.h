@@ -62,14 +62,21 @@ public:
 	virtual void tokenize();	// Tokenize to stdout
 
 	// Construct from a character source
-	TokenizerBase(CharSource &s, const std::string &file_name) :
+	TokenizerBase(CharSource &s, const std::string &file_name,
+			std::vector<std::string> opt = {}) :
 		src(s), saw_comment(false), input_file(file_name),
-		line_number(1), processing_type(PT_FILE) {}
+		line_number(1), processing_type(PT_FILE) {
+		process_options(opt);
+	}
 
 	// Construct for a string source
-	TokenizerBase(const std::string &s) : string_src(s), src(string_src),
-	saw_comment(false), input_file("(string)"),
-	line_number(1), processing_type(PT_FILE) {}
+	TokenizerBase(const std::string &s,
+			std::vector<std::string> opt = {}) :
+		string_src(s), src(string_src), saw_comment(false),
+		input_file("(string)"), line_number(1),
+		processing_type(PT_FILE) {
+		process_options(opt);
+	}
 
 	~TokenizerBase();
 
