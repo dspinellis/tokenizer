@@ -28,7 +28,7 @@
 /** Collect quality metrics from C-like source code */
 class CSharpTokenizer : public TokenizerBase {
 private:
-	CSharpKeyword java_keyword;
+	CSharpKeyword csharp_keyword;
 	int get_token_real();		// Return a single token
 	int previous_token;		// Previously returned token
 public:

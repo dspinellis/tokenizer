@@ -28,7 +28,7 @@
 /** Collect quality metrics from C-like source code */
 class CppTokenizer : public TokenizerBase {
 private:
-	CppKeyword java_keyword;
+	CppKeyword cpp_keyword;
 public:
 	int get_token();		// Return a single token
 
