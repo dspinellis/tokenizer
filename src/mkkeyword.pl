@@ -50,7 +50,9 @@ print $out "
 private:
 	// Keyword map
 	typedef std::map <std::string, enum IdentifierType> KeywordMap;
+	typedef std::map <int, std::string> TokenMap;
 	KeywordMap km;
+	TokenMap tm;
 public:
 	${lang}Keyword() {
 		km = {
@@ -62,16 +64,35 @@ for my $k (shuffle @keywords) {
 	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
 	print $out qq(\t\t\t{"$k", $uck },\n);
 }
+
+print $out '
+		};
+		tm = {
+';
+
+for my $k (shuffle @keywords) {
+	my $uck = uc($k);
+	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
+	print $out qq(\t\t\t{$uck, "$k" },\n);
+}
+
 print $out qq|
 		};
 	}
 
 	enum IdentifierType identifier_type(const std::string &s) {
-		KeywordMap::const_iterator f = km.find(s);
+		auto f = km.find(s);
 		if (f == km.end())
 			return IDENTIFIER;
 		else
 			return f->second;
+	}
+
+	const std::string & keyword(int k) const {
+		static const std::string UNKNOWN("???");
+
+		auto t = tm.find(k);
+		return t == tm.end() ? UNKNOWN : t->second;
 	}
 };
 #endif /* ${lang}KEYWORD_H */
