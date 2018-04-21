@@ -23,6 +23,7 @@
 
 #include "CharSource.h"
 #include "CppKeyword.h"
+#include "CppToken.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
@@ -31,8 +32,18 @@ private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	bool scan_cpp_line;		// Line after a C preprocessor #
 	CppKeyword cpp_keyword;
+	CppToken cpp_token;
 public:
 	int get_token();		// Return a single token
+
+	const std::string & keyword_to_string(int k) const {
+		return cpp_keyword.to_string(k);
+	}
+
+	const std::string & token_to_string(int k) const {
+		return cpp_token.to_string(k);
+	}
+
 
 	// Construct from a character source
 	CppTokenizer(CharSource &s, const std::string &file_name,

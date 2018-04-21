@@ -15,10 +15,12 @@
  */
 
 #include <cctype>
+#include <cassert>
 #include <string>
 #include <cassert>
 #include <cstdlib>
 #include <cmath>
+#include <sstream>
 
 #include "BolState.h"
 #include "CharSource.h"
@@ -202,6 +204,56 @@ TokenizerBase::tokenize()
 	std::cout << std::endl;
 }
 
+void
+TokenizerBase::symbolic_tokenize()
+{
+	int c;
+	bool previously_in_method = false;
+
+	while ((c = get_token())) {
+		std::ostringstream os;
+
+		if (TokenId::is_character(c))
+			os << (char)c;
+		else if (TokenId::is_keyword(c))
+			os.str(keyword_to_string(c));
+		else if (TokenId::is_other_token(c))
+			os.str(token_to_string(c));
+		else if (TokenId::is_zero(c))
+			os.str("0");
+		else if (TokenId::is_number(c))
+			os << "~1E" << c - TokenId::NUMBER_ZERO;
+		else if (TokenId::is_identifier(c))
+			os << "ID:" << c;
+		else
+			assert(false);
+
+		switch (processing_type) {
+		case PT_FILE:
+			std::cout << os.str() << ' ';
+			break;
+		case PT_METHOD:
+			if (previously_in_method && !nesting.in_method())
+				std::cout << os.str() << std::endl;
+			if (nesting.in_method())
+				std::cout << os.str() << ' ';
+			break;
+		case PT_STATEMENT:
+			if (previously_in_method && !nesting.in_method())
+				std::cout << os.str() << std::endl;
+			if (nesting.in_method()) {
+				if (c == ';')
+					std::cout << os.str() << std::endl;
+				else
+					std::cout << os.str() << ' ';
+			}
+			break;
+		}
+		previously_in_method = nesting.in_method();
+	}
+
+	std::cout << std::endl;
+}
 void
 TokenizerBase::process_options(std::vector<std::string> opt)
 {

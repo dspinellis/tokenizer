@@ -33,9 +33,18 @@ public:
 
 	// Numbers on a log_10 scale are centered around this value
 	// and extend +-400 around it
+	static constexpr int NUMBER_START = 1100;
 	static constexpr int NUMBER_ZERO = 1500;
+	static constexpr int NUMBER_END = 1900;
 
 	// Identifiers are dynamically allocated from this number upward
 	static constexpr int IDENTIFIER = 2000;
+
+	static bool is_character(int t) { return t < KEYWORD; }
+	static bool is_keyword(int t) { return t >= KEYWORD && t < OTHER_TOKEN; }
+	static bool is_other_token(int t) { return t >= OTHER_TOKEN && t < NUMBER_START; }
+	static bool is_zero(int t) { return t == NUMBER_ZERO; }
+	static bool is_number(int t) { return t >= NUMBER_START && t < NUMBER_END; }
+	static bool is_identifier(int t) { return t >= IDENTIFIER; }
 };
 #endif /* TOKEIND_H */

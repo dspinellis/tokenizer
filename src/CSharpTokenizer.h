@@ -23,17 +23,27 @@
 
 #include "CharSource.h"
 #include "CSharpKeyword.h"
+#include "CSharpToken.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
 class CSharpTokenizer : public TokenizerBase {
 private:
 	CSharpKeyword csharp_keyword;
+	CSharpToken csharp_token;
 	int get_token_real();		// Return a single token
 	int previous_token;		// Previously returned token
 public:
 	// Return a single token coalescing together multiple line doc comments
 	int get_token();
+
+	const std::string & keyword_to_string(int k) const {
+		return csharp_keyword.to_string(k);
+	}
+
+	const std::string & token_to_string(int k) const {
+		return csharp_token.to_string(k);
+	}
 
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,

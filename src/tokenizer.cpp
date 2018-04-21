@@ -32,23 +32,20 @@
 // Process and print the metrics of stdin
 static void
 process_file(const std::string lang, const std::vector<std::string> opt,
-		std::string filename)
+		std::string filename, bool symbolic)
 {
 	CharSource cs;
+	TokenizerBase *t;
 
-	if (lang == "" || lang == "Java") {
-		JavaTokenizer t(cs, filename, opt);
-		t.tokenize();
-	} else if (lang == "C") {
-		CTokenizer t(cs, filename, opt);
-		t.tokenize();
-	} else if (lang == "CSharp" || lang == "C#") {
-		CSharpTokenizer t(cs, filename, opt);
-		t.tokenize();
-	} else if (lang == "C++") {
-		CppTokenizer t(cs, filename, opt);
-		t.tokenize();
-	} else {
+	if (lang == "" || lang == "Java")
+		t = new JavaTokenizer(cs, filename, opt);
+	else if (lang == "C")
+		t = new CTokenizer(cs, filename, opt);
+	else if (lang == "CSharp" || lang == "C#")
+		t = new CSharpTokenizer(cs, filename, opt);
+	else if (lang == "C++")
+		t = new CppTokenizer(cs, filename, opt);
+	else {
 		std::cerr << "Unknown language specified." << std::endl;
 		std::cerr << "The following languages are supported:" << std::endl;
 		std::cerr << "\tC" << std::endl;
@@ -57,6 +54,10 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\tJava" << std::endl;
 		exit(1);
 	}
+	if (symbolic)
+		t->symbolic_tokenize();
+	else
+		t->tokenize();
 }
 
 /* Calculate and print C metrics for the standard input */
@@ -67,8 +68,9 @@ main(int argc, char * const argv[])
 	int opt;
 	std::string lang = "";
 	std::vector<std::string> processing_opt;
+	bool symbolic = false;
 
-	while ((opt = getopt(argc, argv, "l:o:")) != -1)
+	while ((opt = getopt(argc, argv, "l:o:s")) != -1)
 		switch (opt) {
 		case 'l':
 			lang = optarg;
@@ -76,14 +78,17 @@ main(int argc, char * const argv[])
 		case 'o':
 			processing_opt.push_back(optarg);
 			break;
+		case 's':
+			symbolic = true;
+			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-l lang] [-o opt] [file ...]" << std::endl;
+				"[-s] [-l lang] [-o opt] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
 	if (!argv[optind]) {
-		process_file(lang, processing_opt, "-");
+		process_file(lang, processing_opt, "-", symbolic);
 		exit(EXIT_SUCCESS);
 	}
 
@@ -96,7 +101,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_FAILURE);
 		}
 		std::cin.rdbuf(in.rdbuf());
-		process_file(lang, processing_opt, argv[optind]);
+		process_file(lang, processing_opt, argv[optind], symbolic);
 		in.close();
 		optind++;
 	}

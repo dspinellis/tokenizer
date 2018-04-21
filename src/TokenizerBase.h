@@ -59,7 +59,10 @@ protected:
 	NestedClassState nesting;
 public:
 	virtual int get_token() = 0;	// Return a single token
-	virtual void tokenize();	// Tokenize to stdout
+	virtual const std::string & keyword_to_string(int k) const = 0;
+	virtual const std::string & token_to_string(int k) const = 0;
+	void tokenize();		// Tokenize numbers to stdout
+	void symbolic_tokenize();	// Tokenize symbols to stdout
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,

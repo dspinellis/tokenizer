@@ -2,7 +2,7 @@
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-o \fIopt\fR] [\fB\-l \fIlang\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-s\fP] [\fB\-o \fIopt\fR] [\fB\-l \fIlang\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into integer
@@ -56,6 +56,11 @@ Output a vector for the contents of each method.
 Output a vector for each statement.
 .LP
 .RE
+
+.TP
+.B -s
+Output symbolic token names, rather than numbers.
+
 .RE
 
 .SH EXAMPLES

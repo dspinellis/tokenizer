@@ -23,14 +23,25 @@
 
 #include "CharSource.h"
 #include "JavaKeyword.h"
+#include "JavaToken.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
 class JavaTokenizer : public TokenizerBase {
 private:
 	JavaKeyword java_keyword;
+	JavaToken java_token;
 public:
 	int get_token();		// Return a single token
+
+	const std::string & keyword_to_string(int k) const {
+		return java_keyword.to_string(k);
+	}
+
+	const std::string & token_to_string(int k) const {
+		return java_token.to_string(k);
+	}
+
 
 	// Construct from a character source
 	JavaTokenizer(CharSource &s, const std::string &file_name,

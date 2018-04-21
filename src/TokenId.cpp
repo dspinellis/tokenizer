@@ -23,5 +23,7 @@
 constexpr int TokenId::CHARACTER;
 constexpr int TokenId::KEYWORD;
 constexpr int TokenId::OTHER_TOKEN;
+constexpr int TokenId::NUMBER_START;
 constexpr int TokenId::NUMBER_ZERO;
+constexpr int TokenId::NUMBER_END;
 constexpr int TokenId::IDENTIFIER;

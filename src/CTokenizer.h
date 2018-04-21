@@ -23,6 +23,7 @@
 
 #include "CharSource.h"
 #include "CKeyword.h"
+#include "CToken.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
@@ -32,8 +33,17 @@ private:
 	bool scan_cpp_line;		// Line after a C preprocessor #
 	/** True for keywords that don't end with semicolon */
 	CKeyword ckeyword;
+	CToken ctoken;
 public:
 	int get_token();		// Return a single token
+
+	const std::string & keyword_to_string(int k) const {
+		return ckeyword.to_string(k);
+	}
+
+	const std::string & token_to_string(int k) const {
+		return ctoken.to_string(k);
+	}
 
 	// Construct from a character source
 	CTokenizer(CharSource &s, const std::string &file_name,

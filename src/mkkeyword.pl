@@ -88,7 +88,7 @@ print $out qq|
 			return f->second;
 	}
 
-	const std::string & keyword(int k) const {
+	const std::string & to_string(int k) const {
 		static const std::string UNKNOWN("???");
 
 		auto t = tm.find(k);
