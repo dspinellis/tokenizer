@@ -42,6 +42,7 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testBLOCK_COMMENT);
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
+	CPPUNIT_TEST(testCppKeyword);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -232,6 +233,16 @@ public:
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, ct.get_token());
+	}
+
+	void testCppKeyword() {
+		CTokenizer ct("# include ");
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)CKeyword::INCLUDE, ct.get_token());
+
+		CTokenizer ct2("int include ");
+		CPPUNIT_ASSERT_EQUAL((int)CKeyword::INT, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
 	}
 };
 #endif /*  CTOKENIZERTEST_H */

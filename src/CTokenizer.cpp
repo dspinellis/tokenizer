@@ -42,6 +42,7 @@ CTokenizer::get_token()
 		 * ANSI 3.1.5 p. 32 and 3.1.6 p. 33
 		 */
 		case '\n':
+			bol.saw_newline();
 			scan_cpp_line = false;
 			break;
 		case ' ': case '\t': case '\v': case '\f': case '\r':
@@ -170,7 +171,6 @@ CTokenizer::get_token()
 			}
 			break;
 		case '#':
-			bol.saw_non_space();
 			if (bol.at_bol_space()) {
 				scan_cpp_directive = true;
 				scan_cpp_line = true;
