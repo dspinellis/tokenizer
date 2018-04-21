@@ -53,15 +53,17 @@ private:
 	KeywordMap km;
 public:
 	${lang}Keyword() {
+		km = {
 ";
 
 # Shuffle to avoid presenting sorted data to the map
 for my $k (shuffle @keywords) {
 	my $uck = uc($k);
 	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
-	print $out qq{\t\tkm["$k"] = $uck;\n};
+	print $out qq(\t\t\t{"$k", $uck },\n);
 }
 print $out qq|
+		};
 	}
 
 	enum IdentifierType identifier_type(const std::string &s) {
