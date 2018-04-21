@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use List::Util qw(shuffle);
 
 my $lang = $ARGV[0];
 
@@ -17,7 +18,7 @@ my %tokens;
 open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
 open(my $out, '>', $out_fname) || die "Unable to open $out_fname: $!\n";
 
-print $out qq(
+print $out qq|
 /*
  * Auto-generated file
  */
@@ -28,10 +29,14 @@ print $out qq(
 #include "TokenId.h"
 
 class ${lang}Token {
+private:
+	typedef std::map <int, std::string> TokenMap;
+	TokenMap tm;
+
 public:
 	enum TokenNum {
 		FIRST = TokenId::OTHER_TOKEN,
-);
+|;
 
 while (<$in>) {
 	$tokens{$1} = 1 if (/\b${lang}Token\:\:(\w+)/);
@@ -43,6 +48,25 @@ for my $t (sort keys %tokens) {
 
 print $out "
 	};
+
+	${lang}Token() {
+		tm = {
+";
+
+for my $t (shuffle keys %tokens) {
+	print $out qq(\t\t\t{$t, "$t" },\n);
+}
+
+print $out qq|
+		};
+	}
+
+	const std::string & keyword(int k) const {
+		static const std::string UNKNOWN("???");
+
+		auto t = tm.find(k);
+		return t == tm.end() ? UNKNOWN : t->second;
+	}
 };
 #endif /* ${lang}TOKEN_H */
-";
+|;
