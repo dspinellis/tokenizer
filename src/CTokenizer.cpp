@@ -333,6 +333,7 @@ CTokenizer::get_token()
 			else
 				return 0;
 		case '"':
+			bol.saw_non_space();
 			if (process_string_literal())
 				return CToken::STRING_LITERAL;
 			else
