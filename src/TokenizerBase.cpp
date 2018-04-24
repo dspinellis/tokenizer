@@ -268,6 +268,7 @@ TokenizerBase::process_options(std::vector<std::string> opt)
 			std::cerr << "Unsupported processing option [" << o <<
 				"]" << std::endl;
 			std::cerr << "Valid options are one of file, method, statement" << std::endl;
+			exit(1);
 		}
 	}
 }
