@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/dspinellis/tokenizer.svg?branch=master)](https://travis-ci.org/dspinellis/tokenizer)
 
-# tokenizer
+# Tokenizer
 
 Tokenize source code into integer vectors.
 
@@ -25,6 +25,15 @@ sudo make install
 tokenizer file.c
 tokenizer -l Java -o statement <file.java
 ```
+## Syntax
+```
+tokenizer [-l {Java|C|Charp|C#}] [-o {file|method|statement}] [-s] <\path\to\source\code\file>
+```
+```-l``` specifies programming language (optional argument; Java is default).
+
+```-o``` specifies processing option (optional argument; file is default).
+
+```-s``` emits symbolic output mode (optional argument).
 
 ## Examples of tokenizing "hello world" programs in diverse languages
 
@@ -55,7 +64,7 @@ $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp
 ```
 $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp.cs | tokenizer -l "C#" -s
 class ID:2000 { static void ID:2001 ( ) { ID:2002 . ID:2003 . ID:2004
-( STRING_LITERAL ) ; } }
+( STRING_LITERAL ) ; } }
 ```
 
 ### C# method-only into integers
@@ -71,7 +80,7 @@ $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp
 $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c%2B%2B.cpp | tokenizer -l C++ -s
 # include < ID:2000 > LINE_COMMENT using namespace ID:2001 ; int ID:2002
 ( ) LINE_COMMENT { ID:2003 LSHIFT STRING_LITERAL LSHIFT ID:2004 ;
-LINE_COMMENT return 0 ; LINE_COMMENT }
+LINE_COMMENT return 0 ; LINE_COMMENT }
 ```
 
 ### Java into symbols
