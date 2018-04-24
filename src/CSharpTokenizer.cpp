@@ -278,6 +278,7 @@ CSharpTokenizer::get_token_real()
 			case CSharpKeyword::CLASS:
 			case CSharpKeyword::INTERFACE:
 			case CSharpKeyword::ENUM:
+			case CSharpKeyword::STRUCT:
 				nesting.saw_class();
 				return key;
 			default:
