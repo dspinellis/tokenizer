@@ -32,7 +32,7 @@
 // Process and print the metrics of stdin
 static void
 process_file(const std::string lang, const std::vector<std::string> opt,
-		std::string filename, bool symbolic)
+		std::string filename, char processing_type)
 {
 	CharSource cs;
 	TokenizerBase *t;
@@ -54,10 +54,24 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\tJava" << std::endl;
 		exit(1);
 	}
-	if (symbolic)
+	switch (processing_type) {
+	case 'c':
+		t->code_tokenize();
+		break;
+	case 'n':
+		t->numeric_tokenize();
+		break;
+	case 's':
 		t->symbolic_tokenize();
-	else
-		t->tokenize();
+		break;
+	default:
+		std::cerr << "Unknown processing type specified." << std::endl;
+		std::cerr << "The following processing types are supported:" << std::endl;
+		std::cerr << "\tc: output code; one token per line" << std::endl;
+		std::cerr << "\tn: output numeric values" << std::endl;
+		std::cerr << "\ts: output token symbols" << std::endl;
+		exit(1);
+	}
 }
 
 /* Calculate and print C metrics for the standard input */
@@ -68,9 +82,9 @@ main(int argc, char * const argv[])
 	int opt;
 	std::string lang = "";
 	std::vector<std::string> processing_opt;
-	bool symbolic = false;
+	char processing_type = 'n';
 
-	while ((opt = getopt(argc, argv, "l:o:s")) != -1)
+	while ((opt = getopt(argc, argv, "l:o:t:")) != -1)
 		switch (opt) {
 		case 'l':
 			lang = optarg;
@@ -78,8 +92,8 @@ main(int argc, char * const argv[])
 		case 'o':
 			processing_opt.push_back(optarg);
 			break;
-		case 's':
-			symbolic = true;
+		case 't':
+			processing_type = *optarg;
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
@@ -88,7 +102,7 @@ main(int argc, char * const argv[])
 		}
 
 	if (!argv[optind]) {
-		process_file(lang, processing_opt, "-", symbolic);
+		process_file(lang, processing_opt, "-", processing_type);
 		exit(EXIT_SUCCESS);
 	}
 
@@ -101,7 +115,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_FAILURE);
 		}
 		std::cin.rdbuf(in.rdbuf());
-		process_file(lang, processing_opt, argv[optind], symbolic);
+		process_file(lang, processing_opt, argv[optind], processing_type);
 		in.close();
 		optind++;
 	}

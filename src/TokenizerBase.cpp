@@ -171,7 +171,7 @@ TokenizerBase::process_number(std::string &val)
 }
 
 void
-TokenizerBase::tokenize()
+TokenizerBase::numeric_tokenize()
 {
 	int c;
 	bool previously_in_method = false;
@@ -254,6 +254,31 @@ TokenizerBase::symbolic_tokenize()
 
 	std::cout << std::endl;
 }
+
+void
+TokenizerBase::code_tokenize()
+{
+	int c;
+
+	while ((c = get_token())) {
+		if (TokenId::is_character(c) & !isspace(c))
+			std::cout << (char)c;
+		else if (TokenId::is_keyword(c))
+			std::cout <<keyword_to_string(c);
+		else if (TokenId::is_other_token(c))
+			std::cout << token_to_symbol(c);
+		else if (TokenId::is_zero(c))
+			std::cout << "0";
+		else if (TokenId::is_number(c))
+			std::cout << get_value();
+		else if (TokenId::is_identifier(c))
+			std::cout << get_value();
+		else
+			assert(false);
+		std::cout << std::endl;
+	}
+}
+
 void
 TokenizerBase::process_options(std::vector<std::string> opt)
 {

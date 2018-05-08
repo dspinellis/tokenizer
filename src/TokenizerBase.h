@@ -39,6 +39,7 @@ protected:
 	BolState bol;			// Beginning of line state
 	std::string input_file;		// Input file name
 	int line_number;		// Input line number
+	std::string val;		// Token value (ids, strings, nums, ...)
 	// Report an error message
 	void error(const std::string &msg) {
 		std::cerr << input_file << '(' << line_number << "): " <<
@@ -61,8 +62,10 @@ public:
 	virtual int get_token() = 0;	// Return a single token
 	virtual const std::string & keyword_to_string(int k) const = 0;
 	virtual const std::string & token_to_string(int k) const = 0;
-	void tokenize();		// Tokenize numbers to stdout
+	virtual const std::string & token_to_symbol(int k) const = 0;
+	void numeric_tokenize();	// Tokenize numbers to stdout
 	void symbolic_tokenize();	// Tokenize symbols to stdout
+	void code_tokenize();		// Tokenize code to stdout
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,
@@ -89,5 +92,6 @@ public:
 	bool process_char_literal();
 	bool process_string_literal();
 	int process_number(std::string &val);
+	const std::string & get_value() const { return val; }
 };
 #endif /* TOKENIZERBASE_H */

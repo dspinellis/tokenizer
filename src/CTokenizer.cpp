@@ -29,7 +29,6 @@ inline int
 CTokenizer::get_token()
 {
 	char c0, c1, c2;
-	std::string val;
 	CKeyword::IdentifierType key;
 
 	for (;;) {
@@ -70,9 +69,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '+':
-				return CToken::PLUS_PLUS;
+				return CToken::PLUS_PLUS; // ++
 			case '=':
-				return CToken::PLUS_EQUAL;
+				return CToken::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -83,11 +82,11 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '-':
-				return CToken::MINUS_MINUS;
+				return CToken::MINUS_MINUS; // --
 			case '=':
-				return CToken::MINUS_EQUAL;
+				return CToken::MINUS_EQUAL; // -=
 			case '>':
-				return CToken::ARROW;
+				return CToken::ARROW; // ->
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -98,9 +97,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '&':
-				return CToken::BOOLEAN_AND;
+				return CToken::BOOLEAN_AND; // &&
 			case '=':
-				return CToken::AND_EQUAL;
+				return CToken::AND_EQUAL; // &=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -111,9 +110,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '|':
-				return CToken::BOOLEAN_OR;
+				return CToken::BOOLEAN_OR; // ||
 			case '=':
-				return CToken::OR_EQUAL;
+				return CToken::OR_EQUAL; // |=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -124,7 +123,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::NOT_EQUAL;
+				return CToken::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -134,7 +133,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::MOD_EQUAL;
+				return CToken::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -144,7 +143,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::TIMES_EQUAL;
+				return CToken::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -154,7 +153,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::EQUAL;
+				return CToken::EQUAL; // ==
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -164,7 +163,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::XOR_EQUAL;
+				return CToken::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -173,7 +172,7 @@ CTokenizer::get_token()
 		case '#':
 			src.get(c1);
 			if (c1 == '#')
-				return CToken::TOKEN_PASTE;
+				return CToken::TOKEN_PASTE; // ##
 			else
 				src.push(c1);
 			if (bol.at_bol_space()) {
@@ -188,14 +187,14 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */
-				return CToken::GREATER_EQUAL;
+				return CToken::GREATER_EQUAL; // >=
 			case '>':
 				src.get(c1);
 				if (c1 == '=')			/* >>= */
-					return CToken::RSHIFT_EQUAL;
+					return CToken::RSHIFT_EQUAL; // >>=
 				else {				/* >> */
 					src.push(c1);
-					return CToken::RSHIFT;
+					return CToken::RSHIFT; // >>
 				}
 				break;
 			default:				/* > */
@@ -208,14 +207,14 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* <= */
-				return CToken::LESS_EQUAL;
+				return CToken::LESS_EQUAL; // <=
 			case '<':
 				src.get(c1);
 				if (c1 == '=')			/* <<= */
-					return CToken::LSHIFT_EQUAL;
+					return CToken::LSHIFT_EQUAL; // <<=
 				else {			/* << */
 					src.push(c1);
-					return CToken::LSHIFT;
+					return CToken::LSHIFT; // <<
 				}
 				break;
 			default:				/* < */
@@ -229,21 +228,21 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* /= */
-				return CToken::DIV_EQUAL;
+				return CToken::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				c2 = src.char_after();
 				if (process_block_comment()) {
 					if (c2 == '*' || c2 == '!')
-						return CToken::DOC_COMMENT;
+						return CToken::DOC_COMMENT; // /** ... */
 					else
-						return CToken::BLOCK_COMMENT;
+						return CToken::BLOCK_COMMENT; // /* ... */
 
 				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return CToken::LINE_COMMENT;
+					return CToken::LINE_COMMENT; // // ...
 				else
 					return 0;
 				break;
@@ -269,7 +268,7 @@ CTokenizer::get_token()
 				src.push(c1);
 				return (int)c0;
 			}
-			return CToken::ELIPSIS;
+			return CToken::ELIPSIS; // ...
 			// Elipsis
 		/* Could be a long character or string */
 		case 'L':
@@ -278,12 +277,12 @@ CTokenizer::get_token()
 			switch (c1) {
 			case '\'':
 				if (process_char_literal())
-					return CToken::CHAR_LITERAL;
+					return CToken::CHAR_LITERAL; // '.'
 				else
 					return 0;
 			case '"':
 				if (process_string_literal())
-					return CToken::STRING_LITERAL;
+					return CToken::STRING_LITERAL; // \"...\"
 				else
 					return 0;
 			default:
@@ -334,13 +333,13 @@ CTokenizer::get_token()
 		case '\'':
 			bol.saw_non_space();
 			if (process_char_literal())
-				return CToken::CHAR_LITERAL;
+				return CToken::CHAR_LITERAL; // '.'
 			else
 				return 0;
 		case '"':
 			bol.saw_non_space();
 			if (process_string_literal())
-				return CToken::STRING_LITERAL;
+				return CToken::STRING_LITERAL; // \"...\"
 			else
 				return 0;
 		/* Various numbers */

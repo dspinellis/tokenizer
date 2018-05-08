@@ -45,6 +45,10 @@ public:
 		return ctoken.to_string(k);
 	}
 
+	const std::string & token_to_symbol(int k) const {
+		return ctoken.to_symbol(k);
+	}
+
 	// Construct from a character source
 	CTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :

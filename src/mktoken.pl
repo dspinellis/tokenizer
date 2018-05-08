@@ -13,7 +13,7 @@ my $lang = $ARGV[0];
 my $in_fname = "${lang}Tokenizer.cpp";
 my $out_fname = "${lang}Token.h";
 
-my %tokens;
+my %token_symbol;
 
 open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
 open(my $out, '>', $out_fname) || die "Unable to open $out_fname: $!\n";
@@ -31,7 +31,8 @@ print $out qq|
 class ${lang}Token {
 private:
 	typedef std::map <int, std::string> TokenMap;
-	TokenMap tm;
+	TokenMap token_name;
+	TokenMap token_symbol;
 
 public:
 	enum TokenNum {
@@ -39,10 +40,11 @@ public:
 |;
 
 while (<$in>) {
-	$tokens{$1} = 1 if (/\b${lang}Token\:\:(\w+)/);
+	chop;
+	$token_symbol{$1} = $2 if (/\b${lang}Token\:\:(\w+); \/\/ (.*)/);
 }
 
-for my $t (sort keys %tokens) {
+for my $t (sort keys %token_symbol) {
 	print $out "\t\t$t,\n";
 }
 
@@ -50,12 +52,23 @@ print $out "
 	};
 
 	${lang}Token() {
-		tm = {
+		token_name = {
 ";
 
-for my $t (shuffle keys %tokens) {
+for my $t (shuffle keys %token_symbol) {
 	print $out qq(\t\t\t{$t, "$t" },\n);
 }
+
+print $out "
+		};
+
+		token_symbol = {
+";
+
+for my $t (shuffle keys %token_symbol) {
+	print $out qq(\t\t\t{$t, "$token_symbol{$t}" },\n);
+}
+
 
 print $out qq|
 		};
@@ -64,8 +77,15 @@ print $out qq|
 	const std::string & to_string(int k) const {
 		static const std::string UNKNOWN("???");
 
-		auto t = tm.find(k);
-		return t == tm.end() ? UNKNOWN : t->second;
+		auto t = token_name.find(k);
+		return t == token_name.end() ? UNKNOWN : t->second;
+	}
+
+	const std::string & to_symbol(int k) const {
+		static const std::string UNKNOWN("???");
+
+		auto t = token_symbol.find(k);
+		return t == token_symbol.end() ? UNKNOWN : t->second;
 	}
 };
 #endif /* ${lang}TOKEN_H */
