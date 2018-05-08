@@ -261,7 +261,7 @@ TokenizerBase::code_tokenize()
 	int c;
 
 	while ((c = get_token())) {
-		if (TokenId::is_character(c) & !isspace(c))
+		if (TokenId::is_character(c) & !isspace((unsigned char)c))
 			std::cout << (char)c;
 		else if (TokenId::is_keyword(c))
 			std::cout <<keyword_to_string(c);
