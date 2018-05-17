@@ -45,6 +45,11 @@ public:
 		return csharp_token.to_string(k);
 	}
 
+	const std::string & token_to_symbol(int k) const {
+		return csharp_token.to_symbol(k);
+	}
+
+
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :

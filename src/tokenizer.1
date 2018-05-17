@@ -1,8 +1,8 @@
-.TH TOKENIZER 1 2018-04-20
+.TH TOKENIZER 1 2018-05-08
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-s\fP] [\fB\-o \fIopt\fR] [\fB\-l \fIlang\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fItype\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into integer
@@ -41,6 +41,7 @@ Currently the following languages are supported:
 Specify a language-specific processing option.
 Multiple \fB-o\fP arguments may be provided.
 The following processing options are supported.
+
 .RS 3
 
 .TP
@@ -58,8 +59,22 @@ Output a vector for each statement.
 .RE
 
 .TP
-.B -s
-Output symbolic token names, rather than numbers.
+.BI "-t " type
+Specify the output type.
+The following output types are supported.
+
+.RS 3
+.TP
+.B n
+output numeric token values,
+.TP
+.B s
+output symbolic token values,
+.TP
+.B c
+output code tokens, one per line.
+.LP
+.RE
 
 .RE
 

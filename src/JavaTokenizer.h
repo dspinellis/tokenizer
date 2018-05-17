@@ -42,6 +42,9 @@ public:
 		return java_token.to_string(k);
 	}
 
+	const std::string & token_to_symbol(int k) const {
+		return java_token.to_symbol(k);
+	}
 
 	// Construct from a character source
 	JavaTokenizer(CharSource &s, const std::string &file_name,

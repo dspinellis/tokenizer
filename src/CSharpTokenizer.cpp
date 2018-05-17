@@ -28,7 +28,6 @@ inline int
 CSharpTokenizer::get_token_real()
 {
 	char c0, c1, c2;
-	std::string val;
 	CSharpKeyword::IdentifierType key;
 
 	for (;;) {
@@ -66,9 +65,9 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '+':
-				return CSharpToken::PLUS_PLUS;
+				return CSharpToken::PLUS_PLUS; // ++
 			case '=':
-				return CSharpToken::PLUS_EQUAL;
+				return CSharpToken::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -79,11 +78,11 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '-':
-				return CSharpToken::MINUS_MINUS;
+				return CSharpToken::MINUS_MINUS; // --
 			case '=':
-				return CSharpToken::MINUS_EQUAL;
+				return CSharpToken::MINUS_EQUAL; // -=
 			case '>':
-				return CSharpToken::MEMBER_PTR;
+				return CSharpToken::MEMBER_PTR; // ->
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -94,9 +93,9 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '&':
-				return CSharpToken::BOOLEAN_AND;
+				return CSharpToken::BOOLEAN_AND; // &&
 			case '=':
-				return CSharpToken::AND_EQUAL;
+				return CSharpToken::AND_EQUAL; // &=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -107,9 +106,9 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '|':
-				return CSharpToken::BOOLEAN_OR;
+				return CSharpToken::BOOLEAN_OR; // ||
 			case '=':
-				return CSharpToken::OR_EQUAL;
+				return CSharpToken::OR_EQUAL; // |=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -120,9 +119,9 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '=':
-				return CSharpToken::EQUAL;
+				return CSharpToken::EQUAL; // ==
 			case '>':
-				return CSharpToken::LAMBDA;
+				return CSharpToken::LAMBDA; // =>
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -133,9 +132,9 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '.':
-				return CSharpToken::NULL_CONDITIONAL;
+				return CSharpToken::NULL_CONDITIONAL; // ?.
 			case '?':
-				return CSharpToken::NULL_COALESCE;
+				return CSharpToken::NULL_COALESCE; // ??
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -146,7 +145,7 @@ CSharpTokenizer::get_token_real()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CSharpToken::NOT_EQUAL;
+				return CSharpToken::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -156,7 +155,7 @@ CSharpTokenizer::get_token_real()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CSharpToken::MOD_EQUAL;
+				return CSharpToken::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -166,7 +165,7 @@ CSharpTokenizer::get_token_real()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CSharpToken::TIMES_EQUAL;
+				return CSharpToken::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -176,7 +175,7 @@ CSharpTokenizer::get_token_real()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CSharpToken::XOR_EQUAL;
+				return CSharpToken::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -188,14 +187,14 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */
-				return CSharpToken::GREATER_EQUAL;
+				return CSharpToken::GREATER_EQUAL; // >=
 			case '>':
 				src.get(c1);
 				if (c1 == '=')			/* >>= */
-					return CSharpToken::RSHIFT_EQUAL;
+					return CSharpToken::RSHIFT_EQUAL; // >>=
 				else {			/* << */
 					src.push(c1);
-					return CSharpToken::RSHIFT;
+					return CSharpToken::RSHIFT; // >>
 				}
 				break;
 			default:				/* > */
@@ -208,14 +207,14 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* <= */
-				return CSharpToken::LESS_EQUAL;
+				return CSharpToken::LESS_EQUAL; // <=
 			case '<':
 				src.get(c1);
 				if (c1 == '=')			/* <<= */
-					return CSharpToken::LSHIFT_EQUAL;
+					return CSharpToken::LSHIFT_EQUAL; // <<=
 				else {			/* << */
 					src.push(c1);
-					return CSharpToken::LSHIFT;
+					return CSharpToken::LSHIFT; // <<
 				}
 				break;
 			default:				/* < */
@@ -229,10 +228,10 @@ CSharpTokenizer::get_token_real()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* /= */
-				return CSharpToken::DIV_EQUAL;
+				return CSharpToken::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				if (process_block_comment())
-					return CSharpToken::BLOCK_COMMENT;
+					return CSharpToken::BLOCK_COMMENT; // /* ... */
 
 				else
 					return 0;
@@ -241,9 +240,9 @@ CSharpTokenizer::get_token_real()
 				c2 = src.char_after();
 				if (process_line_comment()) {
 					if (c2 == '/')
-						return CSharpToken::DOC_COMMENT;
+						return CSharpToken::DOC_COMMENT; // ///
 					else
-						return CSharpToken::LINE_COMMENT;
+						return CSharpToken::LINE_COMMENT; // // ...
 				} else
 					return 0;
 				break;
@@ -278,6 +277,7 @@ CSharpTokenizer::get_token_real()
 			case CSharpKeyword::CLASS:
 			case CSharpKeyword::INTERFACE:
 			case CSharpKeyword::ENUM:
+			case CSharpKeyword::STRUCT:
 				nesting.saw_class();
 				return key;
 			default:
@@ -287,12 +287,12 @@ CSharpTokenizer::get_token_real()
 		case '\'':
 			bol.saw_non_space();
 			if (process_char_literal())
-				return CSharpToken::CHAR_LITERAL;
+				return CSharpToken::CHAR_LITERAL; // '.'
 			else
 				return 0;
 		case '"':
 			if (process_string_literal())
-				return CSharpToken::STRING_LITERAL;
+				return CSharpToken::STRING_LITERAL; // \"...\"
 			else
 				return 0;
 		/* Various numbers */
