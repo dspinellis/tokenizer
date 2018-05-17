@@ -41,7 +41,7 @@ while (<$in>) {
 
 for my $k (sort @keywords) {
 	$k = 'KEYWORD_NULL' if ($k eq 'null');
-	#Added the following line to make the program compile in Windows. 
+	#Added the following line to make the program compile in Windows.
 	#Ascii 13 is carriage return char
 	$k = 'KEYWORD_NULL' . chr(13) if ($k eq 'null' . chr(13));
 	print $out "\t\t", uc($k), ",\n";
@@ -65,7 +65,7 @@ public:
 for my $k (shuffle @keywords) {
 	my $uck = uc($k);
 	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
-	chop($k);
+	chop($k) if (substr($k, -1) eq chr(13));
 	print $out qq(\t\t\t{"$k", $uck },\n);
 }
 
