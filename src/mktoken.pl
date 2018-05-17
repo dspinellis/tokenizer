@@ -65,8 +65,14 @@ print $out "
 		token_symbol = {
 ";
 
+my $v;
+
 for my $t (shuffle keys %token_symbol) {
-	print $out qq(\t\t\t{$t, "$token_symbol{$t}" },\n);
+  #added this to return carriage return char that prevents the program compile
+	$v = $token_symbol{$t};
+	chop($v) if (substr($v, -1) eq chr(13));
+  ##
+	print $out qq(\t\t\t{$t, "$v" },\n);
 }
 
 
