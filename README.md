@@ -26,14 +26,7 @@ tokenizer file.c
 tokenizer -l Java -o statement <file.java
 ```
 ## Syntax
-```
-tokenizer [-l {Java|C|Charp|C#}] [-o {file|method|statement}] [-s] <\path\to\source\code\file>
-```
-```-l``` specifies programming language (optional argument; Java is default).
-
-```-o``` specifies processing option (optional argument; file is default).
-
-```-s``` emits symbolic output mode (optional argument).
+--todo--
 
 ## Examples of tokenizing "hello world" programs in diverse languages
 
