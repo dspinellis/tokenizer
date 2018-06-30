@@ -23,13 +23,13 @@
 #include "BolState.h"
 #include "CharSource.h"
 #include "CTokenizer.h"
-#include "CToken.h"
+#include "Token.h"
 
 inline int
 CTokenizer::get_token()
 {
 	char c0, c1, c2;
-	CKeyword::IdentifierType key;
+	Keyword::IdentifierType key;
 
 	for (;;) {
 		if (!src.get(c0))
@@ -69,9 +69,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '+':
-				return CToken::PLUS_PLUS; // ++
+				return Token::PLUS_PLUS; // ++
 			case '=':
-				return CToken::PLUS_EQUAL; // +=
+				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -82,11 +82,11 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '-':
-				return CToken::MINUS_MINUS; // --
+				return Token::MINUS_MINUS; // --
 			case '=':
-				return CToken::MINUS_EQUAL; // -=
+				return Token::MINUS_EQUAL; // -=
 			case '>':
-				return CToken::ARROW; // ->
+				return Token::ARROW; // ->
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -97,9 +97,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '&':
-				return CToken::BOOLEAN_AND; // &&
+				return Token::BOOLEAN_AND; // &&
 			case '=':
-				return CToken::AND_EQUAL; // &=
+				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -110,9 +110,9 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '|':
-				return CToken::BOOLEAN_OR; // ||
+				return Token::BOOLEAN_OR; // ||
 			case '=':
-				return CToken::OR_EQUAL; // |=
+				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -123,7 +123,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::NOT_EQUAL; // !=
+				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -133,7 +133,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::MOD_EQUAL; // %=
+				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -143,7 +143,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::TIMES_EQUAL; // *=
+				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -153,7 +153,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::EQUAL; // ==
+				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -163,7 +163,7 @@ CTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CToken::XOR_EQUAL; // ^=
+				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -172,7 +172,7 @@ CTokenizer::get_token()
 		case '#':
 			src.get(c1);
 			if (c1 == '#')
-				return CToken::TOKEN_PASTE; // ##
+				return Token::TOKEN_PASTE; // ##
 			else
 				src.push(c1);
 			if (bol.at_bol_space()) {
@@ -187,14 +187,14 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */
-				return CToken::GREATER_EQUAL; // >=
+				return Token::GREATER_EQUAL; // >=
 			case '>':
 				src.get(c1);
 				if (c1 == '=')			/* >>= */
-					return CToken::RSHIFT_EQUAL; // >>=
+					return Token::RSHIFT_EQUAL; // >>=
 				else {				/* >> */
 					src.push(c1);
-					return CToken::RSHIFT; // >>
+					return Token::RSHIFT; // >>
 				}
 				break;
 			default:				/* > */
@@ -207,14 +207,14 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* <= */
-				return CToken::LESS_EQUAL; // <=
+				return Token::LESS_EQUAL; // <=
 			case '<':
 				src.get(c1);
 				if (c1 == '=')			/* <<= */
-					return CToken::LSHIFT_EQUAL; // <<=
+					return Token::LSHIFT_EQUAL; // <<=
 				else {			/* << */
 					src.push(c1);
-					return CToken::LSHIFT; // <<
+					return Token::LSHIFT; // <<
 				}
 				break;
 			default:				/* < */
@@ -228,21 +228,21 @@ CTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* /= */
-				return CToken::DIV_EQUAL; // /=
+				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				c2 = src.char_after();
 				if (process_block_comment()) {
 					if (c2 == '*' || c2 == '!')
-						return CToken::DOC_COMMENT; // /** ... */
+						return Token::DOC_COMMENT; // /** ... */
 					else
-						return CToken::BLOCK_COMMENT; // /* ... */
+						return Token::BLOCK_COMMENT; // /* ... */
 
 				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return CToken::LINE_COMMENT; // // ...
+					return Token::LINE_COMMENT; // // ...
 				else
 					return 0;
 				break;
@@ -268,7 +268,7 @@ CTokenizer::get_token()
 				src.push(c1);
 				return (int)c0;
 			}
-			return CToken::ELIPSIS; // ...
+			return Token::ELIPSIS; // ...
 			// Elipsis
 		/* Could be a long character or string */
 		case 'L':
@@ -277,12 +277,12 @@ CTokenizer::get_token()
 			switch (c1) {
 			case '\'':
 				if (process_char_literal())
-					return CToken::CHAR_LITERAL; // '.'
+					return Token::CHAR_LITERAL; // '.'
 				else
 					return 0;
 			case '"':
 				if (process_string_literal())
-					return CToken::STRING_LITERAL; // \"...\"
+					return Token::STRING_LITERAL; // \"...\"
 				else
 					return 0;
 			default:
@@ -310,20 +310,20 @@ CTokenizer::get_token()
 			src.push(c0);
 			key = ckeyword.identifier_type(val);
 			switch (key) {
-			case CKeyword::IFDEF:
-			case CKeyword::ELIF:
-			case CKeyword::INCLUDE:
+			case Keyword::IFDEF:
+			case Keyword::ELIF:
+			case Keyword::INCLUDE:
 				if (scan_cpp_directive)
 					return key;
 				else
 					return symbols.value(val);
 				break;
-			case CKeyword::IDENTIFIER:
+			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case CKeyword::FIRST:
-			case CKeyword::LAST:
+			case Keyword::FIRST:
+			case Keyword::LAST:
 				assert(false);
-			case CKeyword::STRUCT:
+			case Keyword::STRUCT:
 				nesting.saw_class();
 			default:
 				return key;
@@ -333,13 +333,13 @@ CTokenizer::get_token()
 		case '\'':
 			bol.saw_non_space();
 			if (process_char_literal())
-				return CToken::CHAR_LITERAL; // '.'
+				return Token::CHAR_LITERAL; // '.'
 			else
 				return 0;
 		case '"':
 			bol.saw_non_space();
 			if (process_string_literal())
-				return CToken::STRING_LITERAL; // \"...\"
+				return Token::STRING_LITERAL; // \"...\"
 			else
 				return 0;
 		/* Various numbers */

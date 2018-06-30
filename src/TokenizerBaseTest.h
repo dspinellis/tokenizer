@@ -7,8 +7,8 @@
 
 #include "CharSource.h"
 #include "CTokenizer.h"
-#include "CToken.h"
-#include "CKeyword.h"
+#include "Token.h"
+#include "Keyword.h"
 
 /*
  * Use he C tokenizer to test functionality in the TokenizerBase
@@ -24,31 +24,31 @@ class TokenizerBaseTest : public CppUnit::TestFixture  {
 public:
 	void testCharLiteral() {
 		CTokenizer ct("'a'");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::CHAR_LITERAL, ct.get_token());
 
 		CTokenizer ct2("'\\\'a'+");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::CHAR_LITERAL, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
 
 		CTokenizer ct3("'\\001'");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::CHAR_LITERAL, ct3.get_token());
 
 		CTokenizer ct4("'\\xfa'");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct4.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::CHAR_LITERAL, ct4.get_token());
 		CTokenizer ct5("L'a'");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::CHAR_LITERAL, ct5.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::CHAR_LITERAL, ct5.get_token());
 	}
 
 	void testStringLiteral() {
 		CTokenizer ct("\"hello\"");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::STRING_LITERAL, ct.get_token());
 
 		CTokenizer ct2("\"he\\\"llo\"+");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::STRING_LITERAL, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct2.get_token());
 
 		CTokenizer ct3("L\"hello\"");
-		CPPUNIT_ASSERT_EQUAL((int)CToken::STRING_LITERAL, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::STRING_LITERAL, ct3.get_token());
 	}
 
 	/*

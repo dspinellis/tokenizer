@@ -1,21 +1,24 @@
 #!/usr/bin/env perl
 #
-# Find token uses in the specified language tokenizer file
-# and generate the corresponding tokens enumeration file
+# Find token uses in the specified language tokenizer files
+# and generate a global tokens enumeration file
 #
 
 use strict;
 use warnings;
 use List::Util qw(shuffle);
 
-my $lang = $ARGV[0];
-
-my $in_fname = "${lang}Tokenizer.cpp";
-my $out_fname = "${lang}Token.h";
-
 my %token_symbol;
 
-open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
+for my $in_fname (@ARGV) {
+	open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
+	while (<$in>) {
+		chop;
+		$token_symbol{$1} = $2 if (/\bToken\:\:(\w+); \/\/ (.*)/);
+	}
+}
+
+my $out_fname = "Token.h";
 open(my $out, '>', $out_fname) || die "Unable to open $out_fname: $!\n";
 
 print $out qq|
@@ -23,12 +26,12 @@ print $out qq|
  * Auto-generated file
  */
 
-#ifndef ${lang}TOKEN_H
-#define ${lang}TOKEN_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
 #include "TokenId.h"
 
-class ${lang}Token {
+class Token {
 private:
 	typedef std::map <int, std::string> TokenMap;
 	TokenMap token_name;
@@ -39,11 +42,6 @@ public:
 		FIRST = TokenId::OTHER_TOKEN,
 |;
 
-while (<$in>) {
-	chop;
-	$token_symbol{$1} = $2 if (/\b${lang}Token\:\:(\w+); \/\/ (.*)/);
-}
-
 for my $t (sort keys %token_symbol) {
 	print $out "\t\t$t,\n";
 }
@@ -51,7 +49,7 @@ for my $t (sort keys %token_symbol) {
 print $out "
 	};
 
-	${lang}Token() {
+	Token() {
 		token_name = {
 ";
 
@@ -88,5 +86,5 @@ print $out qq|
 		return t == token_symbol.end() ? UNKNOWN : t->second;
 	}
 };
-#endif /* ${lang}TOKEN_H */
+#endif /* TOKEN_H */
 |;

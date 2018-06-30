@@ -13,9 +13,9 @@ else
 CXXFLAGS+=-O2
 endif
 
-KEYWORD_HEADERS=$(patsubst %-keyword.txt,%Keyword.h,$(wildcard *-keyword.txt))
-TOKEN_HEADERS=$(patsubst %-keyword.txt,%Token.h,$(wildcard *-keyword.txt))
-GENERATED_HEADERS=$(KEYWORD_HEADERS) $(TOKEN_HEADERS)
+KEYWORD_FILES=$(wildcard *-keyword.txt)
+TOKENIZER_FILES=$(patsubst %-keyword.txt,%Tokenizer.cpp,$(wildcard *-keyword.txt))
+GENERATED_HEADERS=Keyword.h Token.h
 
 all: $(GENERATED_HEADERS) tokenizer
 
@@ -23,7 +23,7 @@ all: $(GENERATED_HEADERS) tokenizer
 OBJS=CTokenizer.o CppTokenizer.o JavaTokenizer.o CSharpTokenizer.o \
      TokenizerBase.o SymbolTable.o TokenId.o NestedClassState.o
 
-UnitTests: UnitTests.o $(OBJS) CToken.h JavaToken.h
+UnitTests: UnitTests.o $(OBJS) Token.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
 
 test: $(GENERATED_HEADERS) UnitTests
@@ -32,11 +32,11 @@ test: $(GENERATED_HEADERS) UnitTests
 tokenizer: $(GENERATED_HEADERS) $(OBJS) tokenizer.o
 	$(CXX) $(LDFLAGS) tokenizer.o $(OBJS) -o $@
 
-%Token.h: %Tokenizer.cpp
-	./mktoken.pl $(patsubst %Token.h,%,$@)
+Token.h: mktoken.pl $(TOKENIZER_FILES)
+	./mktoken.pl $(TOKENIZER_FILES)
 
-%Keyword.h: %-keyword.txt
-	./mkkeyword.pl $(patsubst %Keyword.h,%,$@)
+Keyword.h: mkkeyword.pl $(KEYWORD_FILES)
+	./mkkeyword.pl $(KEYWORD_FILES)
 
 install: all
 	@mkdir -p $(DESTDIR)$(MANPREFIX)
@@ -45,7 +45,7 @@ install: all
 	install -m 644 tokenizer.1 $(DESTDIR)$(MANPREFIX)/
 
 clean:
-	rm -f *.o *.d *.exe tokenizer UnitTests *Token.h *Keyword.h
+	rm -f *.o *.d *.exe tokenizer UnitTests Token.h Keyword.h
 
 # Pull-in dependencies generated with -MD
 -include $(OBJS:.o=.d)

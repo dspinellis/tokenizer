@@ -1,7 +1,7 @@
 #ifndef BOLSTATE_H
 #define BOLSTATE_H
 
-#include "CKeyword.h"
+#include "Keyword.h"
 
 class BolState {
 private:

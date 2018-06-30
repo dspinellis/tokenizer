@@ -22,13 +22,13 @@
 
 #include "CharSource.h"
 #include "CppTokenizer.h"
-#include "CppToken.h"
+#include "Token.h"
 
 inline int
 CppTokenizer::get_token()
 {
 	char c0, c1, c2;
-	CppKeyword::IdentifierType key;
+	Keyword::IdentifierType key;
 
 	for (;;) {
 		if (!src.get(c0))
@@ -71,9 +71,9 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '+':
-				return CppToken::PLUS_PLUS; // ++
+				return Token::PLUS_PLUS; // ++
 			case '=':
-				return CppToken::PLUS_EQUAL; // +=
+				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -84,16 +84,16 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '-':
-				return CppToken::MINUS_MINUS; // --
+				return Token::MINUS_MINUS; // --
 			case '=':
-				return CppToken::MINUS_EQUAL; // -=
+				return Token::MINUS_EQUAL; // -=
 			case '>':
 				src.get(c2);
 				if (c2 == '*')
-					return CppToken::MEMBER_PTR_FROM_OBJECT_PTR; // ->*
+					return Token::MEMBER_PTR_FROM_OBJECT_PTR; // ->*
 				else {
 					src.push(c2);
-					return CppToken::MEMBER_FROM_OBJECT_PTR; // ->
+					return Token::MEMBER_FROM_OBJECT_PTR; // ->
 				}
 			default:
 				src.push(c1);
@@ -105,9 +105,9 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '&':
-				return CppToken::BOOLEAN_AND; // &&
+				return Token::BOOLEAN_AND; // &&
 			case '=':
-				return CppToken::AND_EQUAL; // &=
+				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -118,9 +118,9 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '|':
-				return CppToken::BOOLEAN_OR; // ||
+				return Token::BOOLEAN_OR; // ||
 			case '=':
-				return CppToken::OR_EQUAL; // |=
+				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -131,7 +131,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CppToken::NOT_EQUAL; // !=
+				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -141,7 +141,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CppToken::MOD_EQUAL; // %=
+				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -151,7 +151,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CppToken::TIMES_EQUAL; // *=
+				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -161,7 +161,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CppToken::EQUAL; // ==
+				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -171,7 +171,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == ':')
-				return CppToken::SCOPE; // ::
+				return Token::SCOPE; // ::
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -181,7 +181,7 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return CppToken::XOR_EQUAL; // ^=
+				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -190,7 +190,7 @@ CppTokenizer::get_token()
 		case '#':
 			src.get(c1);
 			if (c1 == '#')
-				return CppToken::TOKEN_PASTE; // ##
+				return Token::TOKEN_PASTE; // ##
 			else
 				src.push(c1);
 			if (bol.at_bol_space()) {
@@ -207,14 +207,14 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */
-				return CppToken::GREATER_EQUAL; // >=
+				return Token::GREATER_EQUAL; // >=
 			case '>':
 				src.get(c1);
 				if (c1 == '=')			/* >>= */
-					return CppToken::RSHIFT_EQUAL; // >>=
+					return Token::RSHIFT_EQUAL; // >>=
 				else {			/* << */
 					src.push(c1);
-					return CppToken::RSHIFT; // >>
+					return Token::RSHIFT; // >>
 				}
 				break;
 			default:				/* > */
@@ -227,14 +227,14 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* <= */
-				return CppToken::LESS_EQUAL; // <=
+				return Token::LESS_EQUAL; // <=
 			case '<':
 				src.get(c1);
 				if (c1 == '=')			/* <<= */
-					return CppToken::LSHIFT_EQUAL; // <<=
+					return Token::LSHIFT_EQUAL; // <<=
 				else {			/* << */
 					src.push(c1);
-					return CppToken::LSHIFT; // <<
+					return Token::LSHIFT; // <<
 				}
 				break;
 			default:				/* < */
@@ -248,21 +248,21 @@ CppTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* /= */
-				return CppToken::DIV_EQUAL; // /=
+				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				c2 = src.char_after();
 				if (process_block_comment()) {
 					if (c2 == '*')
-						return CppToken::JAVADOC_COMMENT; // /** ... */
+						return Token::JAVADOC_COMMENT; // /** ... */
 					else
-						return CppToken::BLOCK_COMMENT; // /* ... */
+						return Token::BLOCK_COMMENT; // /* ... */
 
 				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return CppToken::LINE_COMMENT; // // ...
+					return Token::LINE_COMMENT; // // ...
 				else
 					return 0;
 				break;
@@ -282,7 +282,7 @@ CppTokenizer::get_token()
 			case '.':
 				src.get(c2);
 				if (c2 == '.')
-					return CppToken::ELIPSIS; // ...
+					return Token::ELIPSIS; // ...
 				else {
 					src.push(c2);
 					src.push(c1);
@@ -290,7 +290,7 @@ CppTokenizer::get_token()
 				}
 				break;
 			case '*':
-				return CppToken::MEMBER_PTR_FROM_OBJECT; // .*
+				return Token::MEMBER_PTR_FROM_OBJECT; // .*
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -317,43 +317,43 @@ CppTokenizer::get_token()
 			src.push(c0);
 			key = cpp_keyword.identifier_type(val);
 			switch (key) {
-			case CppKeyword::IFDEF:
-			case CppKeyword::ELIF:
-			case CppKeyword::INCLUDE:
+			case Keyword::IFDEF:
+			case Keyword::ELIF:
+			case Keyword::INCLUDE:
 				if (scan_cpp_directive)
 					return key;
 				else
 					return symbols.value(val);
 				break;
-			case CppKeyword::IDENTIFIER:
+			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case CppKeyword::CLASS:
-			case CppKeyword::STRUCT:
+			case Keyword::CLASS:
+			case Keyword::STRUCT:
 				nesting.saw_class();
 				return key;
 			// Alternative representations of standard tokens
-			case CppKeyword::AND:
-				return CppToken::BOOLEAN_AND; // &&
-			case CppKeyword::BITOR:
+			case Keyword::AND:
+				return Token::BOOLEAN_AND; // &&
+			case Keyword::BITOR:
 				return '|';
-			case CppKeyword::OR:
-				return CppToken::BOOLEAN_OR; // ||
-			case CppKeyword::XOR:
+			case Keyword::OR:
+				return Token::BOOLEAN_OR; // ||
+			case Keyword::XOR:
 				return '^';
-			case CppKeyword::COMPL:
+			case Keyword::COMPL:
 				return '~';
-			case CppKeyword::BITAND:
+			case Keyword::BITAND:
 				return '&';
-			case CppKeyword::AND_EQ:
-				return CppToken::AND_EQUAL; // &=
-			case CppKeyword::OR_EQ:
-				return CppToken::OR_EQUAL; // |=
-			case CppKeyword::XOR_EQ:
-				return CppToken::XOR_EQUAL; // ^=
-			case CppKeyword::NOT:
+			case Keyword::AND_EQ:
+				return Token::AND_EQUAL; // &=
+			case Keyword::OR_EQ:
+				return Token::OR_EQUAL; // |=
+			case Keyword::XOR_EQ:
+				return Token::XOR_EQUAL; // ^=
+			case Keyword::NOT:
 				return '!';
-			case CppKeyword::NOT_EQ:
-				return CppToken::NOT_EQUAL; // !=
+			case Keyword::NOT_EQ:
+				return Token::NOT_EQUAL; // !=
 			default:
 				return key;
 			}
@@ -362,13 +362,13 @@ CppTokenizer::get_token()
 		case '\'':
 			bol.saw_non_space();
 			if (process_char_literal())
-				return CppToken::CHAR_LITERAL; // '.'
+				return Token::CHAR_LITERAL; // '.'
 			else
 				return 0;
 		case '"':
 			bol.saw_non_space();
 			if (process_string_literal())
-				return CppToken::STRING_LITERAL; // \"...\"
+				return Token::STRING_LITERAL; // \"...\"
 			else
 				return 0;
 		/* Various numbers */

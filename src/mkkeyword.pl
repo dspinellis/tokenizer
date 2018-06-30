@@ -7,37 +7,37 @@ use strict;
 use warnings;
 use List::Util qw(shuffle);
 
-my $lang = $ARGV[0];
-
-my $in_fname = "${lang}-keyword.txt";
-my $out_fname = "${lang}Keyword.h";
-
+my %keywords;
 my @keywords;
 
-open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
+for my $in_fname (@ARGV) {
+	open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
+	while (<$in>) {
+		chop;
+		$keywords{$_} = 1;
+	}
+}
+@keywords = keys %keywords;
+
+my $out_fname = "Keyword.h";
 open(my $out, '>', $out_fname) || die "Unable to open $out_fname: $!\n";
 
 print $out qq(
-#ifndef ${lang}KEYWORD_H
-#define ${lang}KEYWORD_H
+#ifndef KEYWORD_H
+#define KEYWORD_H
 
 #include <map>
 #include <string>
 
 #include "TokenId.h"
 
-/** Classify identifiers into ${lang} keywords */
-class ${lang}Keyword {
+/** Classify identifiers into keywords */
+class Keyword {
 public:
 	enum IdentifierType {
 		FIRST = TokenId::KEYWORD,
 		IDENTIFIER,	// Plain identifier (not a keyword)
 );
-
-while (<$in>) {
-	chop;
-	push(@keywords, $_);
-}
 
 for my $k (sort @keywords) {
 	$k = 'KEYWORD_NULL' if ($k eq 'null');
@@ -54,7 +54,7 @@ private:
 	KeywordMap km;
 	TokenMap tm;
 public:
-	${lang}Keyword() {
+	Keyword() {
 		km = {
 ";
 
@@ -95,5 +95,5 @@ print $out qq|
 		return t == tm.end() ? UNKNOWN : t->second;
 	}
 };
-#endif /* ${lang}KEYWORD_H */
+#endif /* KEYWORD_H */
 |;

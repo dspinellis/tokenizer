@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "CharSource.h"
-#include "CKeyword.h"
+#include "Keyword.h"
 #include "BolState.h"
 #include "SymbolTable.h"
 #include "NestedClassState.h"

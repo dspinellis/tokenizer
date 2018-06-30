@@ -22,8 +22,8 @@
 #include <vector>
 
 #include "CharSource.h"
-#include "CKeyword.h"
-#include "CToken.h"
+#include "Keyword.h"
+#include "Token.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
@@ -32,8 +32,8 @@ private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	bool scan_cpp_line;		// Line after a C preprocessor #
 	/** True for keywords that don't end with semicolon */
-	CKeyword ckeyword;
-	CToken ctoken;
+	Keyword ckeyword;
+	Token ctoken;
 public:
 	int get_token();		// Return a single token
 

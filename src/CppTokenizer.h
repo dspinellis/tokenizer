@@ -22,8 +22,8 @@
 #include <vector>
 
 #include "CharSource.h"
-#include "CppKeyword.h"
-#include "CppToken.h"
+#include "Keyword.h"
+#include "Token.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
@@ -31,8 +31,8 @@ class CppTokenizer : public TokenizerBase {
 private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	bool scan_cpp_line;		// Line after a C preprocessor #
-	CppKeyword cpp_keyword;
-	CppToken cpp_token;
+	Keyword cpp_keyword;
+	Token cpp_token;
 public:
 	int get_token();		// Return a single token
 

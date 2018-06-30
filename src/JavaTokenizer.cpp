@@ -22,13 +22,13 @@
 
 #include "CharSource.h"
 #include "JavaTokenizer.h"
-#include "JavaToken.h"
+#include "Token.h"
 
 inline int
 JavaTokenizer::get_token()
 {
 	char c0, c1, c2;
-	JavaKeyword::IdentifierType key;
+	Keyword::IdentifierType key;
 
 	for (;;) {
 		if (!src.get(c0))
@@ -65,9 +65,9 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '+':
-				return JavaToken::PLUS_PLUS; // ++
+				return Token::PLUS_PLUS; // ++
 			case '=':
-				return JavaToken::PLUS_EQUAL; // +=
+				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -78,9 +78,9 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '-':
-				return JavaToken::MINUS_MINUS; // --
+				return Token::MINUS_MINUS; // --
 			case '=':
-				return JavaToken::MINUS_EQUAL; // -=
+				return Token::MINUS_EQUAL; // -=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -91,9 +91,9 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '&':
-				return JavaToken::BOOLEAN_AND; // &&
+				return Token::BOOLEAN_AND; // &&
 			case '=':
-				return JavaToken::AND_EQUAL; // &=
+				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -104,9 +104,9 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '|':
-				return JavaToken::BOOLEAN_OR; // ||
+				return Token::BOOLEAN_OR; // ||
 			case '=':
-				return JavaToken::OR_EQUAL; // |=
+				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
 				return (int)c0;
@@ -117,7 +117,7 @@ JavaTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return JavaToken::NOT_EQUAL; // !=
+				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -127,7 +127,7 @@ JavaTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return JavaToken::MOD_EQUAL; // %=
+				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -137,7 +137,7 @@ JavaTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return JavaToken::TIMES_EQUAL; // *=
+				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -147,7 +147,7 @@ JavaTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return JavaToken::EQUAL; // ==
+				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -157,7 +157,7 @@ JavaTokenizer::get_token()
 			bol.saw_non_space();
 			src.get(c1);
 			if (c1 == '=')
-				return JavaToken::XOR_EQUAL; // ^=
+				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
 				return (int)c0;
@@ -169,23 +169,23 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* >= */
-				return JavaToken::GREATER_EQUAL; // >=
+				return Token::GREATER_EQUAL; // >=
 			case '>':
 				src.get(c1);
 				switch (c1) {
 				case '=':	/* >>= */
-					return JavaToken::RSHIFT_ARITHMETIC_EQUAL; // >>=
+					return Token::RSHIFT_ARITHMETIC_EQUAL; // >>=
 				case '>':	/* >>> */
 					src.get(c2);
 					if (c2 == '=')
-						return JavaToken::RSHIFT_LOGICAL_EQUAL; // >>>=
+						return Token::RSHIFT_LOGICAL_EQUAL; // >>>=
 					else {
 						src.push(c2);
-						return JavaToken::RSHIFT_LOGICAL; // >>>
+						return Token::RSHIFT_LOGICAL; // >>>
 					}
 				default:
 					src.push(c1);
-					return JavaToken::RSHIFT_ARITHMETIC; // >>
+					return Token::RSHIFT_ARITHMETIC; // >>
 				}
 				break;
 			default:				/* > */
@@ -198,14 +198,14 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* <= */
-				return JavaToken::LESS_EQUAL; // <=
+				return Token::LESS_EQUAL; // <=
 			case '<':
 				src.get(c1);
 				if (c1 == '=')			/* <<= */
-					return JavaToken::LSHIFT_EQUAL; // <<=
+					return Token::LSHIFT_EQUAL; // <<=
 				else {			/* << */
 					src.push(c1);
-					return JavaToken::LSHIFT; // <<
+					return Token::LSHIFT; // <<
 				}
 				break;
 			default:				/* < */
@@ -219,21 +219,21 @@ JavaTokenizer::get_token()
 			src.get(c1);
 			switch (c1) {
 			case '=':				/* /= */
-				return JavaToken::DIV_EQUAL; // /=
+				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				c2 = src.char_after();
 				if (process_block_comment()) {
 					if (c2 == '*')
-						return JavaToken::JAVADOC_COMMENT; // /** ... */
+						return Token::JAVADOC_COMMENT; // /** ... */
 					else
-						return JavaToken::BLOCK_COMMENT; // /* ... */
+						return Token::BLOCK_COMMENT; // /* ... */
 
 				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return JavaToken::LINE_COMMENT; // // ...
+					return Token::LINE_COMMENT; // // ...
 				else
 					return 0;
 				break;
@@ -259,7 +259,7 @@ JavaTokenizer::get_token()
 				src.push(c1);
 				return (int)c0;
 			}
-			return JavaToken::ELIPSIS; // ...
+			return Token::ELIPSIS; // ...
 		/* XXX Can also be non-ASCII */
 		case '_': case 'a': case 'b': case 'c': case 'd': case 'e':
 		case 'f': case 'g': case 'h': case 'i': case 'j': case 'k':
@@ -281,11 +281,11 @@ JavaTokenizer::get_token()
 			src.push(c0);
 			key = java_keyword.identifier_type(val);
 			switch (key) {
-			case JavaKeyword::IDENTIFIER:
+			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case JavaKeyword::CLASS:
-			case JavaKeyword::INTERFACE:
-			case JavaKeyword::ENUM:
+			case Keyword::CLASS:
+			case Keyword::INTERFACE:
+			case Keyword::ENUM:
 				nesting.saw_class();
 				return key;
 			default:
@@ -295,12 +295,12 @@ JavaTokenizer::get_token()
 		case '\'':
 			bol.saw_non_space();
 			if (process_char_literal())
-				return JavaToken::CHAR_LITERAL; // '.'
+				return Token::CHAR_LITERAL; // '.'
 			else
 				return 0;
 		case '"':
 			if (process_string_literal())
-				return JavaToken::STRING_LITERAL; // \"...\"
+				return Token::STRING_LITERAL; // \"...\"
 			else
 				return 0;
 		/* Various numbers */

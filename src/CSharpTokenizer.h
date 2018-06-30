@@ -22,15 +22,15 @@
 #include <vector>
 
 #include "CharSource.h"
-#include "CSharpKeyword.h"
-#include "CSharpToken.h"
+#include "Keyword.h"
+#include "Token.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
 class CSharpTokenizer : public TokenizerBase {
 private:
-	CSharpKeyword csharp_keyword;
-	CSharpToken csharp_token;
+	Keyword csharp_keyword;
+	Token csharp_token;
 	int get_token_real();		// Return a single token
 	int previous_token;		// Previously returned token
 public:

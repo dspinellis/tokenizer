@@ -22,15 +22,15 @@
 #include <vector>
 
 #include "CharSource.h"
-#include "JavaKeyword.h"
-#include "JavaToken.h"
+#include "Keyword.h"
+#include "Token.h"
 #include "TokenizerBase.h"
 
 /** Collect quality metrics from C-like source code */
 class JavaTokenizer : public TokenizerBase {
 private:
-	JavaKeyword java_keyword;
-	JavaToken java_token;
+	Keyword java_keyword;
+	Token java_token;
 public:
 	int get_token();		// Return a single token
 
