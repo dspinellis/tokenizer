@@ -48,15 +48,15 @@ class JavaTokenizerTest : public CppUnit::TestFixture  {
 public:
 	void testKeyword() {
 		JavaTokenizer ct("instanceof (");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::INSTANCEOF, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_instanceof, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'(', ct.get_token());
 
 		JavaTokenizer ct2("while");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::WHILE, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_while, ct2.get_token());
 
 		JavaTokenizer ct3(";if");
 		(void)ct3.get_token();
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::IF, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_if, ct3.get_token());
 	}
 
 	void testIdentifier() {

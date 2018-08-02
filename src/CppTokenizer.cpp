@@ -317,9 +317,9 @@ CppTokenizer::get_token()
 			src.push(c0);
 			key = cpp_keyword.identifier_type(val);
 			switch (key) {
-			case Keyword::IFDEF:
-			case Keyword::ELIF:
-			case Keyword::INCLUDE:
+			case Keyword::K_ifdef:
+			case Keyword::K_elif:
+			case Keyword::K_include:
 				if (scan_cpp_directive)
 					return key;
 				else
@@ -327,32 +327,32 @@ CppTokenizer::get_token()
 				break;
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case Keyword::CLASS:
-			case Keyword::STRUCT:
+			case Keyword::K_class:
+			case Keyword::K_struct:
 				nesting.saw_class();
 				return key;
 			// Alternative representations of standard tokens
-			case Keyword::AND:
+			case Keyword::K_and:
 				return Token::BOOLEAN_AND; // &&
-			case Keyword::BITOR:
+			case Keyword::K_bitor:
 				return '|';
-			case Keyword::OR:
+			case Keyword::K_or:
 				return Token::BOOLEAN_OR; // ||
-			case Keyword::XOR:
+			case Keyword::K_xor:
 				return '^';
-			case Keyword::COMPL:
+			case Keyword::K_compl:
 				return '~';
-			case Keyword::BITAND:
+			case Keyword::K_bitand:
 				return '&';
-			case Keyword::AND_EQ:
+			case Keyword::K_and_eq:
 				return Token::AND_EQUAL; // &=
-			case Keyword::OR_EQ:
+			case Keyword::K_or_eq:
 				return Token::OR_EQUAL; // |=
-			case Keyword::XOR_EQ:
+			case Keyword::K_xor_eq:
 				return Token::XOR_EQUAL; // ^=
-			case Keyword::NOT:
+			case Keyword::K_not:
 				return '!';
-			case Keyword::NOT_EQ:
+			case Keyword::K_not_eq:
 				return Token::NOT_EQUAL; // !=
 			default:
 				return key;

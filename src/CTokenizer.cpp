@@ -310,9 +310,9 @@ CTokenizer::get_token()
 			src.push(c0);
 			key = ckeyword.identifier_type(val);
 			switch (key) {
-			case Keyword::IFDEF:
-			case Keyword::ELIF:
-			case Keyword::INCLUDE:
+			case Keyword::K_ifdef:
+			case Keyword::K_elif:
+			case Keyword::K_include:
 				if (scan_cpp_directive)
 					return key;
 				else
@@ -323,7 +323,7 @@ CTokenizer::get_token()
 			case Keyword::FIRST:
 			case Keyword::LAST:
 				assert(false);
-			case Keyword::STRUCT:
+			case Keyword::K_struct:
 				nesting.saw_class();
 			default:
 				return key;

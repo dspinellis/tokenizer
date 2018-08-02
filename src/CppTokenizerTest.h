@@ -62,15 +62,15 @@ class CppTokenizerTest : public CppUnit::TestFixture  {
 public:
 	void testKeyword() {
 		CppTokenizer ct("dynamic_cast <>");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::DYNAMIC_CAST, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_dynamic_cast, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'<', ct.get_token());
 
 		CppTokenizer ct2("while");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::WHILE, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_while, ct2.get_token());
 
 		CppTokenizer ct3(";if");
 		(void)ct3.get_token();
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::IF, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_if, ct3.get_token());
 	}
 
 	void testIdentifier() {
@@ -328,10 +328,10 @@ public:
 	void testCppKeyword() {
 		CppTokenizer ct("# include ");
 		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::INCLUDE, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_include, ct.get_token());
 
 		CppTokenizer ct2("int include ");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::INT, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_int, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
 	}
 };

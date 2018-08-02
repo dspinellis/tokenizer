@@ -274,10 +274,10 @@ CSharpTokenizer::get_token_real()
 			switch (key) {
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case Keyword::CLASS:
-			case Keyword::INTERFACE:
-			case Keyword::ENUM:
-			case Keyword::STRUCT:
+			case Keyword::K_class:
+			case Keyword::K_interface:
+			case Keyword::K_enum:
+			case Keyword::K_struct:
 				nesting.saw_class();
 				return key;
 			default:

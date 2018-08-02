@@ -33,29 +33,29 @@ class CKeywordTest : public CppUnit::TestFixture {
 	Keyword ck;
 public:
 	void testBranch() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("if"), Keyword::IF);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("elif"), Keyword::ELIF);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("ifdef"), Keyword::IFDEF);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("for"), Keyword::FOR);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("while"), Keyword::WHILE);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("case"), Keyword::CASE);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("default"), Keyword::DEFAULT);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("if"), Keyword::K_if);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("elif"), Keyword::K_elif);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("ifdef"), Keyword::K_ifdef);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("for"), Keyword::K_for);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("while"), Keyword::K_while);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("case"), Keyword::K_case);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("default"), Keyword::K_default);
 	}
 
 	void testGoto() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("goto"), Keyword::GOTO);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("goto"), Keyword::K_goto);
 	}
 
 	void testRegister() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("register"), Keyword::REGISTER);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("register"), Keyword::K_register);
 	}
 
 	void testInclude() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("include"), Keyword::INCLUDE);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("include"), Keyword::K_include);
 	}
 
 	void testTypedef() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("typedef"), Keyword::TYPEDEF);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("typedef"), Keyword::K_typedef);
 	}
 
 	void testId() {

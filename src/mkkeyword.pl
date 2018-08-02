@@ -40,8 +40,7 @@ public:
 );
 
 for my $k (sort @keywords) {
-	$k = 'KEYWORD_NULL' if ($k eq 'null');
-	print $out "\t\t", uc($k), ",\n";
+	print $out "\t\tK_$k,\n";
 }
 
 print $out "
@@ -60,9 +59,7 @@ public:
 
 # Shuffle to avoid presenting sorted data to the map
 for my $k (shuffle @keywords) {
-	my $uck = uc($k);
-	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
-	print $out qq(\t\t\t{"$k", $uck },\n);
+	print $out qq(\t\t\t{"$k", K_$k },\n);
 }
 
 print $out '
@@ -71,9 +68,7 @@ print $out '
 ';
 
 for my $k (shuffle @keywords) {
-	my $uck = uc($k);
-	$uck = 'KEYWORD_NULL' if ($uck eq 'NULL');
-	print $out qq(\t\t\t{$uck, "$k" },\n);
+	print $out qq(\t\t\t{K_$k, "$k" },\n);
 }
 
 print $out qq|

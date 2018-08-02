@@ -283,9 +283,9 @@ JavaTokenizer::get_token()
 			switch (key) {
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
-			case Keyword::CLASS:
-			case Keyword::INTERFACE:
-			case Keyword::ENUM:
+			case Keyword::K_class:
+			case Keyword::K_interface:
+			case Keyword::K_enum:
 				nesting.saw_class();
 				return key;
 			default:

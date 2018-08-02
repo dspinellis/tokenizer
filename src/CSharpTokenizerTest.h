@@ -49,15 +49,15 @@ class CSharpTokenizerTest : public CppUnit::TestFixture  {
 public:
 	void testKeyword() {
 		CSharpTokenizer ct("using (");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::USING, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_using, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'(', ct.get_token());
 
 		CSharpTokenizer ct2("while");
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::WHILE, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_while, ct2.get_token());
 
 		CSharpTokenizer ct3(";if");
 		(void)ct3.get_token();
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::IF, ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_if, ct3.get_token());
 	}
 
 	void testIdentifier() {
