@@ -14,7 +14,7 @@ for my $in_fname (@ARGV) {
 	open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
 	while (<$in>) {
 		chop;
-		$token_symbol{$1} = $2 if (/\bToken\:\:(\w+); \/\/ (.*)/);
+		$token_symbol{$1} = $2 if (/\bToken\:\:(\w+);\s+\/\/\s+(.*)/);
 	}
 }
 
