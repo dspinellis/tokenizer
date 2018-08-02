@@ -23,6 +23,7 @@
 #include "CppTokenizerTest.h"
 #include "CSharpTokenizerTest.h"
 #include "JavaTokenizerTest.h"
+#include "PythonTokenizerTest.h"
 #include "TokenizerBaseTest.h"
 #include "SymbolTableTest.h"
 #include "NestedClassStateTest.h"
@@ -40,6 +41,7 @@ main(int argc, char *argv[])
 	runner.addTest(CppTokenizerTest::suite());
 	runner.addTest(CSharpTokenizerTest::suite());
 	runner.addTest(JavaTokenizerTest::suite());
+	runner.addTest(PythonTokenizerTest::suite());
 	runner.addTest(SymbolTableTest::suite());
 	runner.addTest(NestedClassStateTest::suite());
 
