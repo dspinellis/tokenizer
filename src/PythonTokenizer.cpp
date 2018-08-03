@@ -128,6 +128,10 @@ PythonTokenizer::process_string_literal(char c)
 	return true;
 }
 
+/*
+ * Main tokenizer loop, based on the rules specified in
+ * https://docs.python.org/3/reference/lexical_analysis.html
+ */
 inline int
 PythonTokenizer::get_token()
 {
