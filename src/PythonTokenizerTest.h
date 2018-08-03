@@ -20,6 +20,7 @@ class PythonTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testTripleEmptyString);
 	CPPUNIT_TEST(testComment);
 	CPPUNIT_TEST(testRaise);
+	CPPUNIT_TEST(testOperatorsDelimiters);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testSimpleString() {
@@ -105,5 +106,12 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)'*', ct.get_token());
 	}
 
+	// Test all multi-character operators and delimiters
+	void testOperatorsDelimiters() {
+		PythonTokenizer ct("!= % %= & &= @ @= ^ ^= | |= = == + += - -= -> * ** **= *= / // //= /= < << <<= <= > >= >> >>= in");
+		for (int i = 0; i < 34; i++)
+			(void)ct.get_token();
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_in, ct.get_token());
+	}
 };
 #endif /*  PYTHONTOKENIZERTEST_H */
