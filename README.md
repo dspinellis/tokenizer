@@ -4,6 +4,13 @@
 
 Tokenize source code into integer vectors, symbols, or discrete tokens.
 
+The following languages are currently supported.
+* C
+* C#
+* C++
+* Java
+* Python
+
 ## Build
 
 ```
