@@ -2,7 +2,7 @@
 
 # tokenizer
 
-Tokenize source code into integer vectors.
+Tokenize source code into integer vectors, symbols, or discrete tokens.
 
 ## Build
 
