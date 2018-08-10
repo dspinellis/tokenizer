@@ -103,6 +103,12 @@ a block comment or a character or string literal.
 Written by Diomidis Spinellis.
 
 .SH BUGS
+The tokenizer is more permissive than the corresponding language specifications.
+For example, numbers literals can contain arbitrary letters in them,
+in addition to the recognized \fC0x\fP and \fC0b\fP prefixes.
+Also string and character literals can contain arbitrary backslash-escape
+sequences, in addition the defined ones.
+.PP
 Continuation lines are not supported.
 .PP
 The processing context may get confused by unbalanced braces occurring in
