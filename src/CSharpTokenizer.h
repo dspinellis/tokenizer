@@ -33,6 +33,7 @@ private:
 	Token csharp_token;
 	int get_token_real();		// Return a single token
 	int previous_token;		// Previously returned token
+	bool scan_cpp_directive;	// Keyword after a preprocessor #
 public:
 	// Return a single token coalescing together multiple line doc comments
 	int get_token();
@@ -53,11 +54,11 @@ public:
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt) {}
+		TokenizerBase(s, file_name, opt), scan_cpp_directive(false) {}
 
 	// Construct for a string source
 	CSharpTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt) {}
+		TokenizerBase(s, opt), scan_cpp_directive(false) {}
 
 	~CSharpTokenizer();
 

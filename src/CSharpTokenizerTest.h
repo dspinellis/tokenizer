@@ -45,6 +45,7 @@ class CSharpTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
+	CPPUNIT_TEST(testCppKeyword);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -254,6 +255,23 @@ public:
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'}', ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, ct.get_token());
+	}
+
+	void testCppKeyword() {
+		CSharpTokenizer ct("# include ");
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_include, ct.get_token());
+
+		CSharpTokenizer ct2("#region ! double foo2 bar2\nint include \n # define elif\n # endregion");
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_region, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_int, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_define, ct2.get_token());
+		CPPUNIT_ASSERT(TokenId::is_identifier(ct2.get_token()));
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_endregion, ct2.get_token());
 	}
 };
 #endif /*  CSHARPTOKENIZERTEST_H */

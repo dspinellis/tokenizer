@@ -36,10 +36,10 @@ CSharpTokenizer::get_token_real()
 
 		switch (c0) {
 		/*
-		 * Single character C operators and punctuators
-		 * ANSI 3.1.5 p. 32 and 3.1.6 p. 33
+		 * Single character C# operators and punctuators
 		 */
 		case '\n':
+			bol.saw_newline();
 			break;
 		case ' ': case '\t': case '\v': case '\f': case '\r':
 			break;
@@ -251,6 +251,11 @@ CSharpTokenizer::get_token_real()
 				return (int)c0;
 			}
 			break;
+		case '#':
+			if (bol.at_bol_space())
+				scan_cpp_directive = true;
+			bol.saw_non_space();
+			return (int)c0;
 		/* XXX Can also be non-ASCII */
 		case '_': case 'a': case 'b': case 'c': case 'd': case 'e':
 		case 'f': case 'g': case 'h': case 'i': case 'j': case 'k':
@@ -272,6 +277,34 @@ CSharpTokenizer::get_token_real()
 			src.push(c0);
 			key = csharp_keyword.identifier_type(val);
 			switch (key) {
+			case Keyword::K_region:
+			case Keyword::K_warning:
+			case Keyword::K_error:
+				if (scan_cpp_directive) {
+					scan_cpp_directive = false;
+					if (process_line_comment())
+						return key;
+					else
+						return 0;
+				} else
+					return symbols.value(val);
+				break;
+			case Keyword::K_define:
+			case Keyword::K_elif:
+			case Keyword::K_endif:
+			case Keyword::K_endregion:
+			case Keyword::K_ifdef:
+			case Keyword::K_ifndef:
+			case Keyword::K_include:
+			case Keyword::K_line:
+			case Keyword::K_pragma:
+			case Keyword::K_undef:
+				if (scan_cpp_directive) {
+					scan_cpp_directive = false;
+					return key;
+				} else
+					return symbols.value(val);
+				break;
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
 			case Keyword::K_class:
