@@ -310,9 +310,15 @@ CTokenizer::get_token()
 			src.push(c0);
 			key = ckeyword.identifier_type(val);
 			switch (key) {
-			case Keyword::K_ifdef:
+			case Keyword::K_define:
 			case Keyword::K_elif:
+			case Keyword::K_endif:
+			case Keyword::K_error:
+			case Keyword::K_ifdef:
+			case Keyword::K_ifndef:
 			case Keyword::K_include:
+			case Keyword::K_pragma:
+			case Keyword::K_undef:
 				if (scan_cpp_directive)
 					return key;
 				else
