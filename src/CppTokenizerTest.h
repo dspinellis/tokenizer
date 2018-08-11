@@ -326,13 +326,17 @@ public:
 	}
 
 	void testCppKeyword() {
-		CppTokenizer ct("# include ");
+		CTokenizer ct("# include ");
 		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_include, ct.get_token());
 
-		CppTokenizer ct2("int include ");
+		CTokenizer ct2("int include \n # define elif");
 		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_int, ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)TokenId::IDENTIFIER, ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)'#', ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_define, ct2.get_token());
+		CPPUNIT_ASSERT(TokenId::is_identifier(ct2.get_token()));
 	}
+
 };
 #endif /*  CPPTOKENIZERTEST_H */

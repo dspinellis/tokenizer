@@ -28,13 +28,16 @@ co_return
 co_yield
 decltype
 default
+define
 delete
 do
 double
 dynamic_cast
 elif
 else
+endif
 enum
+error
 explicit
 export
 extern
@@ -45,6 +48,7 @@ friend
 goto
 if
 ifdef
+ifndef
 import
 include
 inline
@@ -61,6 +65,7 @@ nullptr
 operator
 or
 or_eq
+pragma
 private
 protected
 public
@@ -86,6 +91,7 @@ try
 typedef
 typeid
 typename
+undef
 union
 unsigned
 using

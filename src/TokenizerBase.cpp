@@ -63,8 +63,6 @@ TokenizerBase::process_block_comment()
 				error("EOF encountered while processing a block comment");
 				return false;
 			}
-			if (c1 == '\n')
-				newline(true);
 		}
 		if (!isspace(c1) && bol.at_bol_space())
 			bol.saw_non_space();
@@ -74,8 +72,6 @@ TokenizerBase::process_block_comment()
 		}
 		if (c1 == '/')
 			break;
-		else if (c1 == '\n')
-				newline();
 	}
 	return true;
 }
@@ -135,13 +131,9 @@ TokenizerBase::process_string_literal()
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
-			if (c0 == '\n')
-				newline(true);
 			continue;
 		} else if (c0 == '"')
 			break;
-		else if (c0 == '\n')
-			newline(true);
 	}
 	return true;
 }

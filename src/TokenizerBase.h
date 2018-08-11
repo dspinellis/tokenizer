@@ -34,15 +34,12 @@ protected:
 	CharSource src;			// Character source
 	/** True for keywords that don't end with semicolon */
 	bool saw_comment;		// True after a comment
-	/** Called at every encountered newline */
-	void newline(bool in_non_code_block = false) { line_number++; }
 	BolState bol;			// Beginning of line state
 	std::string input_file;		// Input file name
-	int line_number;		// Input line number
 	std::string val;		// Token value (ids, strings, nums, ...)
 	// Report an error message
 	void error(const std::string &msg) {
-		std::cerr << input_file << '(' << line_number << "): " <<
+		std::cerr << input_file << '(' << src.line_number() << "): " <<
 			msg << std::endl;
 	}
 	enum ProcessingType {
@@ -71,7 +68,7 @@ public:
 	TokenizerBase(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
 		src(s), saw_comment(false), input_file(file_name),
-		line_number(1), processing_type(PT_FILE) {
+		processing_type(PT_FILE) {
 		process_options(opt);
 	}
 
@@ -79,7 +76,7 @@ public:
 	TokenizerBase(const std::string &s,
 			std::vector<std::string> opt = {}) :
 		string_src(s), src(string_src), saw_comment(false),
-		input_file("(string)"), line_number(1),
+		input_file("(string)"),
 		processing_type(PT_FILE) {
 		process_options(opt);
 	}

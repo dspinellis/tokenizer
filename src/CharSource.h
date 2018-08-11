@@ -16,6 +16,7 @@ private:
 	std::deque<char> returned_char;
 	std::istream &in;
 	int nchar;		// Number of characters read
+	int newlines;		// Count encountered newlines
 	/**
 	 * Maximum number of characters that can be pushed back, with
 	 * get_before() still returning a valid value (not 0).
@@ -24,7 +25,7 @@ private:
 	 */
 	static const size_t MAX_REWIND = 10;
 public:
-	CharSource(std::istream &s = std::cin) : in(s), nchar(0) {}
+	CharSource(std::istream &s = std::cin) : in(s), nchar(0), newlines(0) {}
 
 	/*
 	 * Obtain the next character from the source.
@@ -32,9 +33,11 @@ public:
 	 */
 	bool get(char &c) {
 		if (pushed_char.empty()) {
-			if (in.get(c))
+			if (in.get(c)) {
 				nchar++;
-			else {
+				if (c == '\n')
+					newlines++;
+			} else {
 				c = 0;
 				return false;
 			}
@@ -47,6 +50,11 @@ public:
 			returned_char.pop_front();
 		return true;
 	}
+
+	/**
+	 * Return current line number
+	 */
+	int line_number() { return newlines + 1; }
 
 	/**
 	 * Return the next character from source without removing it
