@@ -23,6 +23,7 @@ ifndef
 include
 inline
 int
+line
 long
 noalias
 pragma
