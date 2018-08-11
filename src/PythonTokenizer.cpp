@@ -98,8 +98,6 @@ PythonTokenizer::process_string_literal(char c)
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
-			if (c0 == '\n')
-				newline(true);
 			continue;
 		} else if (c0 == c) {
 			// Termination or triple-quoting
@@ -120,8 +118,7 @@ PythonTokenizer::process_string_literal(char c)
 				}
 				break;
 			}
-		} else if (c0 == '\n')
-			newline(true);
+		}
 		c2 = c1;
 		c1 = c0;
 	}
