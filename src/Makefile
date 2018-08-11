@@ -16,6 +16,7 @@ endif
 KEYWORD_FILES=$(wildcard *-keyword.txt)
 TOKENIZER_FILES=$(patsubst %-keyword.txt,%Tokenizer.cpp,$(wildcard *-keyword.txt))
 GENERATED_HEADERS=Keyword.h Token.h
+TEST_FILES=$(wildcard *Test.h)
 
 all: $(GENERATED_HEADERS) tokenizer
 
@@ -26,6 +27,8 @@ OBJS=CTokenizer.o CppTokenizer.o JavaTokenizer.o CSharpTokenizer.o \
 
 UnitTests: UnitTests.o $(OBJS) Token.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
+
+UnitTests.o: $(TEST_FILES)
 
 test: $(GENERATED_HEADERS) UnitTests
 	./UnitTests
