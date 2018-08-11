@@ -324,6 +324,7 @@ CSharpTokenizer::get_token_real()
 			else
 				return 0;
 		case '"':
+			bol.saw_non_space();
 			if (process_string_literal())
 				return Token::STRING_LITERAL; // \"...\"
 			else
