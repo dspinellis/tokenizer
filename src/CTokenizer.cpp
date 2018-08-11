@@ -42,7 +42,6 @@ CTokenizer::get_token()
 		 */
 		case '\n':
 			bol.saw_newline();
-			scan_cpp_line = false;
 			break;
 		case ' ': case '\t': case '\v': case '\f': case '\r':
 			break;
@@ -175,10 +174,8 @@ CTokenizer::get_token()
 				return Token::TOKEN_PASTE; // ##
 			else
 				src.push(c1);
-			if (bol.at_bol_space()) {
+			if (bol.at_bol_space())
 				scan_cpp_directive = true;
-				scan_cpp_line = true;
-			}
 			bol.saw_non_space();
 			return (int)c0;
 		/* Operators starting with < or > */
@@ -319,9 +316,10 @@ CTokenizer::get_token()
 			case Keyword::K_include:
 			case Keyword::K_pragma:
 			case Keyword::K_undef:
-				if (scan_cpp_directive)
+				if (scan_cpp_directive) {
+					scan_cpp_directive = false;
 					return key;
-				else
+				} else
 					return symbols.value(val);
 				break;
 			case Keyword::IDENTIFIER:
@@ -334,7 +332,6 @@ CTokenizer::get_token()
 			default:
 				return key;
 			}
-			scan_cpp_directive = false;
 			break;
 		case '\'':
 			bol.saw_non_space();
