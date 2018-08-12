@@ -9,6 +9,7 @@ The following languages are currently supported.
 * C#
 * C++
 * Java
+* PHP
 * Python
 
 ## Build

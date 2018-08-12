@@ -23,7 +23,7 @@ all: $(GENERATED_HEADERS) tokenizer
 
 OBJS=CTokenizer.o CppTokenizer.o JavaTokenizer.o CSharpTokenizer.o \
      PythonTokenizer.o TokenizerBase.o SymbolTable.o TokenId.o \
-     NestedClassState.o
+     NestedClassState.o PHPTokenizer.o
 
 UnitTests: UnitTests.o $(OBJS) Token.h
 	$(CXX) $(LDFLAGS) UnitTests.o $(OBJS) -lcppunit -o $@
