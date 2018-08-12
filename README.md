@@ -145,7 +145,15 @@ new language name.
 methodically go through the *language*`Tokenizer.cpp` `switch` statements
 to ensure that these are correctly handled.
 When code is missing or different, base the new code on an existing pattern.
-* Add code to handle the language's
+* Add code to handle the language's comments.
+* Adjust if needed the handling of constants and literals.
+Note that for the sake of simplicity and efficiency,
+the tokenizer can assume that its input is correct.
+* To implement features that aren't handled in the language whose
+tokenizer implementation you copied, look at the implementation of other
+language tokenizers that have these features.
+* If you need to reuse a method from another language, move it to
+`TokenizerBase`.
 * Add the object file *language*`Tokenizer.o` to the `OBJ` list of file
 names in the `Makefile`.
 * Add unit tests for any new or modified features you implemented.
