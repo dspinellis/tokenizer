@@ -126,3 +126,31 @@ return
 
 ## Reference manual
 You can read the command's Unix manual page through [this link](https://dspinellis.github.io/manview/?src=https%3A%2F%2Fraw.githubusercontent.com%2Fdspinellis%2Ftokenizer%2Fmaster%2Fsrc%2Ftokenizer.1&name=tokenizer(1)&link=https%3A%2F%2Fgithub.com%2Fdspinellis%2tokenizer).
+
+## Contributing
+To support a new language proceed as follows.
+* Open an issue with the language name and a pointer to its lexical structure
+defintion.
+* Add a comment indicating that you're working on it.
+* List the language's keywords in a file name *language*`-keyword.txt`.
+Keep alphabetic order. If the language supports a C-like preprocessor
+add those keywords as well.
+* Copy the source code files of an existing language that most resembles
+the new language to create the new language files:
+*language*`Tokenizer.cpp`, *language*`Tokenizer.h`, *language*`TokenizerTest.h`.
+* In the copied files rename all instances
+(uppercase, lowercase, CamelCase) of the existing language name to the
+new language name.
+* Create a list of the new language's operators and punctuators, and
+methodically go through the *language*`Tokenizer.cpp` `switch` statements
+to ensure that these are correctly handled.
+When code is missing or different, base the new code on an existing pattern.
+* Add code to handle the language's
+* Add the object file *language*`Tokenizer.o` to the `OBJ` list of file
+names in the `Makefile`.
+* Add unit tests for any new or modified features you implemented.
+* Update the file`UnitTests.cpp` to include the unit test header file,
+and call `addTest` with the unit test suite.
+* Ensure the language is correctly tokenized, both by running the
+tokenizer and by running the unit tests with `make test`.
+* Update the manual page `tokenizer.1` and this `README.md` file.
