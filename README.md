@@ -146,7 +146,7 @@ methodically go through the *language*`Tokenizer.cpp` `switch` statements
 to ensure that these are correctly handled.
 When code is missing or different, base the new code on an existing pattern.
 * Add code to handle the language's comments.
-* Adjust if needed the handling of constants and literals.
+* Adjust, if needed, the handling of constants and literals.
 Note that for the sake of simplicity and efficiency,
 the tokenizer can assume that its input is correct.
 * To implement features that aren't handled in the language whose
@@ -159,6 +159,9 @@ names in the `Makefile`.
 * Add unit tests for any new or modified features you implemented.
 * Update the file`UnitTests.cpp` to include the unit test header file,
 and call `addTest` with the unit test suite.
+* Update the method `process_file` in `tokenizer.cpp` to call the
+tokenizer you implemented and the language's name to the list
+of supported languages.
 * Ensure the language is correctly tokenized, both by running the
 tokenizer and by running the unit tests with `make test`.
 * Update the manual page `tokenizer.1` and this `README.md` file.
