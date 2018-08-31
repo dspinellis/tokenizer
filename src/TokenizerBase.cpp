@@ -166,8 +166,8 @@ void
 TokenizerBase::numeric_tokenize()
 {
 	int c;
-	bool previously_in_method = false;
 
+	previously_in_method = false;
 	while ((c = get_token())) {
 		switch (processing_type) {
 		case PT_FILE:
@@ -197,11 +197,67 @@ TokenizerBase::numeric_tokenize()
 }
 
 void
+TokenizerBase::type_tokenize()
+{
+	int c;
+
+	previously_in_method = false;
+	while ((c = get_token())) {
+		std::ostringstream os;
+
+		if (TokenId::is_character(c))
+			os << (char)c;
+		else if (TokenId::is_keyword(c))
+			os.str(keyword_to_string(c));
+		else if (TokenId::is_other_token(c))
+			os.str(token_to_string(c));
+		else if (TokenId::is_zero(c) || TokenId::is_number(c))
+			os << "NUM";
+		else if (TokenId::is_identifier(c))
+			os << "ID";
+		else
+			assert(false);
+
+		delimit(os.str(), c);
+	}
+
+	std::cout << std::endl;
+}
+
+
+void
+TokenizerBase::delimit(const std::string &s, int c)
+{
+	switch (processing_type) {
+	case PT_FILE:
+		std::cout << s << ' ';
+		break;
+	case PT_METHOD:
+		if (previously_in_method && !nesting.in_method())
+			std::cout << s << std::endl;
+		if (nesting.in_method())
+			std::cout << s << ' ';
+		break;
+	case PT_STATEMENT:
+		if (previously_in_method && !nesting.in_method())
+			std::cout << s << std::endl;
+		if (nesting.in_method()) {
+			if (c == ';')
+				std::cout << s << std::endl;
+			else
+				std::cout << s << ' ';
+		}
+		break;
+	}
+	previously_in_method = nesting.in_method();
+}
+
+void
 TokenizerBase::symbolic_tokenize()
 {
 	int c;
-	bool previously_in_method = false;
 
+	previously_in_method = false;
 	while ((c = get_token())) {
 		std::ostringstream os;
 
@@ -220,28 +276,7 @@ TokenizerBase::symbolic_tokenize()
 		else
 			assert(false);
 
-		switch (processing_type) {
-		case PT_FILE:
-			std::cout << os.str() << ' ';
-			break;
-		case PT_METHOD:
-			if (previously_in_method && !nesting.in_method())
-				std::cout << os.str() << std::endl;
-			if (nesting.in_method())
-				std::cout << os.str() << ' ';
-			break;
-		case PT_STATEMENT:
-			if (previously_in_method && !nesting.in_method())
-				std::cout << os.str() << std::endl;
-			if (nesting.in_method()) {
-				if (c == ';')
-					std::cout << os.str() << std::endl;
-				else
-					std::cout << os.str() << ' ';
-			}
-			break;
-		}
-		previously_in_method = nesting.in_method();
+		delimit(os.str(), c);
 	}
 
 	std::cout << std::endl;
@@ -265,6 +300,30 @@ TokenizerBase::code_tokenize()
 			std::cout << get_value();
 		else if (TokenId::is_identifier(c))
 			std::cout << get_value();
+		else
+			assert(false);
+		std::cout << std::endl;
+	}
+}
+
+void
+TokenizerBase::type_code_tokenize()
+{
+	int c;
+
+	while ((c = get_token())) {
+		if (TokenId::is_character(c) & !isspace((unsigned char)c))
+			std::cout << "TOK " << (char)c;
+		else if (TokenId::is_keyword(c))
+			std::cout << "KW " << keyword_to_string(c);
+		else if (TokenId::is_other_token(c))
+			std::cout << "TOK " << token_to_symbol(c);
+		else if (TokenId::is_zero(c))
+			std::cout << "NUM 0";
+		else if (TokenId::is_number(c))
+			std::cout << "NUM " << get_value();
+		else if (TokenId::is_identifier(c))
+			std::cout << "ID " << get_value();
 		else
 			assert(false);
 		std::cout << std::endl;
