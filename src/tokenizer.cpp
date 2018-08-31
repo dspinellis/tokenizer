@@ -101,7 +101,7 @@ main(int argc, char * const argv[])
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				"[-s] [-l lang] [-o opt] [file ...]" << std::endl;
+				" [-l lang] [-o opt] [-t type] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
