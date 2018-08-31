@@ -29,6 +29,9 @@
 
 /** Collect quality metrics from C-like source code */
 class TokenizerBase {
+private:
+	bool previously_in_method;
+	void delimit(const std::string &s, int c);
 protected:
 	std::stringstream string_src;	// Source for testing
 	CharSource src;			// Character source
@@ -63,6 +66,8 @@ public:
 	void numeric_tokenize();	// Tokenize numbers to stdout
 	void symbolic_tokenize();	// Tokenize symbols to stdout
 	void code_tokenize();		// Tokenize code to stdout
+	void type_tokenize();		// Tokenize token types to stdout
+	void type_code_tokenize();	// Tokenize token code and its type to stdoit
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,

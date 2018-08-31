@@ -68,12 +68,20 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 	case 's':
 		t->symbolic_tokenize();
 		break;
+	case 't':
+		t->type_tokenize();
+		break;
+	case 'T':
+		t->type_code_tokenize();
+		break;
 	default:
 		std::cerr << "Unknown processing type specified." << std::endl;
 		std::cerr << "The following processing types are supported:" << std::endl;
 		std::cerr << "\tc: output code; one token per line" << std::endl;
 		std::cerr << "\tn: output numeric values" << std::endl;
 		std::cerr << "\ts: output token symbols" << std::endl;
+		std::cerr << "\tt: output token types" << std::endl;
+		std::cerr << "\tT: output token types and code; one token per line" << std::endl;
 		exit(1);
 	}
 }
