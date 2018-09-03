@@ -230,16 +230,16 @@ CTokenizer::get_token()
 				c2 = src.char_after();
 				if (process_block_comment()) {
 					if (c2 == '*' || c2 == '!')
-						return Token::DOC_COMMENT; // /** ... */
+						return Token::DOC_COMMENT; // /**...*/
 					else
-						return Token::BLOCK_COMMENT; // /* ... */
+						return Token::BLOCK_COMMENT; // /*...*/
 
 				} else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return Token::LINE_COMMENT; // // ...
+					return Token::LINE_COMMENT; // //...
 				else
 					return 0;
 				break;

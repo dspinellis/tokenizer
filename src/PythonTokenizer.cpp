@@ -145,7 +145,7 @@ PythonTokenizer::get_token()
 			break;
 		case '#':				/* Line comment */
 			if (process_line_comment())
-				return Token::LINE_COMMENT; // # ...
+				return Token::LINE_COMMENT; // #...
 			else
 				return 0;
 			break;

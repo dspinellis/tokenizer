@@ -231,7 +231,7 @@ CSharpTokenizer::get_token_real()
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				if (process_block_comment())
-					return Token::BLOCK_COMMENT; // /* ... */
+					return Token::BLOCK_COMMENT; // /*...*/
 
 				else
 					return 0;
@@ -242,7 +242,7 @@ CSharpTokenizer::get_token_real()
 					if (c2 == '/')
 						return Token::DOC_COMMENT; // ///
 					else
-						return Token::LINE_COMMENT; // // ...
+						return Token::LINE_COMMENT; // //...
 				} else
 					return 0;
 				break;

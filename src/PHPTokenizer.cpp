@@ -103,7 +103,7 @@ PHPTokenizer::get_token()
 			break;
 		case '#':				/* # line comment */
 			if (process_line_comment())
-				return Token::LINE_COMMENT; // # ...
+				return Token::LINE_COMMENT; // #...
 			else
 				return 0;
 			break;
@@ -313,13 +313,13 @@ PHPTokenizer::get_token()
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
 				if (process_block_comment())
-					return Token::BLOCK_COMMENT; // /* ... */
+					return Token::BLOCK_COMMENT; // /*...*/
 				else
 					return 0;
 				break;
 			case '/':				/* Line comment */
 				if (process_line_comment())
-					return Token::LINE_COMMENT; // // ...
+					return Token::LINE_COMMENT; // //...
 				else
 					return 0;
 				break;
