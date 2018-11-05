@@ -10,6 +10,7 @@
 class CharSourceTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST_SUITE(CharSourceTest);
 	CPPUNIT_TEST(testCtor);
+	CPPUNIT_TEST(testValid);
 	CPPUNIT_TEST(testStrCtor);
 	CPPUNIT_TEST(testPush);
 	CPPUNIT_TEST(testNchar);
@@ -34,6 +35,17 @@ public:
 		CPPUNIT_ASSERT_EQUAL((s.get(c), c), 'h');
 		CPPUNIT_ASSERT_EQUAL((s.get(c), c), 'i');
 	}
+
+	void testValid() {
+		std::stringstream str("h\x80\xffi");
+
+		CharSource s(str);
+		char c;
+
+		CPPUNIT_ASSERT_EQUAL('h', (s.get(c), c));
+		CPPUNIT_ASSERT_EQUAL('i', (s.get(c), c));
+	}
+
 
 	void testPush() {
 		std::stringstream str("he");

@@ -28,19 +28,25 @@ public:
 	CharSource(std::istream &s = std::cin) : in(s), nchar(0), newlines(0) {}
 
 	/*
-	 * Obtain the next character from the source.
+	 * Obtain the next valid character from the source.
+	 * Ignore (silently consume without returning them) non-ASCII characters
+	 * This is required, because these cannot be correctly classified
+	 * as valid identifier parts (in languages that allow them)
+	 * without knowledge of the character encoding scheme in effect.
 	 * On EOF return false and set c to 0.
 	 */
 	bool get(char &c) {
 		if (pushed_char.empty()) {
-			if (in.get(c)) {
+			// Read, ignoring non ASCII-characters
+			do {
+				if (!in.get(c)) {
+					c = 0;
+					return false;
+				}
 				nchar++;
-				if (c == '\n')
-					newlines++;
-			} else {
-				c = 0;
-				return false;
-			}
+			} while (c < 0 || c > 127);
+			if (c == '\n')
+				newlines++;
 		} else {
 			c = pushed_char.top();
 			pushed_char.pop();
