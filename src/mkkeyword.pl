@@ -13,6 +13,7 @@ my @keywords;
 for my $in_fname (@ARGV) {
 	open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
 	while (<$in>) {
+		s/\r//g;
 		chop;
 		$keywords{$_} = 1;
 	}
