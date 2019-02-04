@@ -47,7 +47,7 @@ PHPTokenizer::process_here_document()
 	}
 
 	// Read optional quote
-	if (c == '"')
+	if (c == '"' || c == '\'')
 		if (!src.get(c))
 			return false;
 
