@@ -25,5 +25,7 @@ constexpr int TokenId::KEYWORD;
 constexpr int TokenId::OTHER_TOKEN;
 constexpr int TokenId::NUMBER_START;
 constexpr int TokenId::NUMBER_ZERO;
+constexpr int TokenId::NUMBER_INFINITE;
+constexpr int TokenId::NUMBER_NAN;
 constexpr int TokenId::NUMBER_END;
 constexpr int TokenId::IDENTIFIER;

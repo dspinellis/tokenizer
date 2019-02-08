@@ -35,7 +35,9 @@ public:
 	// and extend +-400 around it
 	static constexpr int NUMBER_START = 1100;
 	static constexpr int NUMBER_ZERO = 1500;
-	static constexpr int NUMBER_END = 1900;
+	static constexpr int NUMBER_INFINITE = 1900;
+	static constexpr int NUMBER_NAN = 1901;
+	static constexpr int NUMBER_END = 1902;
 
 	// Identifiers are dynamically allocated from this number upward
 	static constexpr int IDENTIFIER = 2000;
