@@ -19,6 +19,7 @@
 #include <string>
 #include <cassert>
 #include <cstdlib>
+#include <cfloat>
 #include <cmath>
 #include <sstream>
 
@@ -35,17 +36,23 @@
 int
 TokenizerBase::num_token(const std::string &val)
 {
-	const int BASE = TokenId::NUMBER_ZERO;
 
 	double d = strtod(val.c_str(), NULL);
-	if (d == 0)
-		return BASE;
+
+	switch (std::fpclassify(d)) {
+	case FP_INFINITE: return TokenId::NUMBER_INFINITE;
+	case FP_NAN: return TokenId::NUMBER_NAN;
+	case FP_ZERO: return TokenId::NUMBER_ZERO;
+	default:
+	      break;
+	}
+
 	d = log(d) / log(10);
 	if (d >= 0)
 		d = ceil(d) + 1;
 	if (d < 0)
 		d = floor(d);
-	return BASE + d;
+	return TokenId::NUMBER_ZERO + d;
 }
 
 // Process a block comment, returning false on EOF

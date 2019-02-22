@@ -115,6 +115,9 @@ public:
 		CTokenizer ct8("0.1d+");
 		CPPUNIT_ASSERT_EQUAL(1499, ct8.get_token());
 		CPPUNIT_ASSERT_EQUAL((int)'+', ct8.get_token());
+
+		CTokenizer ct9("1e400");
+		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_INFINITE, ct9.get_token());
 	}
 };
 #endif /*  TOKENIZERBASETEST_H */
