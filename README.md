@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/dspinellis/tokenizer.svg?branch=master)](https://travis-ci.org/dspinellis/tokenizer)
+[![DOI](https://zenodo.org/badge/2558419.svg)](https://zenodo.org/badge/latestdoi/2558419)
 
 # tokenizer
 
