@@ -161,9 +161,11 @@ TokenizerBase::process_number(std::string &val)
 				continue;
 			}
 		}
-		if (!isalnum(c0) && c0 != '.' && c0 != '_')
+        // Underscore is for Java and single quote for C++ digit separators
+		if (!isalnum(c0) && c0 != '.' && c0 != '_' && c0 != '\'')
 			break;
-		val += c0;
+        if (c0 != '\'' && c0 != '_')
+            val += c0;
 	}
 	src.push(c0);
 	return num_token(val);
