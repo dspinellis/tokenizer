@@ -1,4 +1,4 @@
-.TH TOKENIZER 1 2018-05-08
+.TH TOKENIZER 1 2023-05-21
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
@@ -17,7 +17,7 @@ Other constants (e.g. characters and strings) are represented as an integer
 representing the corresponding type.
 .IP \(bu
 Identifiers are mapped into integers through some lightweight semantic
-processing.
+processing to determine the identifier's scope.
 .IP \(bu
 Comments are mapped into a single integer.
 .IP \(bu
@@ -111,7 +111,7 @@ Written by Diomidis Spinellis.
 
 .SH BUGS
 The tokenizer is more permissive than the corresponding language specifications.
-For example, numbers literals can contain arbitrary letters in them,
+For example, number literals can contain arbitrary letters in them,
 in addition to the recognized \fC0x\fP and \fC0b\fP prefixes.
 Also string and character literals can contain arbitrary backslash-escape
 sequences, in addition the defined ones.
