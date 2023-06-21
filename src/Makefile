@@ -42,6 +42,10 @@ Token.h: mktoken.pl $(TOKENIZER_FILES)
 Keyword.h: mkkeyword.pl $(KEYWORD_FILES)
 	./mkkeyword.pl $(KEYWORD_FILES)
 
+# Create a PDF version of the manual page
+tokenizer.pdf: tokenizer.1
+	groff -man -Tps $?| ps2pdf - $@
+
 install: all
 	@mkdir -p $(DESTDIR)$(MANPREFIX)
 	@mkdir -p $(DESTDIR)$(BINPREFIX)
