@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014 Diomidis Spinellis
+ * Copyright 2014-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -51,11 +51,13 @@ public:
 	// Construct from a character source
 	CTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), scan_cpp_directive(false) {}
+		TokenizerBase(s, file_name, opt), scan_cpp_directive(false),
+		ckeyword(Keyword::L_C) {}
 
 	// Construct for a string source
 	CTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), scan_cpp_directive(false) {}
+		TokenizerBase(s, opt), scan_cpp_directive(false),
+		ckeyword(Keyword::L_C) {}
 
 	~CTokenizer();
 };

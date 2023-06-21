@@ -10,12 +10,21 @@ use List::Util qw(shuffle);
 my %keywords;
 my @keywords;
 
+my @languages;
+my %keyword_languages;
+
 for my $in_fname (@ARGV) {
+
+	my $language = $in_fname;
+	$language =~ s/\-keyword\.txt//;
+	push(@languages, $language);
+
 	open(my $in, '<', $in_fname) || die "Unable to open $in_fname: $!\n";
 	while (<$in>) {
 		s/\r//g;
 		chop;
 		$keywords{$_} = 1;
+		push @{$keyword_languages{$_}}, "li == L_$language";
 	}
 }
 @keywords = keys %keywords;
@@ -24,6 +33,8 @@ my $out_fname = "Keyword.h";
 open(my $out, '>', $out_fname) || die "Unable to open $out_fname: $!\n";
 
 print $out qq(
+// Automatically generated file.  See $0.
+
 #ifndef KEYWORD_H
 #define KEYWORD_H
 
@@ -47,6 +58,16 @@ for my $k (sort @keywords) {
 print $out "
 		LAST,		// Last value (295)
 	};
+
+	enum LanguageId {
+";
+
+for my $lang (sort @languages) {
+	print $out "\t\tL_$lang,\n";
+}
+
+print $out "
+	};
 private:
 	// Keyword map
 	typedef std::map <std::string, enum IdentifierType> KeywordMap;
@@ -54,17 +75,18 @@ private:
 	KeywordMap km;
 	TokenMap tm;
 public:
-	Keyword() {
-		km = {
+	// Create a keyword recognizer for the specified language
+	Keyword(enum LanguageId li) : km() {
 ";
 
 # Shuffle to avoid presenting sorted data to the map
 for my $k (shuffle @keywords) {
-	print $out qq(\t\t\t{"$k", K_$k },\n);
+	my $condition = join(" || ", @{$keyword_languages{$k}});
+	print $out qq(\t\tif ($condition)\n);
+	print $out qq(\t\t\tkm.emplace("$k", K_$k);\n);
 }
 
 print $out '
-		};
 		tm = {
 ';
 

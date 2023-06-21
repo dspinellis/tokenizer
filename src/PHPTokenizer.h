@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014 Diomidis Spinellis
+ * Copyright 2014-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -50,11 +50,11 @@ public:
 	// Construct from a character source
 	PHPTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt) { }
+		TokenizerBase(s, file_name, opt), php_keyword(Keyword::L_PHP) {}
 
 	// Construct for a string source
 	PHPTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt) { }
+		TokenizerBase(s, opt), php_keyword(Keyword::L_PHP) {}
 
 	~PHPTokenizer();
 
