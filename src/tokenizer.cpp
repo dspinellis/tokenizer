@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014 Diomidis Spinellis
+ * Copyright 2014-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -67,7 +67,10 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		t->code_tokenize();
 		break;
 	case 'n':
-		t->numeric_tokenize();
+		t->numeric_tokenize(false);
+		break;
+	case 'N':
+		t->numeric_tokenize(true);
 		break;
 	case 's':
 		t->symbolic_tokenize();
@@ -83,6 +86,7 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "The following processing types are supported:" << std::endl;
 		std::cerr << "\tc: output code; one token per line" << std::endl;
 		std::cerr << "\tn: output numeric values" << std::endl;
+		std::cerr << "\tN: output compressed numeric values" << std::endl;
 		std::cerr << "\ts: output token symbols" << std::endl;
 		std::cerr << "\tt: output token types" << std::endl;
 		std::cerr << "\tT: output token types and code; one token per line" << std::endl;

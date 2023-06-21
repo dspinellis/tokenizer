@@ -1,5 +1,5 @@
 /*-
- * Copyright 2018 Diomidis Spinellis
+ * Copyright 2018-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ public:
 
 	// Identifiers are dynamically allocated from this number upward
 	static constexpr int IDENTIFIER = 2000;
+
+	// Numbers and identifiers compressed to a single value
+	static constexpr int COMPRESSED_NUMBER = 698;
+	static constexpr int COMPRESSED_IDENTIFIER = 699;
 
 	static bool is_character(int t) { return t < KEYWORD; }
 	static bool is_keyword(int t) { return t >= KEYWORD && t < OTHER_TOKEN; }

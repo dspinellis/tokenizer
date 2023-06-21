@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014-2018 Diomidis Spinellis
+ * Copyright 2014-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public:
 
 	void lines_synchronize();	// Synchronize input/output newlines
 
-	void numeric_tokenize();	// Tokenize numbers to stdout
+	void numeric_tokenize(bool compress); // Tokenize numbers to stdout
 	void symbolic_tokenize();	// Tokenize symbols to stdout
 	void code_tokenize();		// Tokenize code to stdout
 	void type_tokenize();		// Tokenize token types to stdout

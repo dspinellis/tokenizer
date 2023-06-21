@@ -1,5 +1,5 @@
 /*-
- * Copyright 2014-2018 Diomidis Spinellis
+ * Copyright 2014-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -180,12 +180,20 @@ TokenizerBase::lines_synchronize()
 }
 
 void
-TokenizerBase::numeric_tokenize()
+TokenizerBase::numeric_tokenize(bool compress)
 {
 	int c;
 
 	previously_in_method = false;
 	while ((c = get_token())) {
+
+		if (compress) {
+			if (TokenId::is_identifier(c))
+				c = TokenId::COMPRESSED_IDENTIFIER;
+			else if (TokenId::is_number(c))
+				c = TokenId::COMPRESSED_NUMBER;
+		}
+
 		switch (processing_type) {
 		case PT_LINE:
 			lines_synchronize();
