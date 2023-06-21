@@ -60,7 +60,7 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\tJava" << std::endl;
 		std::cerr << "\tPHP" << std::endl;
 		std::cerr << "\tPython" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	switch (processing_type) {
 	case 'c':
@@ -90,7 +90,7 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\ts: output token symbols" << std::endl;
 		std::cerr << "\tS: output compressed token symbols" << std::endl;
 		std::cerr << "\tt: output token types and code; one token per line" << std::endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
