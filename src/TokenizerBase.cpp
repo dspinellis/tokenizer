@@ -169,6 +169,16 @@ TokenizerBase::process_number(std::string &val)
 	return num_token(val);
 }
 
+// Synchronize the input line number with the output line
+void
+TokenizerBase::lines_synchronize()
+{
+	while (src.line_number() > output_line_number) {
+		std::cout << std::endl;
+		output_line_number++;
+	}
+}
+
 void
 TokenizerBase::numeric_tokenize()
 {
@@ -177,6 +187,9 @@ TokenizerBase::numeric_tokenize()
 	previously_in_method = false;
 	while ((c = get_token())) {
 		switch (processing_type) {
+		case PT_LINE:
+			lines_synchronize();
+			// FALLTHROUGH
 		case PT_FILE:
 			std::cout << c << '\t';
 			break;
@@ -232,10 +245,17 @@ TokenizerBase::type_tokenize()
 }
 
 
+/*
+ * Output a token c named s preceded or followed by any
+ * required delimiters.
+ */
 void
 TokenizerBase::delimit(const std::string &s, int c)
 {
 	switch (processing_type) {
+	case PT_LINE:
+		lines_synchronize();
+		// FALLTHROUGH
 	case PT_FILE:
 		std::cout << s << ' ';
 		break;
@@ -343,6 +363,8 @@ TokenizerBase::process_options(std::vector<std::string> opt)
 	for (auto &o : opt) {
 		if (o == "file")
 			processing_type = PT_FILE;
+		else if (o == "line")
+			processing_type = PT_LINE;
 		else if (o == "method")
 			processing_type = PT_METHOD;
 		else if (o == "statement")
@@ -350,7 +372,7 @@ TokenizerBase::process_options(std::vector<std::string> opt)
 		else {
 			std::cerr << "Unsupported processing option [" << o <<
 				"]" << std::endl;
-			std::cerr << "Valid options are one of file, method, statement" << std::endl;
+			std::cerr << "Valid options are one of file, line, method, statement" << std::endl;
 			exit(1);
 		}
 	}

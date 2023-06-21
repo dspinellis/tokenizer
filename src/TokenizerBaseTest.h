@@ -20,6 +20,7 @@ class TokenizerBaseTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testStringLiteral);
 	CPPUNIT_TEST(testComment);
 	CPPUNIT_TEST(testNumber);
+	CPPUNIT_TEST(testOutputLineNumber);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testCharLiteral() {
@@ -118,6 +119,11 @@ public:
 
 		CTokenizer ct9("1e400");
 		CPPUNIT_ASSERT_EQUAL(TokenId::NUMBER_INFINITE, ct9.get_token());
+	}
+
+	void testOutputLineNumber() {
+		CTokenizer ct("0");
+		CPPUNIT_ASSERT_EQUAL(1, ct.get_output_line_number());
 	}
 };
 #endif /*  TOKENIZERBASETEST_H */

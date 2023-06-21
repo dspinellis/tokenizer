@@ -45,12 +45,12 @@ public:
 				}
 				nchar++;
 			} while (c < 0 || c > 127);
-			if (c == '\n')
-				newlines++;
 		} else {
 			c = pushed_char.top();
 			pushed_char.pop();
 		}
+		if (c == '\n')
+			newlines++;
 		returned_char.push_back(c);
 		while (returned_char.size() > MAX_REWIND)
 			returned_char.pop_front();
@@ -97,6 +97,8 @@ public:
 	 * also moves back one character in the returned character queue.
 	 * */
 	void push(char c) {
+		if (c == '\n')
+			newlines--;
 		pushed_char.push(c);
 		if (returned_char.size() > 0)
 			returned_char.pop_back();

@@ -21,6 +21,7 @@ class CharSourceTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testCharBeforeNewline);
 	CPPUNIT_TEST(testCharBeforePush);
 	CPPUNIT_TEST(testCharBeforeQueueShrink);
+	CPPUNIT_TEST(testNewlines);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testCtor() {
@@ -217,6 +218,20 @@ public:
 			CPPUNIT_ASSERT_EQUAL((s.get(c), c), i);
 			CPPUNIT_ASSERT_EQUAL(s.char_before(), (char)(i - 1));
 		}
+	}
+
+	void testNewlines() {
+		std::stringstream str("1\n2");
+
+		CharSource s(str);
+		char c;
+		CPPUNIT_ASSERT_EQUAL((s.get(c), c), '1');
+		CPPUNIT_ASSERT_EQUAL(s.line_number(), 1);
+
+		CPPUNIT_ASSERT_EQUAL((s.get(c), c), '\n');
+		CPPUNIT_ASSERT_EQUAL(s.line_number(), 2);
+		s.push('\n');
+		CPPUNIT_ASSERT_EQUAL(s.line_number(), 1);
 	}
 };
 #endif /*  CHARSOURCETEST_H */

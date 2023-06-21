@@ -35,6 +35,7 @@ private:
 protected:
 	std::stringstream string_src;	// Source for testing
 	CharSource src;			// Character source
+	int output_line_number;		// Current line number in output
 	/** True for keywords that don't end with semicolon */
 	bool saw_comment;		// True after a comment
 	BolState bol;			// Beginning of line state
@@ -47,6 +48,7 @@ protected:
 	}
 	enum ProcessingType {
 		PT_FILE,		// Output vector for whole class
+		PT_LINE,		// Output vector for each line
 		PT_METHOD,		// Output vector for each method
 		PT_STATEMENT,		// Output vector for each statement
 	} processing_type;
@@ -63,25 +65,29 @@ public:
 	virtual const std::string & keyword_to_string(int k) const = 0;
 	virtual const std::string & token_to_string(int k) const = 0;
 	virtual const std::string & token_to_symbol(int k) const = 0;
+
+	void lines_synchronize();	// Synchronize input/output newlines
+
 	void numeric_tokenize();	// Tokenize numbers to stdout
 	void symbolic_tokenize();	// Tokenize symbols to stdout
 	void code_tokenize();		// Tokenize code to stdout
 	void type_tokenize();		// Tokenize token types to stdout
 	void type_code_tokenize();	// Tokenize token code and its type to stdoit
+	int get_output_line_number() const { return output_line_number; }
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		src(s), saw_comment(false), input_file(file_name),
-		processing_type(PT_FILE) {
+		src(s), output_line_number(1), saw_comment(false),
+		input_file(file_name), processing_type(PT_FILE) {
 		process_options(opt);
 	}
 
 	// Construct for a string source
 	TokenizerBase(const std::string &s,
 			std::vector<std::string> opt = {}) :
-		string_src(s), src(string_src), saw_comment(false),
-		input_file("(string)"),
+		string_src(s), src(string_src), output_line_number(1),
+		saw_comment(false), input_file("(string)"),
 		processing_type(PT_FILE) {
 		process_options(opt);
 	}
