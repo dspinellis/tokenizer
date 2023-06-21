@@ -75,10 +75,10 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 	case 's':
 		t->symbolic_tokenize();
 		break;
-	case 't':
+	case 'S':
 		t->type_tokenize();
 		break;
-	case 'T':
+	case 't':
 		t->type_code_tokenize();
 		break;
 	default:
@@ -88,8 +88,8 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\tn: output numeric values" << std::endl;
 		std::cerr << "\tN: output compressed numeric values" << std::endl;
 		std::cerr << "\ts: output token symbols" << std::endl;
-		std::cerr << "\tt: output token types" << std::endl;
-		std::cerr << "\tT: output token types and code; one token per line" << std::endl;
+		std::cerr << "\tS: output compressed token symbols" << std::endl;
+		std::cerr << "\tt: output token types and code; one token per line" << std::endl;
 		exit(1);
 	}
 }

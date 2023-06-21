@@ -90,7 +90,7 @@ Identifiers that have not appeared in any enclosed scope get a new value.
 Output numeric token values in the range 0\(en699.
 All numbers are represented with the value 698
 and all identifiers with the value 699.
-This form of output is particularly well suited for clone detection.
+This form of output is well suited for clone detection.
 
 .TP
 .B c
@@ -98,7 +98,7 @@ Output the original code tokens, one per line.
 Comments and strings are output with their content replaced by an
 ellipsis (...).
 All other tokens are output in their original form.
-This output format can be passed to line-difference programs
+This output format is suitable for passing to line-difference programs
 in order to process the code at the level of individual tokens.
 
 .TP
@@ -118,13 +118,13 @@ the identifier number defined for numeric token values.
 .RE
 
 .TP
-.B t
-Output the type of each token.
+.B S
+Output compressed symbolic token values.
 This output is similar to the of symbolic token values,
 with the exception that all identifiers and numbers are treated as the same.
 
 .TP
-.B T
+.B t
 Output the type of each token (ID, KW, NUM, or TOK) and the actual token,
 one entry per line.
 
