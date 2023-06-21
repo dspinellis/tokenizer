@@ -5,25 +5,8 @@
 \fBtokenizer\fR [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fItype\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
-its command line or provided through its standard input into integer
-vectors.
-.IP \(bu
-Language keywords and multi-character tokens (e.g. \fC+=\fP) are represented
-through unique integers.
-.IP \(bu
-Numbers are mapped into integers on a logarithmic scale.
-.IP \(bu
-Other constants (e.g. characters and strings) are represented as an integer
-representing the corresponding type.
-.IP \(bu
-Identifiers are mapped into integers through some lightweight semantic
-processing to determine the identifier's scope.
-.IP \(bu
-Comments are mapped into a single integer.
-.IP \(bu
-Whitespace is not shown in the output.
-.IP \(bu
-All other characters are represented by the corresponding ASCII code.
+its command line or provided through its standard input into one of several
+supported output formats.
 
 .SH OPTIONS
 The behavior of the \fBtokenizer\fR utility can be controlled
@@ -64,22 +47,72 @@ Output a vector for each statement.
 Specify the output type.
 The following output types are supported.
 
-.RS 3
-.TP
-.B c
-output code tokens, one per line,
+.RS 1
+
 .TP
 .B n
-output numeric token values,
+Output numeric token values.
+This is the default.
+.RS 3
+.IP \(bu
+Characters are output as values in the range 0\(en255.
+.IP \(bu
+The language's keywords are output as values in the range 300\(en599.
+Other multi-character tokens (e.g. \fC+=\fP) are output as values
+in the range 600\(en1099.
+.IP \(bu
+Numbers are output on a base-ten logarithmic scale centered around 1100
+and extending 400 values around it;
+in addition zero is represented as 1500.
+.IP \(bu
+Other constants (e.g. characters and strings) are represented as an integer
+representing the corresponding type.
+.IP \(bu
+Comments are mapped into a single integer.
+.IP \(bu
+White space is not included in the output.
+.IP \(bu
+Identifiers are output as a value starting at 2000.
+Identifiers with the same name within a scope get the same value.
+Identifiers that have not appeared in any enclosed scope get a new value.
+.RE
+
+.TP
+.B c
+Output the original code tokens, one per line.
+Comments and strings are output with their content replaced by an
+ellipsis (...).
+All other tokens are output in their original form.
+This output format can be passed to line-difference programs
+in order to process the code at the level of individual tokens.
+
 .TP
 .B s
-output symbolic token values,
+Output symbolic token values.
+.RS 3
+.IP \(bu
+Single character tokens and reserved words are output in their original form.
+.IP \(bu
+Other language tokens are output as a symbol representing them.
+.IP \(bu
+Numbers are output in scientific notation as 1, prefixed by "~",
+and followed by a varying exponent according to the number's base-ten logarithm.
+.IP \(bu
+Identifiers are prefixed by "ID:" and followed by an integer corresponding to
+the identifier number defined for numeric token values.
+.RE
+
 .TP
 .B t
-output the type of each token,
+Output the type of each token.
+This output is similar to the of symbolic token values,
+with the exception that all identifiers and numbers are treated as the same.
+
 .TP
 .B T
-output the type of each token and code tokens, one per line.
+Output the type of each token (ID, KW, NUM, or TOK) and the actual token,
+one entry per line.
+
 .LP
 .RE
 
