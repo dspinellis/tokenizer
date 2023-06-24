@@ -32,6 +32,7 @@ class CKeywordTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 	Keyword ck;
 public:
+	CKeywordTest() : ck(Keyword::L_C) { CppUnit::TestFixture(); }
 	void testBranch() {
 		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("if"), Keyword::K_if);
 		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("elif"), Keyword::K_elif);
