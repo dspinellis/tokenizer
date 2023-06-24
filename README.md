@@ -24,9 +24,10 @@ make
 ## Test
 Ensure [CppUnit](https://en.wikipedia.org/wiki/CppUnit) is installed.
 Depending on your environment, you may also need to pass its installation
-directory prefix to _make_ through the `ADDFLAGS` argument.
-For example, under macOS pass `ADDFLAGS='-I /opt/homebrew/include'` as
-an argument to _make_.
+directory prefixes to _make_ through the command line arguments.
+For example, under macOS pass
+`ADDCXXFLAGS='-I /opt/homebrew/include' ADDLDFLAGS='-L /opt/homebrew/lib'`
+as arguments to _make_.
 
 ```
 cd src
