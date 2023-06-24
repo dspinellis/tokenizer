@@ -258,9 +258,9 @@ public:
 	}
 
 	void testCppKeyword() {
-		CSharpTokenizer ct("# include ");
+		CSharpTokenizer ct("# define ");
 		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
-		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_include, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Keyword::K_define, ct.get_token());
 
 		CSharpTokenizer ct2("#region ! double foo2 bar2\nint include \n # define elif\n # endregion");
 		CPPUNIT_ASSERT_EQUAL((int)'#', ct2.get_token());
