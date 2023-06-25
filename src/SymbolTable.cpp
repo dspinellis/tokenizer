@@ -1,5 +1,5 @@
 /*-
- * Copyright 2018 Diomidis Spinellis
+ * Copyright 2018-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -45,15 +45,4 @@ SymbolTable::value(std::string symbol)
 	return val;
 }
 
-void
-SymbolTable::enter_scope()
-{
-	table.push_front(Table::value_type());
-}
-
-void
-SymbolTable::exit_scope()
-{
-	if (table.size() > 1)
-		table.pop_front();
-}
+bool SymbolTable::scoping_enabled = true;

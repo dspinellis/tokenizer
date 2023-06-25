@@ -24,6 +24,7 @@
 #include "errno.h"
 #include "unistd.h"
 
+#include "SymbolTable.h"
 #include "CTokenizer.h"
 #include "CppTokenizer.h"
 #include "CSharpTokenizer.h"
@@ -104,8 +105,12 @@ main(int argc, char * const argv[])
 	std::vector<std::string> processing_opt;
 	char processing_type = 'n';
 
-	while ((opt = getopt(argc, argv, "l:o:t:")) != -1)
+	while ((opt = getopt(argc, argv, "dl:o:t:")) != -1)
 		switch (opt) {
+		case 'd':
+			SymbolTable::disable_scoping();
+			break;
+
 		case 'l':
 			lang = optarg;
 			break;
@@ -117,7 +122,7 @@ main(int argc, char * const argv[])
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-l lang] [-o opt] [-t type] [file ...]" << std::endl;
+				" [-d] [-l lang] [-o opt] [-t type] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 

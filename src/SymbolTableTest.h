@@ -11,6 +11,7 @@ class SymbolTableTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testSingle);
 	CPPUNIT_TEST(testScope);
 	CPPUNIT_TEST(testScopeDepth);
+	CPPUNIT_TEST(testDisabledScope);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testSingle() {
@@ -54,5 +55,24 @@ public:
 		CPPUNIT_ASSERT_EQUAL(0, s.scope_depth());
 	}
 
+
+	void testDisabledScope() {
+		SymbolTable s;
+
+		SymbolTable::disable_scoping();
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+
+		s.enter_scope();
+		// Look value at outer scope
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+		// New entry at inner scope
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+
+		s.exit_scope();
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER, s.value("foo"));
+		// Sane entry at outer scope
+		CPPUNIT_ASSERT_EQUAL(TokenId::IDENTIFIER + 1, s.value("bar"));
+	}
 };
 #endif /*  SYMBOLTABLETEST_H */

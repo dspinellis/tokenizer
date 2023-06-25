@@ -1,8 +1,8 @@
-.TH TOKENIZER 1 2023-05-21
+.TH TOKENIZER 1 2023-05-25
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fItype\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB -d\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fItype\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
@@ -12,6 +12,13 @@ supported output formats.
 The behavior of the \fBtokenizer\fR utility can be controlled
 through the following command-line options.
 .RS 3
+
+.TP
+.BI "-d"
+Disable scoping.
+All identifiers with the same name are allocated to the same
+token, irrespective of their scope.
+This option is useful for Type 1 (exact) clone detection.
 
 .TP
 .BI "-l " lang
@@ -86,12 +93,15 @@ Identifiers in outer scopes are visible with the same value in inner scopes.
 Identfiers in first seen in a scope are not visible outside that scope.
 .RE
 
+This form of output, with scoping disabled, is well-suited for Type 2
+(exact) clone detection.
+
 .TP
 .B N
 Output numeric token values in the range 0\(en699.
 All numbers are represented with the value 698
 and all identifiers with the value 699.
-This form of output is well suited for Type 2 (near) clone detection.
+This form of output is well-suited for Type 2 (near) clone detection.
 
 .TP
 .B c

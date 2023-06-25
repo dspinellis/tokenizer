@@ -1,5 +1,5 @@
 /*-
- * Copyright 2018 Diomidis Spinellis
+ * Copyright 2018-2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -33,15 +33,32 @@ class SymbolTable {
 	typedef std::map<std::string, int> Map;	// Map at a single scope
 	typedef std::list <Map> Table;		// Table of all scopes
 	Table table;
+	static bool scoping_enabled;
 public:
 	/** Construct an empty symbol table */
 	SymbolTable() : next_symbol_value(TokenId::IDENTIFIER), table(1) {}
 
 	/** Return a symbol's value, adding it if needed */
 	int value(std::string symbol);
-	void enter_scope();
-	void exit_scope();
+
+	void enter_scope() {
+		if (scoping_enabled)
+			table.push_front(Table::value_type());
+	}
+
+	void exit_scope() {
+		if (scoping_enabled && table.size() > 1)
+			table.pop_front();
+	}
+
 	/** Return the current scope depth, with 0 being the outer scope */
-	int scope_depth() const { return table.size() - 1; }
+	int scope_depth() const {
+		return table.size() - 1;
+	}
+
+	/** Disable scoping, forcing all identifiers in the same scope */
+	static void disable_scoping() {
+		scoping_enabled = false;
+	}
 };
 #endif /* SYMBOLTABLE_H */
