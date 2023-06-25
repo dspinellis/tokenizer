@@ -74,7 +74,7 @@ and extending 400 values around it;
 in addition zero is represented as 1500.
 .IP \(bu
 Other constants (e.g. characters and strings) are represented as an integer
-representing the corresponding type.
+corresponding to that type.
 .IP \(bu
 Comments are mapped into a single integer.
 .IP \(bu
@@ -82,7 +82,8 @@ White space is not included in the output.
 .IP \(bu
 Identifiers are output as a value starting at 2000.
 Identifiers with the same name within a scope get the same value.
-Identifiers that have not appeared in any enclosed scope get a new value.
+Identifiers in outer scopes are visible with the same value in inner scopes.
+Identfiers in first seen in a scope are not visible outside that scope.
 .RE
 
 .TP
