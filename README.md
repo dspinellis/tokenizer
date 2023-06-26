@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dspinellis/tokenizer.svg?branch=master)](https://travis-ci.org/dspinellis/tokenizer)
+![Build Status](https://img.shields.io/github/actions/workflow/status/dspinellis/tokenizer/main.yml?branch=master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2558419.svg)](https://doi.org/10.5281/zenodo.2558419)
 
 

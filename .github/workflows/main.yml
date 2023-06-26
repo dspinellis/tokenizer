@@ -1,0 +1,33 @@
+name: Tokenizer CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies (Ubuntu)
+      if: runner.os == 'Linux'
+      run: sudo apt-get install libcppunit-dev
+
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: brew install cppunit
+
+    - name: Make
+      run: make -C src
+
+    - name: Test
+      run: make -C src test
