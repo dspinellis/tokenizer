@@ -2,7 +2,7 @@
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-f] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
@@ -38,7 +38,7 @@ Identfiers in first seen in a scope are not visible outside that scope.
 .RE
 
 The default form is suitable for training machine-learning models.
-With scoping disabled, it is also well-suited for Type 2 (exact)
+With global scoping , it is also well-suited for Type 2 (exact)
 clone detection.
 
 .SH OPTIONS
@@ -72,11 +72,24 @@ and all identifiers with the value 699.
 This option can be used for Type 2 (near or renamed) clone detection.
 
 .TP
+.B -f
+Identify each read file, before outputting its tokens.
+The file name is output on a separate line prefixed with the letter "F".
+This is the same convention as that expected by the clone detector
+.IR mpcd (1).
+
+.TP
 .B -g
 Global scoping.
 All identifiers with the same name are allocated to the same
 token, irrespective of their scope.
 This option is useful for Type 1 (exact) clone detection.
+
+.TP
+.BI "-i " file
+Process the files listed in the specified file.
+If the file name is "\(en", then the list of files to process
+is read from the program's standard input.
 
 .TP
 .BI "-l " lang
@@ -133,18 +146,36 @@ the identifier number defined for numeric token values.
 
 .SH EXAMPLES
 .PP
-Process a file with default options.
+Process a C file to obtain symbolic output.
 .ft C
 .nf
-tokenizer file.c
+tokenizer -l C -s file.c
 .ft P
 .fi
 
 .PP
-Process a file specifying a vector per method.
+Process a Java file obtaining a numeric vector per method.
 .ft C
 .nf
 tokenizer -l Java -o method File.java
+.ft P
+.fi
+
+.PP
+Produce a token-by-token difference between the current version of the
+file \fCtokenizer.cpp\fP and the one in version v1.1.
+.ft C
+.nf
+diff <(git show v1.1:./tokenizer.cpp | tokenizer -l C++ -b) \\
+  <(tokenizer -l C++ -b tokenizer.cpp)
+.ft P
+.fi
+
+.PP
+List Type 2 (near) clones in the \fItokenizer\fP source code.
+.ft C
+.nf
+tokenizer -l C++ -c -f -o line *.cpp *.h | mpcd
 .ft P
 .fi
 

@@ -60,7 +60,7 @@ $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c.c | 
 ### C into symbols
 
 ```
-$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c.c | tokenizer -l C -t s
+$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c.c | tokenizer -l C -s
 # include < ID:2000 . ID:2001 > int ID:2002 ( ) { ID:2003 ( STRING_LITERAL
 ) ; return 0 ; }
 ```
@@ -75,7 +75,7 @@ $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp
 ### C# into symbols
 
 ```
-$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp.cs | tokenizer -l "C#" -t s
+$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp.cs | tokenizer -l "C#" -s
 class ID:2000 { static void ID:2001 ( ) { ID:2002 . ID:2003 . ID:2004
 ( STRING_LITERAL ) ; } }
 ```
@@ -90,7 +90,7 @@ $ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/csharp
 ### C++ into symbols
 
 ```
-$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c%2B%2B.cpp | tokenizer -l C++ -t s
+$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c%2B%2B.cpp | tokenizer -l C++ -s
 # include < ID:2000 > LINE_COMMENT using namespace ID:2001 ; int ID:2002
 ( ) LINE_COMMENT { ID:2003 LSHIFT STRING_LITERAL LSHIFT ID:2004 ;
 LINE_COMMENT return 0 ; LINE_COMMENT }
@@ -99,7 +99,7 @@ LINE_COMMENT return 0 ; LINE_COMMENT }
 ### Java into symbols
 
 ```
-$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/j/Java.java | tokenizer -l Java -t s
+$ curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/j/Java.java | tokenizer -l Java -s
 public class ID:2000 { public static void ID:2001 ( ID:2002 [ ] ID:2003 )
 { ID:2004 . ID:2005 . ID:2006 ( STRING_LITERAL ) ; } }
 ```
@@ -107,7 +107,7 @@ public class ID:2000 { public static void ID:2001 ( ID:2002 [ ] ID:2003 )
 ### C++ into code tokens
 
 ```
-curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c%2B%2B.cpp | tokenizer -l C++ -t c
+curl -s https://raw.githubusercontent.com/leachim6/hello-world/master/c/c%2B%2B.cpp | tokenizer -l C++ -c
 #
 include
 <
@@ -136,6 +136,22 @@ return
 ;
 // ...
 }
+```
+
+## Examples of _tokenizer_ code preprocessing
+
+### Token-by-token difference
+Produce a token-by-token difference between the current version of the
+file `tokenizer.cpp` and the one in version v1.1.
+```sh
+diff <(git show v1.1:./tokenizer.cpp | tokenizer -l C++ -b) \
+  <(tokenizer -l C++ -b tokenizer.cpp)
+```
+
+## Clone detection
+List Type 2 (near) clones in the _tokenizer_ source code.
+```sh
+tokenizer -l C++ -c -f -o line *.cpp *.h | mpcd
 ```
 
 ## Reference manual
