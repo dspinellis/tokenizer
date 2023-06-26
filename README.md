@@ -141,6 +141,12 @@ return
 ## Reference manual
 You can read the command's Unix manual page through [this link](https://dspinellis.github.io/manview/?src=https%3A%2F%2Fraw.githubusercontent.com%2Fdspinellis%2Ftokenizer%2Fmaster%2Fsrc%2Ftokenizer.1&name=tokenizer(1)&link=https%3A%2F%2Fgithub.com%2Fdspinellis%2tokenizer).
 
+In 2023 version 2.0 of the tokenizer was released, with a simpler and
+more orthogonal command-line interface.
+To convert old code, you can read the Unix manual page of the original v1.1
+version through
+[this link](https://dspinellis.github.io/manview/?src=https%3A%2F%2Fraw.githubusercontent.com%2Fdspinellis%2Ftokenizer%2Fv1.1%2Fsrc%2Ftokenizer.1&name=tokenizer(1)&link=https%3A%2F%2Fgithub.com%2Fdspinellis%2tokenizer).
+
 ## Contributing
 To support a new language proceed as follows.
 * Open an issue with the language name and a pointer to its lexical structure

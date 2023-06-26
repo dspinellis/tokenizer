@@ -32,10 +32,18 @@
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
 
+static bool symbolic_output = false;
+static bool compress_ids = false;
+static enum output_type {
+	ot_tokens,	// Numeric or symbolic tokens
+	ot_break, 	// Original tokens broken into lines
+	ot_type_break,	// As above, tokens preceded by their type
+} output_type = ot_tokens;
+
 // Process and print the metrics of stdin
 static void
 process_file(const std::string lang, const std::vector<std::string> opt,
-		std::string filename, char processing_type)
+		std::string filename)
 {
 	CharSource cs;
 	TokenizerBase *t;
@@ -63,35 +71,23 @@ process_file(const std::string lang, const std::vector<std::string> opt,
 		std::cerr << "\tPython" << std::endl;
 		exit(EXIT_FAILURE);
 	}
-	switch (processing_type) {
-	case 'c':
-		t->code_tokenize();
+
+	switch (output_type) {
+	case ot_tokens:
+		if (symbolic_output) {
+			if (compress_ids)
+				t->type_tokenize();
+			else
+				t->symbolic_tokenize();
+		} else
+			t->numeric_tokenize(compress_ids);
 		break;
-	case 'n':
-		t->numeric_tokenize(false);
-		break;
-	case 'N':
-		t->numeric_tokenize(true);
-		break;
-	case 's':
-		t->symbolic_tokenize();
-		break;
-	case 'S':
-		t->type_tokenize();
-		break;
-	case 't':
+	case ot_type_break:
 		t->type_code_tokenize();
 		break;
-	default:
-		std::cerr << "Unknown processing type specified." << std::endl;
-		std::cerr << "The following processing types are supported:" << std::endl;
-		std::cerr << "\tc: output code; one token per line" << std::endl;
-		std::cerr << "\tn: output numeric values" << std::endl;
-		std::cerr << "\tN: output compressed numeric values" << std::endl;
-		std::cerr << "\ts: output token symbols" << std::endl;
-		std::cerr << "\tS: output compressed token symbols" << std::endl;
-		std::cerr << "\tt: output token types and code; one token per line" << std::endl;
-		exit(EXIT_FAILURE);
+	case ot_break:
+		t->code_tokenize();
+		break;
 	}
 }
 
@@ -103,31 +99,38 @@ main(int argc, char * const argv[])
 	int opt;
 	std::string lang = "";
 	std::vector<std::string> processing_opt;
-	char processing_type = 'n';
 
-	while ((opt = getopt(argc, argv, "dl:o:t:")) != -1)
+	while ((opt = getopt(argc, argv, "Bbcgl:o:st")) != -1)
 		switch (opt) {
-		case 'd':
+		case 'B':
+			output_type = ot_type_break;
+			break;
+		case 'b':
+			output_type = ot_break;
+			break;
+		case 'c':
+			compress_ids = true;
+			break;
+		case 'g':
 			SymbolTable::disable_scoping();
 			break;
-
 		case 'l':
 			lang = optarg;
 			break;
 		case 'o':
 			processing_opt.push_back(optarg);
 			break;
-		case 't':
-			processing_type = *optarg;
+		case 's':
+			symbolic_output = true;
 			break;
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-d] [-l lang] [-o opt] [-t type] [file ...]" << std::endl;
+				" [-l lang] [-o opt] [-cgs | -B | -b] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 
 	if (!argv[optind]) {
-		process_file(lang, processing_opt, "-", processing_type);
+		process_file(lang, processing_opt, "-");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -140,7 +143,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_FAILURE);
 		}
 		std::cin.rdbuf(in.rdbuf());
-		process_file(lang, processing_opt, argv[optind], processing_type);
+		process_file(lang, processing_opt, argv[optind]);
 		in.close();
 		optind++;
 	}

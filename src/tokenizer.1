@@ -1,21 +1,79 @@
-.TH TOKENIZER 1 2023-05-25
+.TH TOKENIZER 1 2023-05-26
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB -d\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fItype\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
 supported output formats.
 
+By default the \fItokenizer\fR outputs numerical token codes.
+
+.RS 3
+.IP \(bu
+Characters are output as values in the range 0\(en255.
+.IP \(bu
+The language's keywords are output as values in the range 300\(en599.
+Other multi-character tokens (e.g. \fC+=\fP) are output as values
+in the range 600\(en1099.
+The numbers for the same keywords are the same between different languages,
+allowing the tokenizer to be used to train models through transfer learning.
+.IP \(bu
+Numbers are output on a base-ten logarithmic scale centered around 1100
+and extending 400 values around it;
+in addition zero is represented as 1500.
+.IP \(bu
+Other constants (e.g. characters and strings) are represented as an integer
+corresponding to that type.
+.IP \(bu
+Comments are mapped into a single integer.
+.IP \(bu
+White space is not included in the output.
+.IP \(bu
+Identifiers are output as a value starting at 2000.
+Identifiers with the same name within a scope get the same value.
+Identifiers in outer scopes are visible with the same value in inner scopes.
+Identfiers in first seen in a scope are not visible outside that scope.
+.RE
+
+The default form is suitable for training machine-learning models.
+With scoping disabled, it is also well-suited for Type 2 (exact)
+clone detection.
+
 .SH OPTIONS
-The behavior of the \fBtokenizer\fR utility can be controlled
+The behavior of the \fItokenizer\fR utility can be controlled
 through the following command-line options.
+
 .RS 3
 
 .TP
-.BI "-d"
-Disable scoping.
+.B -B
+Output the type of each token (ID, KW, NUM, or TOK) and the actual token,
+one entry per line.
+Comments and strings are output with their content replaced by an
+ellipsis (...).
+All other tokens are output in their original form.
+
+.TP
+.B -b
+Similar to the \fB-B\fP output format, but without the token type
+prefix.
+This output format is suitable for passing to line-difference programs
+in order to process the code at the level of individual tokens.
+
+.TP
+.B -c
+Compress token values so that all identifiers and numbers are treated
+as the same.
+In the numeric output form
+all numbers are represented with the value 698
+and all identifiers with the value 699.
+This option can be used for Type 2 (near or renamed) clone detection.
+
+.TP
+.B -g
+Global scoping.
 All identifiers with the same name are allocated to the same
 token, irrespective of their scope.
 This option is useful for Type 1 (exact) clone detection.
@@ -56,64 +114,7 @@ Output a vector for each statement.
 .RE
 
 .TP
-.BI "-t " type
-Specify the output type.
-The following output types are supported.
-
-.RS 1
-
-.TP
-.B n
-Output numeric token values.
-This is the default.
-.RS 3
-.IP \(bu
-Characters are output as values in the range 0\(en255.
-.IP \(bu
-The language's keywords are output as values in the range 300\(en599.
-Other multi-character tokens (e.g. \fC+=\fP) are output as values
-in the range 600\(en1099.
-The numbers for the same keywords are the same between different languages,
-allowing the tokenizer to be used to train models through transfer learning.
-.IP \(bu
-Numbers are output on a base-ten logarithmic scale centered around 1100
-and extending 400 values around it;
-in addition zero is represented as 1500.
-.IP \(bu
-Other constants (e.g. characters and strings) are represented as an integer
-corresponding to that type.
-.IP \(bu
-Comments are mapped into a single integer.
-.IP \(bu
-White space is not included in the output.
-.IP \(bu
-Identifiers are output as a value starting at 2000.
-Identifiers with the same name within a scope get the same value.
-Identifiers in outer scopes are visible with the same value in inner scopes.
-Identfiers in first seen in a scope are not visible outside that scope.
-.RE
-
-This form of output, with scoping disabled, is well-suited for Type 2
-(exact) clone detection.
-
-.TP
-.B N
-Output numeric token values in the range 0\(en699.
-All numbers are represented with the value 698
-and all identifiers with the value 699.
-This form of output is well-suited for Type 2 (near) clone detection.
-
-.TP
-.B c
-Output the original code tokens, one per line.
-Comments and strings are output with their content replaced by an
-ellipsis (...).
-All other tokens are output in their original form.
-This output format is suitable for passing to line-difference programs
-in order to process the code at the level of individual tokens.
-
-.TP
-.B s
+.B -s
 Output symbolic token values.
 .RS 3
 .IP \(bu
@@ -126,20 +127,6 @@ and followed by a varying exponent according to the number's base-ten logarithm.
 .IP \(bu
 Identifiers are prefixed by "ID:" and followed by an integer corresponding to
 the identifier number defined for numeric token values.
-.RE
-
-.TP
-.B S
-Output compressed symbolic token values.
-This output is similar to the of symbolic token values,
-with the exception that all identifiers and numbers are treated as the same.
-
-.TP
-.B t
-Output the type of each token (ID, KW, NUM, or TOK) and the actual token,
-one entry per line.
-
-.LP
 .RE
 
 .RE
