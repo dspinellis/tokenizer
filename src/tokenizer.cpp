@@ -33,6 +33,8 @@
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
 
+const char version[] = "2.3.0";
+
 // Command-line option values
 static bool symbolic_output = false;
 static bool compress_ids = false;
@@ -133,7 +135,7 @@ main(int argc, char * const argv[])
 	int opt;
 	std::optional<std::string> files_list(std::nullopt);
 
-	while ((opt = getopt(argc, argv, "Bbcfgi:l:o:st")) != -1)
+	while ((opt = getopt(argc, argv, "Bbcfgi:l:o:sV")) != -1)
 		switch (opt) {
 		case 'B':
 			output_type = ot_type_break;
@@ -162,9 +164,12 @@ main(int argc, char * const argv[])
 		case 's':
 			symbolic_output = true;
 			break;
+		case 'V':
+		    std::cout << "tokenizer " << version << std::endl;
+		    exit(EXIT_SUCCESS);
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				" [-i input-file-list] [-l lang] [-f] [-o opt] [-cgs | -B | -b] [file ...]" << std::endl;
+				"  [-cgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 

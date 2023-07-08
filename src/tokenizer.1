@@ -2,7 +2,7 @@
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-f] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-fV\fP] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
@@ -141,6 +141,10 @@ and followed by a varying exponent according to the number's base-ten logarithm.
 Identifiers are prefixed by "ID:" and followed by an integer corresponding to
 the identifier number defined for numeric token values.
 .RE
+
+.TP
+.BI "-V "
+Display the program's version number and exit.
 
 .RE
 
