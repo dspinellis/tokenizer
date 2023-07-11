@@ -11,6 +11,7 @@ The following languages are currently supported.
 * C#
 * C++
 * Java
+* JavaScript
 * PHP
 * Python
 
@@ -181,6 +182,9 @@ new language name.
 methodically go through the *language*`Tokenizer.cpp` `switch` statements
 to ensure that these are correctly handled.
 When code is missing or different, base the new code on an existing pattern.
+Keep token names used for the same semantic purpose same between languages.
+If you need a new token name just write `Token:MY_NAME` and it will be
+defined automatigcally.
 * Add code to handle the language's comments.
 * Adjust, if needed, the handling of constants and literals.
 Note that for the sake of simplicity and efficiency,
@@ -201,3 +205,5 @@ of supported languages.
 * Ensure the language is correctly tokenized, both by running the
 tokenizer and by running the unit tests with `make test`.
 * Update the manual page `tokenizer.1` and this `README.md` file.
+* Bump up the semantic version middle number of the version string
+in `tokenizer.cpp`

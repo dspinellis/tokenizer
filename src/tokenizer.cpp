@@ -30,10 +30,11 @@
 #include "CppTokenizer.h"
 #include "CSharpTokenizer.h"
 #include "JavaTokenizer.h"
+#include "JavaScriptTokenizer.h"
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
 
-const char version[] = "2.3.0";
+const char version[] = "2.4.0";
 
 // Command-line option values
 static bool symbolic_output = false;
@@ -59,6 +60,8 @@ process_file(std::istream &in, std::string filename)
 
 	if (lang == "Java")
 		t = new JavaTokenizer(cs, filename, processing_opt);
+	else if (lang == "JavaScript")
+		t = new JavaScriptTokenizer(cs, filename, processing_opt);
 	else if (lang == "C")
 		t = new CTokenizer(cs, filename, processing_opt);
 	else if (lang == "CSharp" || lang == "C#")
@@ -76,6 +79,7 @@ process_file(std::istream &in, std::string filename)
 		std::cerr << "\tCSharp (or C#)" << std::endl;
 		std::cerr << "\tC++" << std::endl;
 		std::cerr << "\tJava" << std::endl;
+		std::cerr << "\tJavaScript" << std::endl;
 		std::cerr << "\tPHP" << std::endl;
 		std::cerr << "\tPython" << std::endl;
 		exit(EXIT_FAILURE);
