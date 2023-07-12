@@ -20,6 +20,7 @@
 #include "CharSourceTest.h"
 #include "CKeywordTest.h"
 #include "CTokenizerTest.h"
+#include "GoTokenizerTest.h"
 #include "CppTokenizerTest.h"
 #include "CSharpTokenizerTest.h"
 #include "JavaTokenizerTest.h"
@@ -40,6 +41,7 @@ main(int argc, char *argv[])
 	runner.addTest(CKeywordTest::suite());
 	runner.addTest(TokenizerBaseTest::suite());
 	runner.addTest(CTokenizerTest::suite());
+	runner.addTest(GoTokenizerTest::suite());
 	runner.addTest(CppTokenizerTest::suite());
 	runner.addTest(CSharpTokenizerTest::suite());
 	runner.addTest(JavaTokenizerTest::suite());
