@@ -29,15 +29,14 @@
 /** Collect quality metrics from C-like source code */
 class GoTokenizer : public TokenizerBase {
 private:
-	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	/** True for keywords that don't end with semicolon */
-	Keyword ckeyword;
+	Keyword go_keyword;
 	Token ctoken;
 public:
 	int get_token();		// Return a single token
 
 	const std::string & keyword_to_string(int k) const {
-		return ckeyword.to_string(k);
+		return go_keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(int k) const {
@@ -51,13 +50,11 @@ public:
 	// Construct from a character source
 	GoTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), scan_cpp_directive(false),
-		ckeyword(Keyword::L_C) {}
+		TokenizerBase(s, file_name, opt), go_keyword(Keyword::L_C) {}
 
 	// Construct for a string source
 	GoTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), scan_cpp_directive(false),
-		ckeyword(Keyword::L_C) {}
+		TokenizerBase(s, opt), go_keyword(Keyword::L_C) {}
 
 	~GoTokenizer();
 };

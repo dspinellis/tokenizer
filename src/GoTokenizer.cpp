@@ -293,7 +293,7 @@ GoTokenizer::get_token()
 				val += c0;
 			}
 			src.push(c0);
-			key = ckeyword.identifier_type(val);
+			key = go_keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
