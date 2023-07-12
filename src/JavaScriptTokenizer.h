@@ -29,14 +29,14 @@
 /** Collect quality metrics from C-like source code */
 class JavaScriptTokenizer : public TokenizerBase {
 private:
-	Keyword java_keyword;
+	Keyword javascript_keyword;
 	Token java_token;
 	bool process_string_literal(char c);
 public:
 	int get_token();		// Return a single token
 
 	const std::string & keyword_to_string(int k) const {
-		return java_keyword.to_string(k);
+		return javascript_keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(int k) const {
@@ -51,12 +51,12 @@ public:
 	JavaScriptTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
 		TokenizerBase(s, file_name, opt),
-		java_keyword(Keyword::L_JavaScript) { }
+		javascript_keyword(Keyword::L_JavaScript) { }
 
 	// Construct for a string source
 	JavaScriptTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
 		TokenizerBase(s, opt),
-		java_keyword(Keyword::L_JavaScript) { }
+		javascript_keyword(Keyword::L_JavaScript) { }
 
 	~JavaScriptTokenizer();
 

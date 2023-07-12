@@ -392,7 +392,7 @@ JavaScriptTokenizer::get_token()
 				val += c0;
 			}
 			src.push(c0);
-			key = java_keyword.identifier_type(val);
+			key = javascript_keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::IDENTIFIER:
 				return symbols.value(val);
