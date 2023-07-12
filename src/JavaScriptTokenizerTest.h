@@ -15,9 +15,9 @@ class JavaScriptTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testKeyword);
 	CPPUNIT_TEST(testIdentifier);
 	CPPUNIT_TEST(testCharacterToken);
-	CPPUNIT_TEST(testEXPONENT);
+	CPPUNIT_TEST(testRAISE);
 	CPPUNIT_TEST(testLAMBDA);
-	CPPUNIT_TEST(testEXPONENT_EQUAL);
+	CPPUNIT_TEST(testRAISE_EQUAL);
 	CPPUNIT_TEST(testEQUAL_STRICT);
 	CPPUNIT_TEST(testNOT_EQUAL_STRICT);
 	CPPUNIT_TEST(testAND_EQUAL);
@@ -107,9 +107,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)'#', ct.get_token());
 	}
 
-	void testEXPONENT() {
+	void testRAISE() {
 		JavaScriptTokenizer ct("**3");
-		CPPUNIT_ASSERT_EQUAL((int)Token::EXPONENT, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::RAISE, ct.get_token());
 	}
 
 	void testLAMBDA() {
@@ -117,9 +117,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL((int)Token::LAMBDA, ct.get_token());
 	}
 
-	void testEXPONENT_EQUAL() {
+	void testRAISE_EQUAL() {
 		JavaScriptTokenizer ct("**=3");
-		CPPUNIT_ASSERT_EQUAL((int)Token::EXPONENT_EQUAL, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((int)Token::RAISE_EQUAL, ct.get_token());
 	}
 
 	void testEQUAL_STRICT() {

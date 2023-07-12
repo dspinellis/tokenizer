@@ -161,10 +161,10 @@ JavaScriptTokenizer::get_token()
 				src.get(c1);
 				switch (c1) {
 				case '=':	/* **= */
-					return Token::EXPONENT_EQUAL; // **=
+					return Token::RAISE_EQUAL; // **=
 				default:
 					src.push(c1);
-					return Token::EXPONENT; // **
+					return Token::RAISE; // **
 				}
 				break;
 			default:				/* * */
