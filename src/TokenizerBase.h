@@ -60,6 +60,7 @@ protected:
 	}
 	SymbolTable symbols;
 	NestedClassState nesting;
+	char separator;			// Output token separator
 public:
 	virtual int get_token() = 0;	// Return a single token
 	virtual const std::string & keyword_to_string(int k) const = 0;
@@ -68,12 +69,16 @@ public:
 
 	void lines_synchronize();	// Synchronize input/output newlines
 
-	void numeric_tokenize(bool compress); // Tokenize numbers to stdout
+	// Tokenize numbers to stdout
+	void numeric_tokenize(bool compress);
+
 	void symbolic_tokenize();	// Tokenize symbols to stdout
 	void code_tokenize();		// Tokenize code to stdout
 	void type_tokenize();		// Tokenize token types to stdout
 	void type_code_tokenize();	// Tokenize token code and its type to stdoit
 	int get_output_line_number() const { return output_line_number; }
+
+	void set_separator(char s) { separator = s; }
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,

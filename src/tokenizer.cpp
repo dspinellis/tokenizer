@@ -35,7 +35,7 @@
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
 
-const char version[] = "2.5.0";
+const char version[] = "2.6.0";
 
 // Command-line option values
 static bool symbolic_output = false;
@@ -48,6 +48,7 @@ static enum output_type {
 } output_type = ot_tokens;
 static std::string lang("Java");
 static std::vector<std::string> processing_opt;
+static char separator;
 
 /*
  * Process and print the metrics of the specified stream,
@@ -89,6 +90,7 @@ process_file(std::istream &in, std::string filename)
 		exit(EXIT_FAILURE);
 	}
 
+	t->set_separator(separator ? separator : ' ');
 	switch (output_type) {
 	case ot_tokens:
 		if (symbolic_output) {
@@ -96,8 +98,10 @@ process_file(std::istream &in, std::string filename)
 				t->type_tokenize();
 			else
 				t->symbolic_tokenize();
-		} else
+		} else {
+			t->set_separator(separator ? separator : '\t');
 			t->numeric_tokenize(compress_ids);
+		}
 		break;
 	case ot_type_break:
 		t->type_code_tokenize();
@@ -143,7 +147,7 @@ main(int argc, char * const argv[])
 	int opt;
 	std::optional<std::string> files_list(std::nullopt);
 
-	while ((opt = getopt(argc, argv, "Bbcfgi:l:o:sV")) != -1)
+	while ((opt = getopt(argc, argv, "Bbcfgi:l:o:st:V")) != -1)
 		switch (opt) {
 		case 'B':
 			output_type = ot_type_break;
@@ -172,12 +176,15 @@ main(int argc, char * const argv[])
 		case 's':
 			symbolic_output = true;
 			break;
+		case 't':
+			separator = *optarg;
+			break;
 		case 'V':
 		    std::cout << "tokenizer " << version << std::endl;
 		    exit(EXIT_SUCCESS);
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				"  [-cgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [file ...]" << std::endl;
+				"  [-cgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [-t sep] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 

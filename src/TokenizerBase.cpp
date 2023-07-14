@@ -179,6 +179,10 @@ TokenizerBase::lines_synchronize()
 	}
 }
 
+/*
+ * Output numeric token values.
+ * If compress is true, all identifiers and numbers have the same value.
+ */
 void
 TokenizerBase::numeric_tokenize(bool compress)
 {
@@ -199,13 +203,13 @@ TokenizerBase::numeric_tokenize(bool compress)
 			lines_synchronize();
 			// FALLTHROUGH
 		case PT_FILE:
-			std::cout << c << '\t';
+			std::cout << c << separator;
 			break;
 		case PT_METHOD:
 			if (previously_in_method && !nesting.in_method())
 				std::cout << c << std::endl;
 			if (nesting.in_method())
-				std::cout << c << '\t';
+				std::cout << c << separator;
 			break;
 		case PT_STATEMENT:
 			if (previously_in_method && !nesting.in_method())
@@ -214,7 +218,7 @@ TokenizerBase::numeric_tokenize(bool compress)
 				if (c == ';')
 					std::cout << c << std::endl;
 				else
-					std::cout << c << '\t';
+					std::cout << c << separator;
 			}
 			break;
 		}
@@ -265,13 +269,13 @@ TokenizerBase::delimit(const std::string &s, int c)
 		lines_synchronize();
 		// FALLTHROUGH
 	case PT_FILE:
-		std::cout << s << ' ';
+		std::cout << s << separator;
 		break;
 	case PT_METHOD:
 		if (previously_in_method && !nesting.in_method())
 			std::cout << s << std::endl;
 		if (nesting.in_method())
-			std::cout << s << ' ';
+			std::cout << s << separator;
 		break;
 	case PT_STATEMENT:
 		if (previously_in_method && !nesting.in_method())
@@ -280,7 +284,7 @@ TokenizerBase::delimit(const std::string &s, int c)
 			if (c == ';')
 				std::cout << s << std::endl;
 			else
-				std::cout << s << ' ';
+				std::cout << s << separator;
 		}
 		break;
 	}

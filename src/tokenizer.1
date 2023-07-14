@@ -1,8 +1,8 @@
-.TH TOKENIZER 1 2023-07-12
+.TH TOKENIZER 1 2023-07-14
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-fV\fP] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-fV\fP] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fIsep\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
@@ -147,6 +147,11 @@ and followed by a varying exponent according to the number's base-ten logarithm.
 Identifiers are prefixed by "ID:" and followed by an integer corresponding to
 the identifier number defined for numeric token values.
 .RE
+
+.TP
+.BI "-t " sep
+Specify the separator character for non-line output.
+By default this is tab for numeric tokens and space for symbolic output.
 
 .TP
 .BI "-V "
