@@ -76,6 +76,9 @@ process_file(std::istream &in, std::string filename)
 		t = new PHPTokenizer(cs, filename, processing_opt);
 	else if (lang == "Python")
 		t = new PythonTokenizer(cs, filename, processing_opt);
+	else if (lang == "TypeScript")
+		t = new JavaScriptTokenizer(cs, filename, processing_opt,
+				Keyword::L_TypeScript);
 	else {
 		std::cerr << "Unknown language specified." << std::endl;
 		std::cerr << "The following languages are supported:" << std::endl;
@@ -87,6 +90,7 @@ process_file(std::istream &in, std::string filename)
 		std::cerr << "\tJavaScript" << std::endl;
 		std::cerr << "\tPHP" << std::endl;
 		std::cerr << "\tPython" << std::endl;
+		std::cerr << "\tTypeScript" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 

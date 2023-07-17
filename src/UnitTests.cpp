@@ -28,6 +28,7 @@
 #include "PHPTokenizerTest.h"
 #include "PythonTokenizerTest.h"
 #include "TokenizerBaseTest.h"
+#include "TypeScriptTokenizerTest.h"
 #include "SymbolTableTest.h"
 #include "NestedClassStateTest.h"
 
@@ -40,6 +41,7 @@ main(int argc, char *argv[])
 	runner.addTest(CharSourceTest::suite());
 	runner.addTest(CKeywordTest::suite());
 	runner.addTest(TokenizerBaseTest::suite());
+
 	runner.addTest(CTokenizerTest::suite());
 	runner.addTest(GoTokenizerTest::suite());
 	runner.addTest(CppTokenizerTest::suite());
@@ -48,6 +50,8 @@ main(int argc, char *argv[])
 	runner.addTest(PythonTokenizerTest::suite());
 	runner.addTest(PHPTokenizerTest::suite());
 	runner.addTest(JavaScriptTokenizerTest::suite());
+	runner.addTest(TypeScriptTokenizerTest::suite());
+
 	runner.addTest(SymbolTableTest::suite());
 	runner.addTest(NestedClassStateTest::suite());
 

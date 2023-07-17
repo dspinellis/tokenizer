@@ -14,6 +14,7 @@ The following languages are currently supported.
 * JavaScript
 * PHP
 * Python
+* TypeScript
 
 ## Build
 

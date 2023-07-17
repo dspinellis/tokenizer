@@ -49,17 +49,21 @@ public:
 
 	// Construct from a character source
 	JavaScriptTokenizer(CharSource &s, const std::string &file_name,
-			std::vector<std::string> opt = {}) :
+			std::vector<std::string> opt = {},
+			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
 		TokenizerBase(s, file_name, opt),
-		javascript_keyword(Keyword::L_JavaScript) { }
+		javascript_keyword(kw_id) { }
 
 	// Construct for a string source
-	JavaScriptTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
+	JavaScriptTokenizer(const std::string &s,
+			std::vector<std::string> opt = {},
+			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
 		TokenizerBase(s, opt),
-		javascript_keyword(Keyword::L_JavaScript) { }
+		javascript_keyword(kw_id) { }
 
 	~JavaScriptTokenizer();
 
 	friend class JavaScriptTokenizerTest;
+	friend class TypeScriptTokenizerTest;
 };
 #endif /* JAVASCRIPTTOKENIZER_H */
