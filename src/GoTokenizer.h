@@ -26,24 +26,24 @@
 #include "Token.h"
 #include "TokenizerBase.h"
 
-/** Collect quality metrics from C-like source code */
+/** Split input into language-specific tokens */
 class GoTokenizer : public TokenizerBase {
 private:
 	/** True for keywords that don't end with semicolon */
 	Keyword go_keyword;
 	Token ctoken;
 public:
-	int get_token();		// Return a single token
+	token_type get_token();		// Return a single token
 
-	const std::string & keyword_to_string(int k) const {
+	const std::string & keyword_to_string(token_type k) const {
 		return go_keyword.to_string(k);
 	}
 
-	const std::string & token_to_string(int k) const {
+	const std::string & token_to_string(token_type k) const {
 		return ctoken.to_string(k);
 	}
 
-	const std::string & token_to_symbol(int k) const {
+	const std::string & token_to_symbol(token_type k) const {
 		return ctoken.to_symbol(k);
 	}
 

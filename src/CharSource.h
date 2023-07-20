@@ -63,7 +63,7 @@ public:
 	int line_number() { return newlines + 1; }
 
 	/**
-	 * Return the next character from source without removing it
+	 * Return (peek) the next character from source without removing it
 	 * Return 0 on EOF.
 	 */
 	char char_after() {

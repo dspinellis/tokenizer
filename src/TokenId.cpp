@@ -20,12 +20,12 @@
  * Numeric identifiers used for representing tokens.
  * These need to be defined as well as declared until C++17
  */
-constexpr int TokenId::CHARACTER;
-constexpr int TokenId::KEYWORD;
-constexpr int TokenId::OTHER_TOKEN;
-constexpr int TokenId::NUMBER_START;
-constexpr int TokenId::NUMBER_ZERO;
-constexpr int TokenId::NUMBER_INFINITE;
-constexpr int TokenId::NUMBER_NAN;
-constexpr int TokenId::NUMBER_END;
-constexpr int TokenId::IDENTIFIER;
+constexpr token_type TokenId::CHARACTER;
+constexpr token_type TokenId::KEYWORD;
+constexpr token_type TokenId::OTHER_TOKEN;
+constexpr token_type TokenId::NUMBER_START;
+constexpr token_type TokenId::NUMBER_ZERO;
+constexpr token_type TokenId::NUMBER_INFINITE;
+constexpr token_type TokenId::NUMBER_NAN;
+constexpr token_type TokenId::NUMBER_END;
+constexpr token_type TokenId::IDENTIFIER;

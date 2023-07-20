@@ -24,7 +24,7 @@
 #include "CppTokenizer.h"
 #include "Token.h"
 
-inline int
+inline token_type
 CppTokenizer::get_token()
 {
 	char c0, c1, c2;
@@ -48,12 +48,12 @@ CppTokenizer::get_token()
 			bol.saw_non_space();
 			symbols.enter_scope();
 			nesting.saw_open_brace();
-			return (int)c0;
+			return (token_type)c0;
 		case '}':
 			bol.saw_non_space();
 			symbols.exit_scope();
 			nesting.saw_close_brace();
-			return (int)c0;
+			return (token_type)c0;
 		case ';':
 			bol.saw_non_space();
 			/*
@@ -61,7 +61,7 @@ CppTokenizer::get_token()
 			 * or an elaborated type.
 			 */
 			nesting.unsaw_class();
-			return (int)c0;
+			return (token_type)c0;
 		/*
 		 * Double character C tokens with more than 2 different outcomes
 		 * (e.g. +, +=, ++)
@@ -76,7 +76,7 @@ CppTokenizer::get_token()
 				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '-':
@@ -97,7 +97,7 @@ CppTokenizer::get_token()
 				}
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '&':
@@ -110,7 +110,7 @@ CppTokenizer::get_token()
 				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '|':
@@ -123,7 +123,7 @@ CppTokenizer::get_token()
 				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* Simple single/double character tokens (e.g. !, !=) */
@@ -134,7 +134,7 @@ CppTokenizer::get_token()
 				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '%':
@@ -144,7 +144,7 @@ CppTokenizer::get_token()
 				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '*':
@@ -154,7 +154,7 @@ CppTokenizer::get_token()
 				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '=':
@@ -164,7 +164,7 @@ CppTokenizer::get_token()
 				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case ':':
@@ -174,7 +174,7 @@ CppTokenizer::get_token()
 				return Token::SCOPE; // ::
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '^':
@@ -184,7 +184,7 @@ CppTokenizer::get_token()
 				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '#':
@@ -196,7 +196,7 @@ CppTokenizer::get_token()
 			if (bol.at_bol_space())
 				scan_cpp_directive = true;
 			bol.saw_non_space();
-			return (int)c0;
+			return (token_type)c0;
 		/* Operators starting with < or > */
 		case '>':
 			bol.saw_non_space();
@@ -217,7 +217,7 @@ CppTokenizer::get_token()
 				break;
 			default:				/* > */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '<':
@@ -237,7 +237,7 @@ CppTokenizer::get_token()
 				break;
 			default:				/* < */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* Comments and / operators */
@@ -266,7 +266,7 @@ CppTokenizer::get_token()
 				break;
 			default:				/* / */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '.':	/* . .* ... */
@@ -284,14 +284,14 @@ CppTokenizer::get_token()
 				else {
 					src.push(c2);
 					src.push(c1);
-					return (int)c0;
+					return (token_type)c0;
 				}
 				break;
 			case '*':
 				return Token::MEMBER_PTR_FROM_OBJECT; // .*
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* XXX Can also be non-ASCII */
@@ -384,7 +384,7 @@ CppTokenizer::get_token()
 			return process_number(val);
 		default:
 			bol.saw_non_space();
-			return (int)(c0);
+			return (token_type)c0;
 		}
 	}
 }

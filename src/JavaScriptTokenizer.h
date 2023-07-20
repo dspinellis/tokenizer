@@ -26,25 +26,25 @@
 #include "Token.h"
 #include "TokenizerBase.h"
 
-/** Collect quality metrics from C-like source code */
+/** Split input into language-specific tokens */
 class JavaScriptTokenizer : public TokenizerBase {
 private:
 	Keyword javascript_keyword;
-	Token java_token;
+	Token java_script_token;
 	bool process_string_literal(char c);
 public:
-	int get_token();		// Return a single token
+	token_type get_token();		// Return a single token
 
-	const std::string & keyword_to_string(int k) const {
+	const std::string & keyword_to_string(token_type k) const {
 		return javascript_keyword.to_string(k);
 	}
 
-	const std::string & token_to_string(int k) const {
-		return java_token.to_string(k);
+	const std::string & token_to_string(token_type k) const {
+		return java_script_token.to_string(k);
 	}
 
-	const std::string & token_to_symbol(int k) const {
-		return java_token.to_symbol(k);
+	const std::string & token_to_symbol(token_type k) const {
+		return java_script_token.to_symbol(k);
 	}
 
 	// Construct from a character source

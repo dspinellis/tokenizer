@@ -26,27 +26,27 @@
 #include "Token.h"
 #include "TokenizerBase.h"
 
-/** Collect quality metrics from C-like source code */
+/** Split input into language-specific tokens */
 class CSharpTokenizer : public TokenizerBase {
 private:
 	Keyword csharp_keyword;
 	Token csharp_token;
-	int get_token_real();		// Return a single token
-	int previous_token;		// Previously returned token
+	token_type get_token_real();		// Return a single token
+	token_type previous_token;		// Previously returned token
 	bool scan_cpp_directive;	// Keyword after a preprocessor #
 public:
 	// Return a single token coalescing together multiple line doc comments
-	int get_token();
+	token_type get_token();
 
-	const std::string & keyword_to_string(int k) const {
+	const std::string & keyword_to_string(token_type k) const {
 		return csharp_keyword.to_string(k);
 	}
 
-	const std::string & token_to_string(int k) const {
+	const std::string & token_to_string(token_type k) const {
 		return csharp_token.to_string(k);
 	}
 
-	const std::string & token_to_symbol(int k) const {
+	const std::string & token_to_symbol(token_type k) const {
 		return csharp_token.to_symbol(k);
 	}
 

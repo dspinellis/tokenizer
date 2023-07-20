@@ -26,7 +26,7 @@
 #include "Token.h"
 #include "TokenizerBase.h"
 
-/** Collect quality metrics from C-like source code */
+/** Split input into language-specific tokens */
 class PythonTokenizer : public TokenizerBase {
 private:
 	Keyword python_keyword;
@@ -34,17 +34,17 @@ private:
 	bool val_is_string_prefix();
 	bool process_string_literal(char c);
 public:
-	int get_token();		// Return a single token
+	token_type get_token();		// Return a single token
 
-	const std::string & keyword_to_string(int k) const {
+	const std::string & keyword_to_string(token_type k) const {
 		return python_keyword.to_string(k);
 	}
 
-	const std::string & token_to_string(int k) const {
+	const std::string & token_to_string(token_type k) const {
 		return python_token.to_string(k);
 	}
 
-	const std::string & token_to_symbol(int k) const {
+	const std::string & token_to_symbol(token_type k) const {
 		return python_token.to_symbol(k);
 	}
 

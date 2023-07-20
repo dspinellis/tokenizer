@@ -33,7 +33,7 @@
  * NUMBER_ZERO +- 500, with 0 being NUMBER_ZERO and the rest being
  * represented through base 10 logarithms.
  */
-int
+token_type
 TokenizerBase::num_token(const std::string &val)
 {
 
@@ -146,7 +146,7 @@ TokenizerBase::process_string_literal()
 }
 
 // Process a number starting with the passed string returning its token value
-int
+token_type
 TokenizerBase::process_number(std::string &val)
 {
 	char c0;
@@ -186,7 +186,7 @@ TokenizerBase::lines_synchronize()
 void
 TokenizerBase::numeric_tokenize(bool compress)
 {
-	int c;
+	token_type c;
 
 	previously_in_method = false;
 	while ((c = get_token())) {
@@ -231,7 +231,7 @@ TokenizerBase::numeric_tokenize(bool compress)
 void
 TokenizerBase::type_tokenize()
 {
-	int c;
+	token_type c;
 
 	previously_in_method = false;
 	while ((c = get_token())) {
@@ -262,7 +262,7 @@ TokenizerBase::type_tokenize()
  * required delimiters.
  */
 void
-TokenizerBase::delimit(const std::string &s, int c)
+TokenizerBase::delimit(const std::string &s, token_type c)
 {
 	switch (processing_type) {
 	case PT_LINE:
@@ -294,7 +294,7 @@ TokenizerBase::delimit(const std::string &s, int c)
 void
 TokenizerBase::symbolic_tokenize()
 {
-	int c;
+	token_type c;
 
 	previously_in_method = false;
 	while ((c = get_token())) {
@@ -324,7 +324,7 @@ TokenizerBase::symbolic_tokenize()
 void
 TokenizerBase::code_tokenize()
 {
-	int c;
+	token_type c;
 
 	while ((c = get_token())) {
 		if (TokenId::is_character(c) && !isspace((unsigned char)c))
@@ -348,7 +348,7 @@ TokenizerBase::code_tokenize()
 void
 TokenizerBase::type_code_tokenize()
 {
-	int c;
+	token_type c;
 
 	while ((c = get_token())) {
 		if (TokenId::is_character(c) && !isspace((unsigned char)c))

@@ -29,8 +29,8 @@
  * they appear.
  */
 class SymbolTable {
-	int next_symbol_value;
-	typedef std::map<std::string, int> Map;	// Map at a single scope
+	token_type next_symbol_value;
+	typedef std::map<std::string, token_type> Map;	// Map at a single scope
 	typedef std::list <Map> Table;		// Table of all scopes
 	Table table;
 	static bool scoping_enabled;
@@ -39,7 +39,7 @@ public:
 	SymbolTable() : next_symbol_value(TokenId::IDENTIFIER), table(1) {}
 
 	/** Return a symbol's value, adding it if needed */
-	int value(std::string symbol);
+	token_type value(std::string symbol);
 
 	void enter_scope() {
 		if (scoping_enabled)

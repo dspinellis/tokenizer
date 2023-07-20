@@ -27,11 +27,11 @@
 #include "SymbolTable.h"
 #include "NestedClassState.h"
 
-/** Collect quality metrics from C-like source code */
+/** Split input into language-specific tokens */
 class TokenizerBase {
 private:
 	bool previously_in_method;
-	void delimit(const std::string &s, int c);
+	void delimit(const std::string &s, token_type c);
 protected:
 	std::stringstream string_src;	// Source for testing
 	CharSource src;			// Character source
@@ -62,10 +62,10 @@ protected:
 	NestedClassState nesting;
 	char separator;			// Output token separator
 public:
-	virtual int get_token() = 0;	// Return a single token
-	virtual const std::string & keyword_to_string(int k) const = 0;
-	virtual const std::string & token_to_string(int k) const = 0;
-	virtual const std::string & token_to_symbol(int k) const = 0;
+	virtual token_type get_token() = 0;	// Return a single token
+	virtual const std::string & keyword_to_string(token_type k) const = 0;
+	virtual const std::string & token_to_string(token_type k) const = 0;
+	virtual const std::string & token_to_symbol(token_type k) const = 0;
 
 	void lines_synchronize();	// Synchronize input/output newlines
 
@@ -99,12 +99,12 @@ public:
 
 	~TokenizerBase();
 
-	static int num_token(const std::string &val);
+	static token_type num_token(const std::string &val);
 	bool process_block_comment();
 	bool process_line_comment();
 	bool process_char_literal();
 	bool process_string_literal();
-	int process_number(std::string &val);
+	token_type process_number(std::string &val);
 	const std::string & get_value() const { return val; }
 };
 #endif /* TOKENIZERBASE_H */

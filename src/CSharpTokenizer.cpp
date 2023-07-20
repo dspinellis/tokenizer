@@ -24,7 +24,7 @@
 #include "CSharpTokenizer.h"
 #include "Token.h"
 
-inline int
+inline token_type
 CSharpTokenizer::get_token_real()
 {
 	char c0, c1, c2;
@@ -47,15 +47,15 @@ CSharpTokenizer::get_token_real()
 			bol.saw_non_space();
 			symbols.enter_scope();
 			nesting.saw_open_brace();
-			return (int)c0;
+			return (token_type)c0;
 		case '}':
 			bol.saw_non_space();
 			symbols.exit_scope();
 			nesting.saw_close_brace();
-			return (int)c0;
+			return (token_type)c0;
 		case ';':
 			bol.saw_non_space();
-			return (int)c0;
+			return (token_type)c0;
 		/*
 		 * Double character C tokens with more than 2 different outcomes
 		 * (e.g. +, +=, ++)
@@ -70,7 +70,7 @@ CSharpTokenizer::get_token_real()
 				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '-':
@@ -85,7 +85,7 @@ CSharpTokenizer::get_token_real()
 				return Token::MEMBER_PTR; // ->
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '&':
@@ -98,7 +98,7 @@ CSharpTokenizer::get_token_real()
 				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '|':
@@ -111,7 +111,7 @@ CSharpTokenizer::get_token_real()
 				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '=':
@@ -124,7 +124,7 @@ CSharpTokenizer::get_token_real()
 				return Token::LAMBDA; // =>
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '?':
@@ -137,7 +137,7 @@ CSharpTokenizer::get_token_real()
 				return Token::NULL_COALESCE; // ??
 			default:
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* Simple single/double character tokens (e.g. !, !=) */
@@ -148,7 +148,7 @@ CSharpTokenizer::get_token_real()
 				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '%':
@@ -158,7 +158,7 @@ CSharpTokenizer::get_token_real()
 				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '*':
@@ -168,7 +168,7 @@ CSharpTokenizer::get_token_real()
 				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '^':
@@ -178,7 +178,7 @@ CSharpTokenizer::get_token_real()
 				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* Operators starting with < or > */
@@ -199,7 +199,7 @@ CSharpTokenizer::get_token_real()
 				break;
 			default:				/* > */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '<':
@@ -219,7 +219,7 @@ CSharpTokenizer::get_token_real()
 				break;
 			default:				/* < */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		/* Comments and / operators */
@@ -248,14 +248,14 @@ CSharpTokenizer::get_token_real()
 				break;
 			default:				/* / */
 				src.push(c1);
-				return (int)c0;
+				return (token_type)c0;
 			}
 			break;
 		case '#':
 			if (bol.at_bol_space())
 				scan_cpp_directive = true;
 			bol.saw_non_space();
-			return (int)c0;
+			return (token_type)c0;
 		/* XXX Can also be non-ASCII */
 		case '_': case 'a': case 'b': case 'c': case 'd': case 'e':
 		case 'f': case 'g': case 'h': case 'i': case 'j': case 'k':
@@ -337,15 +337,15 @@ CSharpTokenizer::get_token_real()
 			return process_number(val);
 		default:
 			bol.saw_non_space();
-			return (int)(c0);
+			return (token_type)(c0);
 		}
 	}
 }
 
-inline int
+inline token_type
 CSharpTokenizer::get_token()
 {
-	int token;
+	token_type token;
 
 	do {
 		token = get_token_real();

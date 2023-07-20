@@ -21,7 +21,7 @@
 #include "SymbolTable.h"
 
 // Return a symbol's value, adding it if needed
-int
+token_type
 SymbolTable::value(std::string symbol)
 {
 	Table::value_type &current_map = table.front();
@@ -40,7 +40,7 @@ SymbolTable::value(std::string symbol)
 	}
 
 	// Not found; insert it the the current scope
-	int val = next_symbol_value++;
+	token_type val = next_symbol_value++;
 	current_map.insert(lb, Map::value_type(symbol, val));
 	return val;
 }

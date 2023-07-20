@@ -144,7 +144,7 @@ process_files_from_stream(std::istream &in)
 		process_named_file(filename);
 }
 
-/* Calculate and print C metrics for the standard input */
+/* Read code and output its constituent tokens */
 int
 main(int argc, char * const argv[])
 {
