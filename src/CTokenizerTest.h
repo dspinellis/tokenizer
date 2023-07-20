@@ -210,6 +210,9 @@ public:
 	void testBLOCK_COMMENT() {
 		CTokenizer ct("/* hi */");
 		CPPUNIT_ASSERT_EQUAL((token_type)Token::BLOCK_COMMENT, ct.get_token());
+
+		CTokenizer ct2("/**/");
+		CPPUNIT_ASSERT_EQUAL((token_type)Token::BLOCK_COMMENT, ct2.get_token());
 	}
 
 	void testLINE_COMMENT() {

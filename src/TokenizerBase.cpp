@@ -26,6 +26,7 @@
 #include "BolState.h"
 #include "CharSource.h"
 #include "TokenizerBase.h"
+#include "Token.h"
 #include "TokenId.h"
 
 /*
@@ -55,32 +56,38 @@ TokenizerBase::num_token(const std::string &val)
 	return TokenId::NUMBER_ZERO + d;
 }
 
-// Process a block comment, returning false on EOF
-bool
+// Process a block comment, returning the token's code
+token_type
 TokenizerBase::process_block_comment()
 {
 	char c1;
+	token_type ret = Token::BLOCK_COMMENT; // /*...*/
 
 	src.get(c1);
+
+	// Comment starts with /**, and isn't empty (/**/)
+	if (c1 == '*' && src.char_after() != '/')
+		ret = Token::DOC_COMMENT; // /**...*/
+
 	for (;;) {
 		while (c1 != '*') {
 			if (!isspace(c1) && bol.at_bol_space())
 				bol.saw_non_space();
 			if (!src.get(c1)) {
 				error("EOF encountered while processing a block comment");
-				return false;
+				return 0;
 			}
 		}
 		if (!isspace(c1) && bol.at_bol_space())
 			bol.saw_non_space();
 		if (!src.get(c1)) {
 			error("EOF encountered while processing a block comment");
-			return false;
+			return 0;
 		}
 		if (c1 == '/')
 			break;
 	}
-	return true;
+	return ret;
 }
 
 // Process a line comment, returning false on EOF

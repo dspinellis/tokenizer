@@ -230,12 +230,7 @@ CSharpTokenizer::get_token_real()
 			case '=':				/* /= */
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
-				if (process_block_comment())
-					return Token::BLOCK_COMMENT; // /*...*/
-
-				else
-					return 0;
-				break;
+				return process_block_comment();
 			case '/':				/* Line comment */
 				c2 = src.char_after();
 				if (process_line_comment()) {

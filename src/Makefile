@@ -15,7 +15,7 @@ LDFLAGS=$(ADDLDFLAGS)
 endif
 
 KEYWORD_FILES=$(wildcard *-keyword.txt)
-TOKENIZER_FILES=$(patsubst %-keyword.txt,%Tokenizer.cpp,$(wildcard *-keyword.txt))
+TOKENIZER_FILES=$(patsubst %-keyword.txt,%Tokenizer.cpp,$(wildcard *-keyword.txt)) TokenizerBase.cpp
 GENERATED_HEADERS=Keyword.h Token.h
 TEST_FILES=$(wildcard *Test.h)
 

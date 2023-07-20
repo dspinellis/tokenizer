@@ -111,7 +111,7 @@ public:
 	~TokenizerBase();
 
 	static token_type num_token(const std::string &val);
-	bool process_block_comment();
+	token_type process_block_comment();
 	bool process_line_comment();
 	bool process_char_literal();
 	bool process_string_literal();

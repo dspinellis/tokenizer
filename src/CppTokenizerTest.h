@@ -52,7 +52,7 @@ class CppTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testNOT);
 	CPPUNIT_TEST(testNOT_EQ);
 	CPPUNIT_TEST(testLINE_COMMENT);
-	CPPUNIT_TEST(testJAVADOC_COMMENT);
+	CPPUNIT_TEST(testDOC_COMMENT);
 	CPPUNIT_TEST(testBLOCK_COMMENT);
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
@@ -292,9 +292,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL((token_type)Token::BLOCK_COMMENT, ct.get_token());
 	}
 
-	void testJAVADOC_COMMENT() {
+	void testDOC_COMMENT() {
 		CppTokenizer ct("/** hi */");
-		CPPUNIT_ASSERT_EQUAL((token_type)Token::JAVADOC_COMMENT, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((token_type)Token::DOC_COMMENT, ct.get_token());
 	}
 
 	void testLINE_COMMENT() {

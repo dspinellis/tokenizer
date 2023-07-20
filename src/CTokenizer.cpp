@@ -227,16 +227,7 @@ CTokenizer::get_immediate_token()
 			case '=':				/* /= */
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
-				c2 = src.char_after();
-				if (process_block_comment()) {
-					if (c2 == '*' || c2 == '!')
-						return Token::DOC_COMMENT; // /**...*/
-					else
-						return Token::BLOCK_COMMENT; // /*...*/
-
-				} else
-					return 0;
-				break;
+				return process_block_comment();
 			case '/':				/* Line comment */
 				if (process_line_comment())
 					return Token::LINE_COMMENT; // //...

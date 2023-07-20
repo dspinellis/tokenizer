@@ -49,7 +49,7 @@ class JavaScriptTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
 	CPPUNIT_TEST(testBLOCK_COMMENT);
-	CPPUNIT_TEST(testJAVADOC_COMMENT);
+	CPPUNIT_TEST(testDOC_COMMENT);
 	CPPUNIT_TEST(testLINE_COMMENT);
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
@@ -279,11 +279,14 @@ public:
 	void testBLOCK_COMMENT() {
 		JavaScriptTokenizer ct("/* hi */");
 		CPPUNIT_ASSERT_EQUAL((token_type)Token::BLOCK_COMMENT, ct.get_token());
+
+		JavaScriptTokenizer ct2("/**/");
+		CPPUNIT_ASSERT_EQUAL((token_type)Token::BLOCK_COMMENT, ct2.get_token());
 	}
 
-	void testJAVADOC_COMMENT() {
+	void testDOC_COMMENT() {
 		JavaScriptTokenizer ct("/** hi */");
-		CPPUNIT_ASSERT_EQUAL((token_type)Token::JAVADOC_COMMENT, ct.get_token());
+		CPPUNIT_ASSERT_EQUAL((token_type)Token::DOC_COMMENT, ct.get_token());
 	}
 
 	void testLINE_COMMENT() {
