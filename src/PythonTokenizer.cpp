@@ -162,7 +162,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::ARROW; // ->
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Simple single/double character tokens (e.g. !, !=) */
@@ -173,7 +173,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '%':
@@ -183,7 +183,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '&':
@@ -193,7 +193,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::AND_EQUAL; // &=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '@':
@@ -203,7 +203,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::AT_EQUAL; // @=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '^':
@@ -213,7 +213,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '|':
@@ -223,7 +223,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::OR_EQUAL; // |=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '=':
@@ -233,7 +233,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '+':
@@ -243,7 +243,7 @@ PythonTokenizer::get_immediate_token()
 				return Token::PLUS_EQUAL; // +=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Operators starting with * or / */
@@ -263,7 +263,7 @@ PythonTokenizer::get_immediate_token()
 				}
 			default:					// *
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '/':
@@ -282,7 +282,7 @@ PythonTokenizer::get_immediate_token()
 				}
 			default:					// /
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Operators starting with < or > */
@@ -303,7 +303,7 @@ PythonTokenizer::get_immediate_token()
 				break;
 			default:				/* > */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '<':
@@ -323,7 +323,7 @@ PythonTokenizer::get_immediate_token()
 				break;
 			default:				/* < */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '.':	/* . and ... */
@@ -335,13 +335,13 @@ PythonTokenizer::get_immediate_token()
 			}
 			if (c1 != '.') {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			src.get(c2);
 			if (c2 != '.') {
 				src.push(c2);
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			return Token::ELIPSIS; // ...
 		/* XXX Can also be non-ASCII */
@@ -398,7 +398,7 @@ PythonTokenizer::get_immediate_token()
 			return process_number(val);
 		default:
 			bol.saw_non_space();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		}
 	}
 }

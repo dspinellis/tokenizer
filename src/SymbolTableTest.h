@@ -17,33 +17,33 @@ public:
 	void testSingle() {
 		SymbolTable s;
 
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 	}
 
 	void testScope() {
 		SymbolTable s;
 
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 
 		s.enter_scope();
 		// Look value at outer scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 		// New entry at inner scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
 
 		s.exit_scope();
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 		// New entry at outer scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 2, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 2), s.value("bar"));
 		s.enter_scope();
 		// Lookup at outer scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 2, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 2), s.value("bar"));
 	}
 
 	void testScopeDepth() {
@@ -60,19 +60,19 @@ public:
 		SymbolTable s;
 
 		SymbolTable::disable_scoping();
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 
 		s.enter_scope();
 		// Look value at outer scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 		// New entry at inner scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
 
 		s.exit_scope();
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER, s.value("foo"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), s.value("foo"));
 		// Sane entry at outer scope
-		CPPUNIT_ASSERT_EQUAL((token_type)TokenId::IDENTIFIER + 1, s.value("bar"));
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), s.value("bar"));
 	}
 };
 #endif /*  SYMBOLTABLETEST_H */

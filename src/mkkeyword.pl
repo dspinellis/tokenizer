@@ -46,7 +46,7 @@ print $out qq(
 /** Classify identifiers into keywords */
 class Keyword {
 public:
-	enum IdentifierType {
+	enum IdentifierType : token_type {
 		FIRST = TokenId::KEYWORD,
 		IDENTIFIER,	// Plain identifier (not a keyword)
 );
@@ -71,7 +71,7 @@ print $out "
 private:
 	// Keyword map
 	typedef std::map <std::string, enum IdentifierType> KeywordMap;
-	typedef std::map <int, std::string> TokenMap;
+	typedef std::map <token_type, std::string> TokenMap;
 	KeywordMap km;
 	TokenMap tm;
 public:
@@ -106,7 +106,7 @@ print $out qq|
 			return f->second;
 	}
 
-	const std::string & to_string(int k) const {
+	const std::string & to_string(token_type k) const {
 		static const std::string UNKNOWN("???");
 
 		auto t = tm.find(k);

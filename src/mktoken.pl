@@ -34,12 +34,12 @@ print $out qq|
 
 class Token {
 private:
-	typedef std::map <int, std::string> TokenMap;
+	typedef std::map <token_type, std::string> TokenMap;
 	TokenMap token_name;
 	TokenMap token_symbol;
 
 public:
-	enum TokenNum {
+	enum TokenNum : token_type {
 		FIRST = TokenId::OTHER_TOKEN,
 |;
 
@@ -73,14 +73,14 @@ print $out qq|
 		};
 	}
 
-	const std::string & to_string(int k) const {
+	const std::string & to_string(token_type k) const {
 		static const std::string UNKNOWN("???");
 
 		auto t = token_name.find(k);
 		return t == token_name.end() ? UNKNOWN : t->second;
 	}
 
-	const std::string & to_symbol(int k) const {
+	const std::string & to_symbol(token_type k) const {
 		static const std::string UNKNOWN("???");
 
 		auto t = token_symbol.find(k);

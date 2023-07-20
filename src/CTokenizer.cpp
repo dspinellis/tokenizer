@@ -49,16 +49,16 @@ CTokenizer::get_immediate_token()
 			bol.saw_non_space();
 			symbols.enter_scope();
 			nesting.saw_open_brace();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		case '}':
 			bol.saw_non_space();
 			symbols.exit_scope();
 			nesting.saw_close_brace();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		case ';':
 			bol.saw_non_space();
 			nesting.unsaw_class();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		/*
 		 * Double character C tokens with more than 2 different outcomes
 		 * (e.g. +, +=, ++)
@@ -73,7 +73,7 @@ CTokenizer::get_immediate_token()
 				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '-':
@@ -88,7 +88,7 @@ CTokenizer::get_immediate_token()
 				return Token::ARROW; // ->
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '&':
@@ -101,7 +101,7 @@ CTokenizer::get_immediate_token()
 				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '|':
@@ -114,7 +114,7 @@ CTokenizer::get_immediate_token()
 				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Simple single/double character tokens (e.g. !, !=) */
@@ -125,7 +125,7 @@ CTokenizer::get_immediate_token()
 				return Token::NOT_EQUAL; // !=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '%':
@@ -135,7 +135,7 @@ CTokenizer::get_immediate_token()
 				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '*':
@@ -145,7 +145,7 @@ CTokenizer::get_immediate_token()
 				return Token::TIMES_EQUAL; // *=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '=':
@@ -155,7 +155,7 @@ CTokenizer::get_immediate_token()
 				return Token::EQUAL; // ==
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '^':
@@ -165,7 +165,7 @@ CTokenizer::get_immediate_token()
 				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '#':
@@ -177,7 +177,7 @@ CTokenizer::get_immediate_token()
 			if (bol.at_bol_space())
 				scan_cpp_directive = true;
 			bol.saw_non_space();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		/* Operators starting with < or > */
 		case '>':
 			bol.saw_non_space();
@@ -196,7 +196,7 @@ CTokenizer::get_immediate_token()
 				break;
 			default:				/* > */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '<':
@@ -216,7 +216,7 @@ CTokenizer::get_immediate_token()
 				break;
 			default:				/* < */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Comments and / operators */
@@ -236,7 +236,7 @@ CTokenizer::get_immediate_token()
 				break;
 			default:				/* / */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '.':	/* . and ... */
@@ -248,13 +248,13 @@ CTokenizer::get_immediate_token()
 			}
 			if (c1 != '.') {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			src.get(c2);
 			if (c2 != '.') {
 				src.push(c2);
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			return Token::ELIPSIS; // ...
 			// Elipsis
@@ -345,7 +345,7 @@ CTokenizer::get_immediate_token()
 			return process_number(val);
 		default:
 			bol.saw_non_space();
-			return (token_type)(c0);
+			return static_cast<token_type>(c0);
 		}
 	}
 }

@@ -107,7 +107,7 @@ PHPTokenizer::get_immediate_token()
 			else
 				return 0;
 			break;
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		/*
 		 * Double character PHP tokens with more than 2 different outcomes
 		 * (e.g. &, &=, &&)
@@ -122,7 +122,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::AND_EQUAL; // &=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '|':
@@ -135,7 +135,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::OR_EQUAL; // |=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '+':
@@ -148,7 +148,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::PLUS_EQUAL; // +=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '-':
@@ -163,7 +163,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::ARROW; // ->
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Simple single/double character tokens (e.g. ?, ??) */
@@ -174,7 +174,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::NULL_COALESCE; // ??
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '^':
@@ -184,7 +184,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::XOR_EQUAL; // ^=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '%':
@@ -194,7 +194,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::MOD_EQUAL; // %=
 			else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Operators starting with < or > or = or ! or * */
@@ -215,7 +215,7 @@ PHPTokenizer::get_immediate_token()
 				break;
 			default:				/* > */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '=':
@@ -231,7 +231,7 @@ PHPTokenizer::get_immediate_token()
 				}
 			} else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '!':
@@ -247,7 +247,7 @@ PHPTokenizer::get_immediate_token()
 				}
 			} else {
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '*':
@@ -266,7 +266,7 @@ PHPTokenizer::get_immediate_token()
 				return Token::TIMES_EQUAL; // *=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '<':
@@ -301,7 +301,7 @@ PHPTokenizer::get_immediate_token()
 				break;
 			default:				/* < */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		/* Comments and / operators */
@@ -321,7 +321,7 @@ PHPTokenizer::get_immediate_token()
 				break;
 			default:				/* / */
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 			break;
 		case '.':	/* . and ... */
@@ -337,14 +337,14 @@ PHPTokenizer::get_immediate_token()
 				if (c2 != '.') {
 					src.push(c2);
 					src.push(c1);
-					return (token_type)c0;
+					return static_cast<token_type>(c0);
 				}
 				return Token::ELIPSIS; // ...
 			case '=':
 				return Token::CONCAT_EQUALS; // .=
 			default:
 				src.push(c1);
-				return (token_type)c0;
+				return static_cast<token_type>(c0);
 			}
 		/* XXX Can also be non-ASCII */
 		case '$': case '\\':
@@ -395,7 +395,7 @@ PHPTokenizer::get_immediate_token()
 			return process_number(val);
 		default:
 			bol.saw_non_space();
-			return (token_type)c0;
+			return static_cast<token_type>(c0);
 		}
 	}
 }
