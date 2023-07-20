@@ -26,7 +26,7 @@
 #include "Token.h"
 
 inline token_type
-GoTokenizer::get_token()
+GoTokenizer::get_immediate_token()
 {
 	char c0, c1, c2;
 	Keyword::IdentifierType key;

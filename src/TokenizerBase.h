@@ -20,6 +20,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <deque>
 
 #include "CharSource.h"
 #include "Keyword.h"
@@ -32,6 +33,8 @@ class TokenizerBase {
 private:
 	bool previously_in_method;
 	void delimit(const std::string &s, token_type c);
+
+	std::deque <token_type> token_queue;
 protected:
 	std::stringstream string_src;	// Source for testing
 	CharSource src;			// Character source
@@ -61,8 +64,16 @@ protected:
 	SymbolTable symbols;
 	NestedClassState nesting;
 	char separator;			// Output token separator
+
+	// Return a single token from the lexical stream
+	virtual token_type get_immediate_token() = 0;
 public:
-	virtual token_type get_token() = 0;	// Return a single token
+	// Return a single token from the queue or the lexical stream
+	token_type get_token();
+
+	// Add a next token to be returned to the queue
+	void push_token(token_type token) { token_queue.push_back(token); }
+
 	virtual const std::string & keyword_to_string(token_type k) const = 0;
 	virtual const std::string & token_to_string(token_type k) const = 0;
 	virtual const std::string & token_to_symbol(token_type k) const = 0;

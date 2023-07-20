@@ -33,7 +33,7 @@ private:
 	Token java_script_token;
 	bool process_string_literal(char c);
 public:
-	token_type get_token();		// Return a single token
+	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
 		return javascript_keyword.to_string(k);

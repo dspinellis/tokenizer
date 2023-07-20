@@ -130,7 +130,7 @@ PythonTokenizer::process_string_literal(char c)
  * https://docs.python.org/3/reference/lexical_analysis.html
  */
 inline token_type
-PythonTokenizer::get_token()
+PythonTokenizer::get_immediate_token()
 {
 	char c0, c1, c2;
 	Keyword::IdentifierType key;

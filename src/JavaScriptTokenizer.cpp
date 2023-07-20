@@ -68,7 +68,7 @@ JavaScriptTokenizer::process_string_literal(char c)
 }
 
 inline token_type
-JavaScriptTokenizer::get_token()
+JavaScriptTokenizer::get_immediate_token()
 {
 	char c0, c1, c2;
 	Keyword::IdentifierType key;

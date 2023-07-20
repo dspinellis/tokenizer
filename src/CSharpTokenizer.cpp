@@ -343,7 +343,7 @@ CSharpTokenizer::get_token_real()
 }
 
 inline token_type
-CSharpTokenizer::get_token()
+CSharpTokenizer::get_immediate_token()
 {
 	token_type token;
 

@@ -33,7 +33,7 @@ private:
 	Keyword cpp_keyword;
 	Token cpp_token;
 public:
-	token_type get_token();		// Return a single token
+	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
 		return cpp_keyword.to_string(k);

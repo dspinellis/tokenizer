@@ -390,6 +390,18 @@ TokenizerBase::process_options(std::vector<std::string> opt)
 	}
 }
 
+// Return a single token from the queue or the lexical stream
+token_type
+TokenizerBase::get_token()
+{
+	if (token_queue.empty())
+		return get_immediate_token();
+
+	token_type token = token_queue.back();
+	token_queue.pop_back();
+	return token;
+}
+
 TokenizerBase::~TokenizerBase()
 {
 }

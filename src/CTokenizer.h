@@ -34,7 +34,7 @@ private:
 	Keyword ckeyword;
 	Token ctoken;
 public:
-	token_type get_token();		// Return a single token
+	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
 		return ckeyword.to_string(k);

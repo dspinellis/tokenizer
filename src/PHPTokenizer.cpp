@@ -82,7 +82,7 @@ PHPTokenizer::process_here_document()
 }
 
 inline token_type
-PHPTokenizer::get_token()
+PHPTokenizer::get_immediate_token()
 {
 	char c0, c1, c2;
 	Keyword::IdentifierType key;

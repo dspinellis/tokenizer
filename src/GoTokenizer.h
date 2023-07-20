@@ -33,7 +33,7 @@ private:
 	Keyword go_keyword;
 	Token ctoken;
 public:
-	token_type get_token();		// Return a single token
+	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
 		return go_keyword.to_string(k);

@@ -36,7 +36,7 @@ private:
 	bool scan_cpp_directive;	// Keyword after a preprocessor #
 public:
 	// Return a single token coalescing together multiple line doc comments
-	token_type get_token();
+	token_type get_immediate_token();
 
 	const std::string & keyword_to_string(token_type k) const {
 		return csharp_keyword.to_string(k);

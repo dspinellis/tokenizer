@@ -25,7 +25,7 @@
 #include "Token.h"
 
 inline token_type
-JavaTokenizer::get_token()
+JavaTokenizer::get_immediate_token()
 {
 	char c0, c1, c2;
 	Keyword::IdentifierType key;
