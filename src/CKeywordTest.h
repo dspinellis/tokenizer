@@ -60,9 +60,9 @@ public:
 	}
 
 	void testId() {
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("returning"), Keyword::IDENTIFIER);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("id"), Keyword::IDENTIFIER);
-		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("xyzzy"), Keyword::IDENTIFIER);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("returning"), Keyword::FIRST_IDENTIFIER);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("id"), Keyword::FIRST_IDENTIFIER);
+		CPPUNIT_ASSERT_EQUAL(ck.identifier_type("xyzzy"), Keyword::FIRST_IDENTIFIER);
 	}
 };
 #endif /*  CKEYWORDTEST_H */

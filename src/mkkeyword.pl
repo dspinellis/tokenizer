@@ -42,13 +42,14 @@ print $out qq(
 #include <string>
 
 #include "TokenId.h"
+#include "CollectionViews.h"
 
 /** Classify identifiers into keywords */
 class Keyword {
 public:
 	enum IdentifierType : token_type {
 		FIRST = TokenId::KEYWORD,
-		IDENTIFIER,	// Plain identifier (not a keyword)
+		FIRST_IDENTIFIER,	// Plain identifier (not a keyword)
 );
 
 for my $k (sort @keywords) {
@@ -101,7 +102,7 @@ print $out qq|
 	enum IdentifierType identifier_type(const std::string &s) {
 		auto f = km.find(s);
 		if (f == km.end())
-			return IDENTIFIER;
+			return FIRST_IDENTIFIER;
 		else
 			return f->second;
 	}
@@ -111,6 +112,11 @@ print $out qq|
 
 		auto t = tm.find(k);
 		return t == tm.end() ? UNKNOWN : t->second;
+	}
+
+	// Return an iterator over the keyword symbols
+	ConstCollectionView<TokenMap> token_keyword_view() const {
+		return tm;
 	}
 };
 #endif /* KEYWORD_H */

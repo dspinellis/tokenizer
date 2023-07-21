@@ -68,6 +68,12 @@ protected:
 	// Return a single token from the lexical stream
 	virtual token_type get_immediate_token() = 0;
 public:
+	/*
+	 * Compress the passed number into its base 10 logarithm
+	 * and return its token number.
+	 */
+	static token_type compress(double d);
+
 	// Return a single token from the queue or the lexical stream
 	token_type get_token();
 

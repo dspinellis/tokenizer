@@ -314,7 +314,7 @@ CTokenizer::get_immediate_token()
 				} else
 					return symbols.value(val);
 				break;
-			case Keyword::IDENTIFIER:
+			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);
 			case Keyword::FIRST:
 			case Keyword::LAST:

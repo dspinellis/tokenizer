@@ -31,10 +31,10 @@ public:
 
 	void testIdentifier() {
 		PHPTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 
 		PHPTokenizer ct2("$foo ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 
 		PHPTokenizer ct3("\\a\\b\\c + ");
 		CPPUNIT_ASSERT(TokenId::is_identifier(ct3.get_token()));
@@ -107,13 +107,13 @@ public:
 
 	void testHereDocument() {
 		PHPTokenizer ct("$a = <<< EOF\nfoo\nEOFA\nx EOF\nEOF;\n+");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('='), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::HERE_DOCUMENT), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct.get_token());
 
 		PHPTokenizer ct2("$a = <<< \"EOF\"\nfoo\nEOFA\nx EOF\nEOF;\n+");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('='), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::HERE_DOCUMENT), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct2.get_token());

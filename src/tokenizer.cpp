@@ -116,6 +116,42 @@ process_file(std::istream &in, std::string filename)
 	}
 }
 
+// List the values of all tokens
+static void
+list_tokens()
+{
+	// Characters (ASCII assumed)
+	for (char c = ' '; c <= '~'; c++)
+		std::cout << static_cast<int>(c) << '\t' << c << std::endl;
+
+	// Character symbol tokens (e.g. +=)
+	Token t;
+	for (auto ti: t.token_symbol_view())
+		std::cout << ti.first << '\t' << ti.second << std::endl;
+
+	// Keywords (e.g. "if")
+	// Language is irrelevant for token_keyword_view
+	Keyword k(Keyword::L_C);
+	for (auto ki: k.token_keyword_view())
+		std::cout << ki.first << '\t' << ki.second << std::endl;
+
+	// Compressed token identifiers
+	std::cout << TokenId::ANY_NUMBER << "\tANY_NUMBER" << std::endl;
+	std::cout << TokenId::ANY_IDENTIFIER << "\tANY_IDENTIFIER" << std::endl;
+
+	// Numbers
+	for (long double d = 1e-308L; d < 1; d *= 10)
+		std::cout << TokenizerBase::compress(static_cast<double>(d)) << '\t' << d << std::endl;
+	std::cout << TokenId::NUMBER_ZERO << "\t0" << std::endl;
+	for (long double d = 1; d < 1e309L; d *= 10)
+		std::cout << TokenizerBase::compress(static_cast<double>(d)) << '\t' << d << std::endl;
+
+	// Other token values
+	std::cout << TokenId::NUMBER_INFINITE << "\tINFINITE" << std::endl;
+	std::cout << TokenId::NUMBER_NAN << "\tNAN" << std::endl;
+	std::cout << TokenId::FIRST_IDENTIFIER << "\tFIRST_IDENTIFIER" << std::endl;
+}
+
 // Open and process the specified file
 static void
 process_named_file(std::string filename)
@@ -151,7 +187,7 @@ main(int argc, char * const argv[])
 	int opt;
 	std::optional<std::string> files_list(std::nullopt);
 
-	while ((opt = getopt(argc, argv, "Bbcfgi:l:o:st:V")) != -1)
+	while ((opt = getopt(argc, argv, "Bbcfgi:Ll:o:st:V")) != -1)
 		switch (opt) {
 		case 'B':
 			output_type = ot_type_break;
@@ -171,6 +207,10 @@ main(int argc, char * const argv[])
 		case 'i':
 			files_list = optarg;
 			break;
+		case 'L':
+			list_tokens();
+			exit(EXIT_SUCCESS);
+			break;
 		case 'l':
 			lang = optarg;
 			break;
@@ -184,8 +224,8 @@ main(int argc, char * const argv[])
 			separator = *optarg;
 			break;
 		case 'V':
-		    std::cout << "tokenizer " << version << std::endl;
-		    exit(EXIT_SUCCESS);
+			std::cout << "tokenizer " << version << std::endl;
+			exit(EXIT_SUCCESS);
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
 				"  [-cgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [-t sep] [file ...]" << std::endl;

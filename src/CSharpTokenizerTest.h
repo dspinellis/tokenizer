@@ -63,7 +63,7 @@ public:
 
 	void testIdentifier() {
 		CSharpTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testCharacterToken() {
@@ -244,17 +244,17 @@ public:
 
 	void testSameScope() {
 		CSharpTokenizer ct("foo { foo");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testDifferentScope() {
 		CSharpTokenizer ct("{ foo } foo");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('}'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER + 1), ct.get_token());
 	}
 
 	void testCppKeyword() {
@@ -266,7 +266,7 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('#'), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_region), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_int), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('#'), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_define), ct2.get_token());
 		CPPUNIT_ASSERT(TokenId::is_identifier(ct2.get_token()));

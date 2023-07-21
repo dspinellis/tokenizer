@@ -76,7 +76,7 @@ public:
 
 	void testIdentifier() {
 		JavaScriptTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testCharacterToken() {
@@ -304,65 +304,65 @@ public:
 
 	void testSameScope() {
 		JavaScriptTokenizer ct("foo { foo");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testDifferentScope() {
 		JavaScriptTokenizer ct("{ foo } foo");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('}'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER + 1), ct.get_token());
 	}
 
 	void testSimpleString() {
 		JavaScriptTokenizer ct("a'string' in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
 
 		JavaScriptTokenizer ct2("a\"string\" in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct2.get_token());
 
 		JavaScriptTokenizer ct3("a`string` in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct3.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct3.get_token());
 	}
 
 	void testEmptyString() {
 		JavaScriptTokenizer ct("a'' in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
 
 		JavaScriptTokenizer ct2("a\"\" in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct2.get_token());
 	}
 
 	void testSimpleTemplateString() {
 		JavaScriptTokenizer ct("a`string ${42}` in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
 	}
 
 	void testNestedTemplateString() {
 		JavaScriptTokenizer ct("a`string ${{42}}` in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
 	}
 
 	void testTemplateNestedTemplateString() {
 		JavaScriptTokenizer ct("a`string ${{`42`} `5 + ${8}`}` in");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
 	}

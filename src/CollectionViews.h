@@ -1,5 +1,5 @@
 /*-
- * Copyright 2018 Diomidis Spinellis
+ * Copyright 2023 Diomidis Spinellis
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -12,20 +12,23 @@
  *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
+ *
+ * Read-only views of collections
  */
 
-#include "TokenId.h"
+#pragma once
 
-/**
- * Numeric identifiers used for representing tokens.
- * These need to be defined as well as declared until C++17
- */
-constexpr token_type TokenId::CHARACTER;
-constexpr token_type TokenId::KEYWORD;
-constexpr token_type TokenId::OTHER_TOKEN;
-constexpr token_type TokenId::NUMBER_START;
-constexpr token_type TokenId::NUMBER_ZERO;
-constexpr token_type TokenId::NUMBER_INFINITE;
-constexpr token_type TokenId::NUMBER_NAN;
-constexpr token_type TokenId::NUMBER_END;
-constexpr token_type TokenId::FIRST_IDENTIFIER;
+// A constant view of a collection
+template <typename C>
+class ConstCollectionView {
+    const C& col;
+public:
+    ConstCollectionView(const C& col) : col(col) {}
+
+    typename C::const_iterator begin() const {
+        return col.begin();
+    }
+    typename C::const_iterator end() const {
+        return col.end();
+    }
+};

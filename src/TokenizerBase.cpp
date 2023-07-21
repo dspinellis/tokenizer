@@ -29,6 +29,22 @@
 #include "Token.h"
 #include "TokenId.h"
 
+const double LOG10 = std::log(10.0);
+
+/*
+ * Compress the passed number into its base 10 logarithm
+ * and return its token number.
+ */
+token_type
+TokenizerBase::compress(double d)
+{
+	d = std::log(d) / LOG10;
+	if (d >= 0)
+		d = ceil(d) + 1;
+	if (d < 0)
+		d = floor(d);
+	return TokenId::NUMBER_ZERO + static_cast<token_type>(d);
+}
 /*
  * Convert the passed number into an integer token value, in the range
  * NUMBER_ZERO +- 500, with 0 being NUMBER_ZERO and the rest being
@@ -47,13 +63,7 @@ TokenizerBase::num_token(const std::string &val)
 	default:
 	      break;
 	}
-
-	d = log(d) / log(10);
-	if (d >= 0)
-		d = ceil(d) + 1;
-	if (d < 0)
-		d = floor(d);
-	return TokenId::NUMBER_ZERO + d;
+	return compress(d);
 }
 
 // Process a block comment, returning the token's code
@@ -200,9 +210,9 @@ TokenizerBase::numeric_tokenize(bool compress)
 
 		if (compress) {
 			if (TokenId::is_identifier(c))
-				c = TokenId::COMPRESSED_IDENTIFIER;
+				c = TokenId::ANY_IDENTIFIER;
 			else if (TokenId::is_number(c))
-				c = TokenId::COMPRESSED_NUMBER;
+				c = TokenId::ANY_NUMBER;
 		}
 
 		switch (processing_type) {

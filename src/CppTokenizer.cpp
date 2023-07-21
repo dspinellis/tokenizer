@@ -322,7 +322,7 @@ CppTokenizer::get_immediate_token()
 				} else
 					return symbols.value(val);
 				break;
-			case Keyword::IDENTIFIER:
+			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);
 			case Keyword::K_class:
 			case Keyword::K_struct:

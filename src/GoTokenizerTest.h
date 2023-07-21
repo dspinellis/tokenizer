@@ -62,7 +62,7 @@ public:
 
 	void testIdentifier() {
 		GoTokenizer ct("foo ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testCharacterToken() {
@@ -110,7 +110,7 @@ public:
 
 	void testVAR_ASSIGN() {
 		GoTokenizer ct("a:=3");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::VAR_ASSIGN), ct.get_token());
 	}
 
@@ -151,7 +151,7 @@ public:
 
 	void testIDENTIFIER() {
 		GoTokenizer ct("foo");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testLESS_EQUAL() {
@@ -241,17 +241,17 @@ public:
 
 	void testSameScope() {
 		GoTokenizer ct("foo { foo");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 	}
 
 	void testDifferentScope() {
 		GoTokenizer ct("{ foo } foo");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('}'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::IDENTIFIER + 1), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER + 1), ct.get_token());
 	}
 
 };

@@ -385,7 +385,7 @@ JavaScriptTokenizer::get_immediate_token()
 			src.push(c0);
 			key = javascript_keyword.identifier_type(val);
 			switch (key) {
-			case Keyword::IDENTIFIER:
+			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);
 			case Keyword::K_class:
 			case Keyword::K_interface:

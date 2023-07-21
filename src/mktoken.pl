@@ -31,6 +31,7 @@ print $out qq|
 #define TOKEN_H
 
 #include "TokenId.h"
+#include "CollectionViews.h"
 
 class Token {
 private:
@@ -85,6 +86,11 @@ print $out qq|
 
 		auto t = token_symbol.find(k);
 		return t == token_symbol.end() ? UNKNOWN : t->second;
+	}
+
+	// Return an iterator over the token symbols
+	ConstCollectionView<TokenMap> token_symbol_view() const {
+		return token_symbol;
 	}
 };
 #endif /* TOKEN_H */

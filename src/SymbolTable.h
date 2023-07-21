@@ -36,7 +36,7 @@ class SymbolTable {
 	static bool scoping_enabled;
 public:
 	/** Construct an empty symbol table */
-	SymbolTable() : next_symbol_value(TokenId::IDENTIFIER), table(1) {}
+	SymbolTable() : next_symbol_value(TokenId::FIRST_IDENTIFIER), table(1) {}
 
 	/** Return a symbol's value, adding it if needed */
 	token_type value(std::string symbol);
