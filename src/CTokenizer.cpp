@@ -229,11 +229,7 @@ CTokenizer::get_immediate_token()
 			case '*':				/* Block comment */
 				return process_block_comment();
 			case '/':				/* Line comment */
-				if (process_line_comment())
-					return Token::LINE_COMMENT; // //...
-				else
-					return 0;
-				break;
+				return process_line_comment();
 			default:				/* / */
 				src.push(c1);
 				return static_cast<token_type>(c0);

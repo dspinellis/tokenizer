@@ -77,7 +77,7 @@ TokenizerBase::process_block_comment()
 
 	// Comment starts with /**, and isn't empty (/**/)
 	if (c1 == '*' && src.char_after() != '/')
-		ret = Token::DOC_COMMENT; // /**...*/
+		ret = Token::BLOCK_DOC_COMMENT; // /**...*/
 
 	for (;;) {
 		while (c1 != '*') {
@@ -101,20 +101,25 @@ TokenizerBase::process_block_comment()
 }
 
 // Process a line comment, returning false on EOF
-bool
+token_type
 TokenizerBase::process_line_comment()
 {
 	char c1;
+	token_type ret = Token::LINE_COMMENT; // //...
 
 	src.get(c1);
+	if (c1 == '/')
+		ret = Token::LINE_DOC_COMMENT; // ///...
+
 	for (;;) {
 		if (c1 == '\n')
 			break;
 		if (!src.get(c1))
-			return false;
+			return ret;
 	}
 	src.push(c1);
-	return true;
+
+	return ret;
 }
 
 // Process a character literal, returning false on EOF

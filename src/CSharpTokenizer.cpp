@@ -27,7 +27,7 @@
 inline token_type
 CSharpTokenizer::get_token_real()
 {
-	char c0, c1, c2;
+	char c0, c1;
 	Keyword::IdentifierType key;
 
 	for (;;) {
@@ -232,15 +232,7 @@ CSharpTokenizer::get_token_real()
 			case '*':				/* Block comment */
 				return process_block_comment();
 			case '/':				/* Line comment */
-				c2 = src.char_after();
-				if (process_line_comment()) {
-					if (c2 == '/')
-						return Token::DOC_COMMENT; // ///
-					else
-						return Token::LINE_COMMENT; // //...
-				} else
-					return 0;
-				break;
+				return process_line_comment();
 			default:				/* / */
 				src.push(c1);
 				return static_cast<token_type>(c0);
@@ -342,9 +334,10 @@ CSharpTokenizer::get_immediate_token()
 {
 	token_type token;
 
+	// Merge consecutive doc comments
 	do {
 		token = get_token_real();
-	} while (previous_token == Token::DOC_COMMENT && token == Token::DOC_COMMENT);
+	} while (previous_token == Token::LINE_DOC_COMMENT && token == Token::LINE_DOC_COMMENT);
 	previous_token = token;
 	return token;
 }

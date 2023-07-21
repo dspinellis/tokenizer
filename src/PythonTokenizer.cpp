@@ -144,11 +144,7 @@ PythonTokenizer::get_immediate_token()
 		case ' ': case '\t': case '\v': case '\f': case '\r':
 			break;
 		case '#':				/* Line comment */
-			if (process_line_comment())
-				return Token::LINE_COMMENT; // #...
-			else
-				return 0;
-			break;
+			return process_line_comment();
 		/*
 		 * Double character tokens with more than 2 different outcomes
 		 */

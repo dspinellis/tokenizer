@@ -223,9 +223,10 @@ public:
 
 	void testDOC_COMMENT() {
 		CSharpTokenizer ct("/// hi\n");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::DOC_COMMENT), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LINE_DOC_COMMENT), ct.get_token());
+
 		CSharpTokenizer ct2("\t/// hi\n\t/// there\n =>");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::DOC_COMMENT), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LINE_DOC_COMMENT), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LAMBDA), ct2.get_token());
 	}
 

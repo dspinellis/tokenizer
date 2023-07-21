@@ -222,7 +222,7 @@ public:
 
 	void testDOC_COMMENT() {
 		CTokenizer ct("/** hi */");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::DOC_COMMENT), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::BLOCK_DOC_COMMENT), ct.get_token());
 	}
 
 	void testSameScope() {

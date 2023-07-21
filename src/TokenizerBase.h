@@ -118,7 +118,7 @@ public:
 
 	static token_type num_token(const std::string &val);
 	token_type process_block_comment();
-	bool process_line_comment();
+	token_type process_line_comment();
 	bool process_char_literal();
 	bool process_string_literal();
 	token_type process_number(std::string &val);
