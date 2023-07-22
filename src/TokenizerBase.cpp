@@ -151,8 +151,8 @@ TokenizerBase::process_line_comment()
 bool
 TokenizerBase::process_char_literal()
 {
-	char c;  // The character literal
-	char c0; // Each character read
+	char c = 0;	// The character literal
+	char c0;	// Each character read
 
 	for (;;) {
 		if (!src.get(c0)) {
