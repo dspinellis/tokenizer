@@ -23,7 +23,7 @@ all: $(GENERATED_HEADERS) tokenizer
 
 
 OBJS=CTokenizer.o CppTokenizer.o JavaTokenizer.o CSharpTokenizer.o \
-     PythonTokenizer.o TokenizerBase.o SymbolTable.o TokenId.o \
+     PythonTokenizer.o TokenizerBase.o SymbolTable.o \
      NestedClassState.o PHPTokenizer.o JavaScriptTokenizer.o \
      GoTokenizer.o
 
