@@ -222,7 +222,8 @@ TokenizerBase::process_number(std::string &val)
 				continue;
 			}
 		}
-		if (!isalnum(c0) && c0 != '.' && c0 != '_')
+		// Decimal and digit separators
+		if (!isalnum(c0) && c0 != '.' && c0 != '_' && c0 != '\'')
 			break;
 		val += c0;
 	}
