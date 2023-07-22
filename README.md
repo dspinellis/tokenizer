@@ -10,6 +10,7 @@ The following languages are currently supported.
 * C
 * C#
 * C++
+* Go
 * Java
 * JavaScript
 * PHP
