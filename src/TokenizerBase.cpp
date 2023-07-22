@@ -75,6 +75,11 @@ TokenizerBase::process_block_comment()
 
 	src.get(c1);
 
+	if (all_contents) {
+		sequence_hash.reset();
+		sequence_hash.add(c1);
+	}
+
 	// Comment starts with /**, and isn't empty (/**/)
 	if (c1 == '*' && src.char_after() != '/')
 		ret = Token::BLOCK_DOC_COMMENT; // /**...*/
@@ -87,6 +92,8 @@ TokenizerBase::process_block_comment()
 				error("EOF encountered while processing a block comment");
 				return 0;
 			}
+			if (all_contents)
+				sequence_hash.add(c1);
 		}
 		if (!isspace(c1) && bol.at_bol_space())
 			bol.saw_non_space();
@@ -96,7 +103,11 @@ TokenizerBase::process_block_comment()
 		}
 		if (c1 == '/')
 			break;
+		if (all_contents)
+			sequence_hash.add(c1);
 	}
+	if (all_contents)
+		push_token(sequence_hash.get());
 	return ret;
 }
 
@@ -108,16 +119,30 @@ TokenizerBase::process_line_comment()
 	token_type ret = Token::LINE_COMMENT; // //...
 
 	src.get(c1);
+
+	if (all_contents) {
+		sequence_hash.reset();
+		sequence_hash.add(c1);
+	}
+
 	if (c1 == '/')
 		ret = Token::LINE_DOC_COMMENT; // ///...
 
 	for (;;) {
 		if (c1 == '\n')
 			break;
-		if (!src.get(c1))
+		if (!src.get(c1)) {
+			if (all_contents)
+				push_token(sequence_hash.get());
 			return ret;
+		}
+		if (all_contents)
+			sequence_hash.add(c1);
 	}
 	src.push(c1);
+
+	if (all_contents)
+		push_token(sequence_hash.get());
 
 	return ret;
 }
@@ -126,7 +151,8 @@ TokenizerBase::process_line_comment()
 bool
 TokenizerBase::process_char_literal()
 {
-	char c0;
+	char c;  // The character literal
+	char c0; // Each character read
 
 	for (;;) {
 		if (!src.get(c0)) {
@@ -137,11 +163,16 @@ TokenizerBase::process_char_literal()
 			// Consume one character after the backslash
 			// ... to deal with the '\'' problem
 			src.get(c0);
+			c = c0;
 			continue;
 		}
 		if (c0 == '\'')
 			break;
+		else
+			c = c0;
 	}
+	if (all_contents)
+		push_token(c);
 	return true;
 }
 
@@ -152,6 +183,8 @@ TokenizerBase::process_string_literal()
 	char c0;
 
 	bol.saw_non_space();
+	if (all_contents)
+		sequence_hash.reset();
 	for (;;) {
 		if (!src.get(c0)) {
 			error("EOF encountered while processing a string literal");
@@ -160,10 +193,16 @@ TokenizerBase::process_string_literal()
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
+			if (all_contents)
+				sequence_hash.add(c0);
 			continue;
 		} else if (c0 == '"')
 			break;
+		if (all_contents)
+			sequence_hash.add(c0);
 	}
+	if (all_contents)
+		push_token(sequence_hash.get());
 	return true;
 }
 
@@ -218,6 +257,8 @@ TokenizerBase::numeric_tokenize(bool compress)
 				c = TokenId::ANY_IDENTIFIER;
 			else if (TokenId::is_number(c))
 				c = TokenId::ANY_NUMBER;
+			else if (TokenId::is_hashed_content(c))
+				c = TokenId::ANY_HASH;
 		}
 
 		switch (processing_type) {
@@ -269,6 +310,8 @@ TokenizerBase::type_tokenize()
 			os << "NUM";
 		else if (TokenId::is_identifier(c))
 			os << "ID";
+		else if (TokenId::is_hashed_content(c))
+			os << "HASH";
 		else
 			assert(false);
 
@@ -334,6 +377,8 @@ TokenizerBase::symbolic_tokenize()
 			os << "~1E" << c - TokenId::NUMBER_ZERO;
 		else if (TokenId::is_identifier(c))
 			os << "ID:" << c;
+		else if (TokenId::is_hashed_content(c))
+			os << "HASH:" << c;
 		else
 			assert(false);
 
@@ -361,6 +406,8 @@ TokenizerBase::code_tokenize()
 			std::cout << get_value();
 		else if (TokenId::is_identifier(c))
 			std::cout << get_value();
+		else if (TokenId::is_hashed_content(c))
+			std::cout << get_value();
 		else
 			assert(false);
 		std::cout << std::endl;
@@ -385,6 +432,8 @@ TokenizerBase::type_code_tokenize()
 			std::cout << "NUM " << get_value();
 		else if (TokenId::is_identifier(c))
 			std::cout << "ID " << get_value();
+		else if (TokenId::is_hashed_content(c))
+			std::cout << "HASH " << get_value();
 		else
 			assert(false);
 		std::cout << std::endl;

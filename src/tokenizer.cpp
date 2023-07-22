@@ -35,9 +35,10 @@
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
 
-const char version[] = "2.6.0";
+const char version[] = "2.7.0";
 
 // Command-line option values
+static bool all_contents = false;
 static bool symbolic_output = false;
 static bool compress_ids = false;
 static bool show_file_name = false;
@@ -95,6 +96,7 @@ process_file(std::istream &in, std::string filename)
 	}
 
 	t->set_separator(separator ? separator : ' ');
+	t->set_all_contents(all_contents);
 	switch (output_type) {
 	case ot_tokens:
 		if (symbolic_output) {
@@ -136,6 +138,7 @@ list_tokens()
 		std::cout << ki.first << '\t' << ki.second << std::endl;
 
 	// Compressed token identifiers
+	std::cout << TokenId::ANY_HASH << "\tANY_HASH" << std::endl;
 	std::cout << TokenId::ANY_NUMBER << "\tANY_NUMBER" << std::endl;
 	std::cout << TokenId::ANY_IDENTIFIER << "\tANY_IDENTIFIER" << std::endl;
 
@@ -146,10 +149,17 @@ list_tokens()
 	for (long double d = 1; d < 1e309L; d *= 10)
 		std::cout << TokenizerBase::compress(static_cast<double>(d)) << '\t' << d << std::endl;
 
+	// RLE horizontal space
+	for (int i = 2; i <= TokenId::RLE_MAX; ++i)
+		std::cout << TokenId::RLE_SPACE + i << '\t' << "' ' * " << i << std::endl;
+	for (int i = 2; i <= TokenId::RLE_MAX; ++i)
+		std::cout << TokenId::RLE_TAB + i << '\t' << "'\\t' * " << i << std::endl;
+
 	// Other token values
 	std::cout << TokenId::NUMBER_INFINITE << "\tINFINITE" << std::endl;
 	std::cout << TokenId::NUMBER_NAN << "\tNAN" << std::endl;
 	std::cout << TokenId::FIRST_IDENTIFIER << "\tFIRST_IDENTIFIER" << std::endl;
+	std::cout << TokenId::HASHED_CONTENT << "\tFIST_HASHED_CONTENT" << std::endl;
 }
 
 // Open and process the specified file
@@ -187,8 +197,11 @@ main(int argc, char * const argv[])
 	int opt;
 	std::optional<std::string> files_list(std::nullopt);
 
-	while ((opt = getopt(argc, argv, "Bbcfgi:Ll:o:st:V")) != -1)
+	while ((opt = getopt(argc, argv, "aBbcfgi:Ll:o:st:V")) != -1)
 		switch (opt) {
+		case 'a':
+			all_contents = true;
+			break;
 		case 'B':
 			output_type = ot_type_break;
 			break;
@@ -228,7 +241,7 @@ main(int argc, char * const argv[])
 			exit(EXIT_SUCCESS);
 		default: /* ? */
 			std::cerr << "Usage: " << argv[0] <<
-				"  [-cgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [-t sep] [file ...]" << std::endl;
+				"  [-acgs | -B | -b] [-fV] [-i file] [-l lang] [-o opt] [-t sep] [file ...]" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 

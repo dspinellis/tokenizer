@@ -33,6 +33,12 @@ public:
 	// Language's keywords
 	static constexpr token_type KEYWORD = 400;
 
+	// Numbers and identifiers compressed to a single value
+	static constexpr token_type ANY_HASH = 997;
+	static constexpr token_type ANY_NUMBER = 998;
+	static constexpr token_type ANY_IDENTIFIER = 999;
+
+
 	// (Positive) numbers on a log_10 scale are centered around this value
 	// and extend +-400 around it
 	static constexpr token_type NUMBER_START = 1100;
@@ -41,18 +47,23 @@ public:
 	static constexpr token_type NUMBER_NAN = 1901;
 	static constexpr token_type NUMBER_END = 1902;
 
+	// Run-length encoded spaces and tabs (1912 is two spaces)
+	static constexpr token_type RLE_SPACE = 1910;
+	static constexpr token_type RLE_TAB = 1950;
+	static constexpr int RLE_MAX = 39;
+
 	// Identifiers are dynamically allocated from this number upward
 	static constexpr token_type FIRST_IDENTIFIER = 2000;
 
-	// Numbers and identifiers compressed to a single value
-	static constexpr token_type ANY_NUMBER = 998;
-	static constexpr token_type ANY_IDENTIFIER = 999;
+	// Comment and string hashes start at this value
+	static constexpr token_type HASHED_CONTENT = 0x8000'0000;
 
 	static bool is_character(token_type t) { return t < KEYWORD; }
 	static bool is_keyword(token_type t) { return t >= KEYWORD && t < OTHER_TOKEN; }
 	static bool is_other_token(token_type t) { return t >= OTHER_TOKEN && t < NUMBER_START; }
 	static bool is_zero(token_type t) { return t == NUMBER_ZERO; }
 	static bool is_number(token_type t) { return t >= NUMBER_START && t < NUMBER_END; }
-	static bool is_identifier(token_type t) { return t >= FIRST_IDENTIFIER; }
+	static bool is_identifier(token_type t) { return t >= FIRST_IDENTIFIER && t < HASHED_CONTENT; }
+	static bool is_hashed_content(token_type t) { return t >= HASHED_CONTENT; }
 };
 #endif /* TOKEIND_H */

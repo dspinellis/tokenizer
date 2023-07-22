@@ -33,6 +33,8 @@ JavaScriptTokenizer::process_string_literal(char c)
 	bool is_template = (c == '`');
 
 	bol.saw_non_space();
+	if (all_contents)
+		sequence_hash.reset();
 	for (;;) {
 		if (!src.get(c0)) {
 			error("EOF encountered while processing a string literal");
@@ -41,6 +43,8 @@ JavaScriptTokenizer::process_string_literal(char c)
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
+			if (all_contents)
+				sequence_hash.add(c0);
 		} else if (is_template && c0 == '$') {
 			saw_dollar = true;
 		} else if (saw_dollar && c0 == '{') {
@@ -48,6 +52,8 @@ JavaScriptTokenizer::process_string_literal(char c)
 			int brace_depth = 1;
 			do {
 				token_type c = get_token();
+				if (all_contents)
+					sequence_hash.add(c);
 				if (c == '{')
 					++brace_depth;
 				else if (c ==  '}')
@@ -63,7 +69,12 @@ JavaScriptTokenizer::process_string_literal(char c)
 		} else {
 			saw_dollar = false;
 		}
+
+		if (all_contents)
+			sequence_hash.add(c0);
 	}
+	if (all_contents)
+		push_token(sequence_hash.get());
 	return true;
 }
 
@@ -76,6 +87,12 @@ JavaScriptTokenizer::get_immediate_token()
 	for (;;) {
 		if (!src.get(c0))
 			return 0;
+
+		if (all_contents) {
+			token_type t = rle.add(c0);
+			if (t)
+				return t;
+		}
 
 		switch (c0) {
 		/*

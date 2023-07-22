@@ -19,6 +19,8 @@ class TokenizerBaseTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testCharLiteral);
 	CPPUNIT_TEST(testStringLiteral);
 	CPPUNIT_TEST(testComment);
+	CPPUNIT_TEST(testHashBlockComment);
+	CPPUNIT_TEST(testHashLineComment);
 	CPPUNIT_TEST(testNumber);
 	CPPUNIT_TEST(testOutputLineNumber);
 	CPPUNIT_TEST_SUITE_END();
@@ -38,6 +40,12 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct4.get_token());
 		CTokenizer ct5("L'a'");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct5.get_token());
+
+		CTokenizer ct6("'a'");
+		ct6.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct6.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('a'), ct6.get_token());
+
 	}
 
 	void testStringLiteral() {
@@ -50,6 +58,24 @@ public:
 
 		CTokenizer ct3("L\"hello\"");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
+
+		CTokenizer ct4("\"hello\" \"world\" \"hello\"");
+		ct4.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t1 = ct4.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct4.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t2 = ct4.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct4.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t3 = ct4.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
 	}
 
 	/*
@@ -72,6 +98,47 @@ public:
 		CTokenizer ct4("/* hi ***/\n+");
 		(void)ct4.get_token();
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct4.get_token());
+	}
+
+	void testHashBlockComment() {
+		CTokenizer ct(" /* One */ /* Another */ /* One */");
+		ct.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::BLOCK_COMMENT), ct.get_token());
+		token_type t1 = ct.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::BLOCK_COMMENT), ct.get_token());
+		token_type t2 = ct.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::BLOCK_COMMENT), ct.get_token());
+		token_type t3 = ct.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
+	}
+
+	void testHashLineComment() {
+		CTokenizer ct(" // One\n // Another\n// One\n");
+		ct.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LINE_COMMENT), ct.get_token());
+		token_type t1 = ct.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LINE_COMMENT), ct.get_token());
+		token_type t2 = ct.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LINE_COMMENT), ct.get_token());
+		token_type t3 = ct.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
 	}
 
 	void testNumber() {

@@ -2,7 +2,7 @@
 .SH NAME
 \fBtokenizer\fR \(en convert source code into integer vectors
 .SH SYNOPSIS
-\fBtokenizer\fR [\fB\-cgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-fLV\fP] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fIsep\fR] [\fIfile ...\fR]
+\fBtokenizer\fR [\fB\-acgs\fR | \fB-B\fR | \fB-b\fP] [\fB\-fLV\fP] [\fB\-i \fIfile\fR] [\fB\-l \fIlang\fR] [\fB\-o \fIopt\fR] [\fB\-t \fIsep\fR] [\fIfile ...\fR]
 .SH DESCRIPTION
 The \fBtokenizer\fR utility converts source code specified as files in
 its command line or provided through its standard input into one of several
@@ -30,16 +30,23 @@ corresponding to that token type.
 .IP \(bu
 Comments are mapped into a single integer.
 .IP \(bu
-White space is not included in the output.
+White space is not included in the output, unless the \fB-a\fP
+option is specified.
 .IP \(bu
 Identifiers are output as a value starting at \fCFIRST_IDENTIFIER\fP.
 Identifiers with the same name within a scope get the same value.
 Identifiers in outer scopes are visible with the same value in inner scopes.
 Identfiers in first seen in a scope are not visible outside that scope.
+.IP \(bu
+When the \fB-a\fP option is specified, comments and strings have their
+token value followed by a value of their content's hash
+as a value starting at \fCFIRST_HASH_CONTENT\fP.
+Moreover horizontal space (spaces and tabs) is output, run length
+encoded as seen in the output of the \fB-L\fP option.
 .RE
 
 The default form is suitable for training machine-learning models.
-With global scoping , it is also well-suited for Type 2 (exact)
+With global scoping, it is also well-suited for Type-1 (exact in code)
 clone detection.
 
 .SH OPTIONS
@@ -47,6 +54,12 @@ The behavior of the \fItokenizer\fR utility can be controlled
 through the following command-line options.
 
 .RS 3
+
+.TP
+.B "-a"
+Output distinct token values for all input, including horizontal white space
+and the content of strings and comments.
+This option can be used for Type-0 (exact in all text) clone detection.
 
 .TP
 .B -B
@@ -72,7 +85,7 @@ all numbers are represented with the value corresponding to the token symbol
 \fCANY_NUMBER\fP
 and all identifiers with the value corresponding to the token symbol
 \fCANY_IDENTIFIER\fP.
-This option can be used for Type 2 (near or renamed) clone detection.
+This option can be used for Type-2 (near or renamed) clone detection.
 
 .TP
 .B -f
@@ -86,7 +99,7 @@ This is the same convention as that expected by the clone detector
 Global scoping.
 All identifiers with the same name are allocated to the same
 token, irrespective of their scope.
-This option is useful for Type 1 (exact) clone detection.
+This option is useful for Type-1 (exact in code) clone detection.
 
 .TP
 .BI "-i " file
@@ -155,6 +168,9 @@ and followed by a varying exponent according to the number's base-ten logarithm.
 .IP \(bu
 Identifiers are prefixed by "ID:" and followed by an integer corresponding to
 the identifier number defined for numeric token values.
+.IP \(bu
+When the \fB-a\fP option is specified, comments and strings have their
+token followed by a value of their content's hash prefixed by "HASH:".
 .RE
 
 .TP
@@ -163,7 +179,7 @@ Specify the separator character for non-line output.
 By default this is tab for numeric tokens and space for symbolic output.
 
 .TP
-.BI "-V "
+.B "-V"
 Display the program's version number and exit.
 
 .RE
@@ -196,7 +212,7 @@ diff <(git show v1.1:./tokenizer.cpp | tokenizer -l C++ -b) \\
 .fi
 
 .PP
-List Type 2 (near) clones in the \fItokenizer\fP source code.
+List Type-2 (near or renamed) clones in the \fItokenizer\fP source code.
 .ft C
 .nf
 tokenizer -l C++ -c -f -o line *.cpp *.h | mpcd

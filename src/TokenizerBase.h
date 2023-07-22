@@ -17,27 +17,34 @@
 #ifndef TOKENIZERBASE_H
 #define TOKENIZERBASE_H
 
+#include <deque>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <deque>
 
-#include "CharSource.h"
-#include "Keyword.h"
 #include "BolState.h"
+#include "CharSource.h"
 #include "SymbolTable.h"
+#include "IncrementalHash.h"
+#include "Keyword.h"
 #include "NestedClassState.h"
+#include "RunLengthEncoder.h"
 
 /** Split input into language-specific tokens */
 class TokenizerBase {
 private:
 	bool previously_in_method;
+
 	void delimit(const std::string &s, token_type c);
 
 	std::deque <token_type> token_queue;
 protected:
+	// When true tokenize strings, comments, whitespace
+	bool all_contents;
+
 	std::stringstream string_src;	// Source for testing
 	CharSource src;			// Character source
+	RunLengthEncoder rle;		// RLE horizontal space
 	int output_line_number;		// Current line number in output
 	/** True for keywords that don't end with semicolon */
 	bool saw_comment;		// True after a comment
@@ -67,6 +74,8 @@ protected:
 
 	// Return a single token from the lexical stream
 	virtual token_type get_immediate_token() = 0;
+
+	IncrementalHash sequence_hash;
 public:
 	/*
 	 * Compress the passed number into its base 10 logarithm
@@ -96,11 +105,13 @@ public:
 	int get_output_line_number() const { return output_line_number; }
 
 	void set_separator(char s) { separator = s; }
+	void set_all_contents(bool v) { all_contents = v; }
 
 	// Construct from a character source
 	TokenizerBase(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		src(s), output_line_number(1), saw_comment(false),
+		all_contents(false),
+		src(s), rle(s), output_line_number(1), saw_comment(false),
 		input_file(file_name), processing_type(PT_FILE) {
 		process_options(opt);
 	}
@@ -108,7 +119,9 @@ public:
 	// Construct for a string source
 	TokenizerBase(const std::string &s,
 			std::vector<std::string> opt = {}) :
-		string_src(s), src(string_src), output_line_number(1),
+		all_contents(false),
+		string_src(s), src(string_src), rle(src),
+		output_line_number(1),
 		saw_comment(false), input_file("(string)"),
 		processing_type(PT_FILE) {
 		process_options(opt);

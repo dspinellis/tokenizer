@@ -59,6 +59,7 @@ class JavaScriptTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testSimpleTemplateString);
 	CPPUNIT_TEST(testNestedTemplateString);
 	CPPUNIT_TEST(testTemplateNestedTemplateString);
+	CPPUNIT_TEST(testRunLengthEncoding);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
@@ -332,6 +333,22 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct3.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct3.get_token());
+
+		JavaScriptTokenizer ct4("\"Hello,\"`world.`'Hello,'");
+		ct4.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t1 = ct4.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t2 = ct4.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t3 = ct4.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
 	}
 
 	void testEmptyString() {
@@ -361,10 +378,27 @@ public:
 	}
 
 	void testTemplateNestedTemplateString() {
-		JavaScriptTokenizer ct("a`string ${{`42`} `5 + ${8}`}` in");
+		JavaScriptTokenizer ct("a`string ${{`4200`} `5 + ${8}`}` in");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct.get_token());
+	}
+
+	void testRunLengthEncoding() {
+		JavaScriptTokenizer jt("[ (  ]\t\t\t  \t-                                        :");
+		jt.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('['), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('('), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::RLE_SPACE + 2), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(']'), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::RLE_TAB + 3), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::RLE_SPACE + 2), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('\t'), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('-'), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::RLE_SPACE + 39), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), jt.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(':'), jt.get_token());
 	}
 };
 #endif /*  JAVASCRIPTTOKENIZERTEST_H */

@@ -35,6 +35,12 @@ CTokenizer::get_immediate_token()
 		if (!src.get(c0))
 			return 0;
 
+		if (all_contents) {
+			token_type t = rle.add(c0);
+			if (t)
+				return t;
+		}
+
 		switch (c0) {
 		/*
 		 * Single character C operators and punctuators

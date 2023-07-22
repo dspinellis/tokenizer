@@ -90,6 +90,8 @@ PythonTokenizer::process_string_literal(char c)
 
 	c1 = c2 = 0;
 	bol.saw_non_space();
+	if (all_contents)
+		sequence_hash.reset();
 	for (;;) {
 		if (!src.get(c0)) {
 			error("EOF encountered while processing a string literal");
@@ -98,6 +100,8 @@ PythonTokenizer::process_string_literal(char c)
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
+			if (all_contents)
+				sequence_hash.add(c0);
 			continue;
 		} else if (c0 == c) {
 			// Termination or triple-quoting
@@ -121,7 +125,12 @@ PythonTokenizer::process_string_literal(char c)
 		}
 		c2 = c1;
 		c1 = c0;
+		if (all_contents) {
+			sequence_hash.add(c0);
+		}
 	}
+	if (all_contents)
+		push_token(sequence_hash.get());
 	return true;
 }
 
@@ -138,6 +147,12 @@ PythonTokenizer::get_immediate_token()
 	for (;;) {
 		if (!src.get(c0))
 			return 0;
+
+		if (all_contents) {
+			token_type t = rle.add(c0);
+			if (t)
+				return t;
+		}
 
 		switch (c0) {
 		case '\n':

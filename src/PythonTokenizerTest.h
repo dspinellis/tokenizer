@@ -33,6 +33,24 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_in), ct2.get_token());
+
+		PythonTokenizer ct3("\"hello,\" \"\"\"world!\"\"\" 'hello,'");
+		ct3.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
+		token_type t1 = ct3.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
+		token_type t2 = ct3.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct3.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct3.get_token());
+		token_type t3 = ct3.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
 	}
 
 	void testEmptyString() {
