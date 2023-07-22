@@ -22,12 +22,11 @@ and numbers are output as values in the ranges that can be seen by running
 The numbers for the same keywords are the same between different languages,
 allowing the tokenizer to be used to train models through transfer learning.
 .IP \(bu
-Numbers are output on a base-ten logarithmic scale centered around a central
-value and extending by less than 400 values around it;
-in addition zero is represented as the token value in the range's center.
+Numbers are output on a base-ten logarithmic scale centered around zero
+and extending by less than 400 values around it.
 .IP \(bu
 Other constants (e.g. characters and strings) are represented as an integer
-corresponding to that type.
+corresponding to that token type.
 .IP \(bu
 Comments are mapped into a single integer.
 .IP \(bu
@@ -69,8 +68,10 @@ in order to process the code at the level of individual tokens.
 Compress token values so that all identifiers and numbers are treated
 as the same.
 In the numeric output form
-all numbers are represented with the value 698
-and all identifiers with the value 699.
+all numbers are represented with the value corresponding to the token symbol
+\fCANY_NUMBER\fP
+and all identifiers with the value corresponding to the token symbol
+\fCANY_IDENTIFIER\fP.
 This option can be used for Type 2 (near or renamed) clone detection.
 
 .TP
