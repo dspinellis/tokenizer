@@ -55,6 +55,7 @@ class JavaScriptTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testSameScope);
 	CPPUNIT_TEST(testDifferentScope);
 	CPPUNIT_TEST(testSimpleString);
+	CPPUNIT_TEST(testRegex);
 	CPPUNIT_TEST(testEmptyString);
 	CPPUNIT_TEST(testSimpleTemplateString);
 	CPPUNIT_TEST(testNestedTemplateString);
@@ -82,17 +83,18 @@ public:
 	}
 
 	void testCharacterToken() {
-		JavaScriptTokenizer ct("+ - * / =\t<\n> %()[]{}^|&~,.;:!#");
+		JavaScriptTokenizer ct("+ - * ( ) / =\t<\n> %[]{}^|&~,.;:!#");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('-'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('*'), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('('), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(')'), ct.get_token());
+		// Division most follow brack to appear in expression context
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('/'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('='), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('<'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('>'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('%'), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('('), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(')'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('['), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(']'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('{'), ct.get_token());
@@ -175,7 +177,8 @@ public:
 	}
 
 	void testDIV_EQUAL() {
-		JavaScriptTokenizer ct("/=5");
+		JavaScriptTokenizer ct("a /=5");
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::DIV_EQUAL), ct.get_token());
 	}
 
@@ -347,6 +350,33 @@ public:
 		CPPUNIT_ASSERT(t1 != t2);
 
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::STRING_LITERAL), ct4.get_token());
+		token_type t3 = ct4.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
+	}
+
+
+	void testRegex() {
+		JavaScriptTokenizer ct("let a = /xy\\/zzy/gi;");
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_let), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('='), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::REGEX_LITERAL), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(';'), ct.get_token());
+		JavaScriptTokenizer ct4("/foo/gi /bar/ /foo/gi");
+		ct4.set_all_contents(true);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::REGEX_LITERAL), ct4.get_token());
+		token_type t1 = ct4.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct4.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::REGEX_LITERAL), ct4.get_token());
+		token_type t2 = ct4.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct4.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::REGEX_LITERAL), ct4.get_token());
 		token_type t3 = ct4.get_token();
 		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
 		CPPUNIT_ASSERT_EQUAL(t1, t3);

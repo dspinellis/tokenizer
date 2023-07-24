@@ -65,5 +65,9 @@ public:
 	static bool is_number(token_type t) { return t >= NUMBER_START && t < NUMBER_END; }
 	static bool is_identifier(token_type t) { return t >= FIRST_IDENTIFIER && t < HASHED_CONTENT; }
 	static bool is_hashed_content(token_type t) { return t >= HASHED_CONTENT; }
+	static bool is_horizontal_space(token_type t) {
+		return (t >= RLE_SPACE && t <= RLE_SPACE + RLE_MAX)
+			|| (t >= RLE_TAB && t <= RLE_TAB + RLE_MAX);
+	}
 };
 #endif /* TOKEIND_H */

@@ -31,7 +31,11 @@ class JavaScriptTokenizer : public TokenizerBase {
 private:
 	Keyword javascript_keyword;
 	Token java_script_token;
+	bool expression_context;  // When true / and /= are division operators
 	bool process_string_literal(char c);
+	bool process_regex_literal();
+	// Get a token, knowing the current context
+	inline token_type get_token_for_context();
 public:
 	token_type get_immediate_token();		// Return a single token
 
@@ -52,14 +56,16 @@ public:
 			std::vector<std::string> opt = {},
 			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
 		TokenizerBase(s, file_name, opt),
-		javascript_keyword(kw_id) { }
+		javascript_keyword(kw_id),
+		expression_context(false) {}
 
 	// Construct for a string source
 	JavaScriptTokenizer(const std::string &s,
 			std::vector<std::string> opt = {},
 			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
 		TokenizerBase(s, opt),
-		javascript_keyword(kw_id) { }
+		javascript_keyword(kw_id),
+		expression_context(false) {}
 
 	~JavaScriptTokenizer();
 
