@@ -111,7 +111,7 @@ TokenizerBase::get_block_comment_token()
 	return ret;
 }
 
-// Process a line comment, returning false on EOF
+// Process a line comment, returning the token type
 token_type
 TokenizerBase::get_line_comment_token()
 {

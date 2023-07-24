@@ -310,16 +310,12 @@ PHPTokenizer::get_immediate_token()
 			bol.saw_non_space();
 			src.get(c1);
 			switch (c1) {
-			case '=':				/* /= */
+			case '=':		/* /= */
 				return Token::DIV_EQUAL; // /=
-			case '*':				/* Block comment */
+			case '*':		/* Block comment */
 				return get_block_comment_token();
-			case '/':				/* Line comment */
-				if (get_line_comment_token())
-					return Token::LINE_COMMENT; // //...
-				else
-					return 0;
-				break;
+			case '/':		/* Line comment */
+				return get_line_comment_token();
 			default:				/* / */
 				src.push(c1);
 				return static_cast<token_type>(c0);

@@ -275,13 +275,10 @@ CSharpTokenizer::get_token_real()
 			case Keyword::K_error:
 				if (scan_cpp_directive) {
 					scan_cpp_directive = false;
-					if (get_line_comment_token())
-						return key;
-					else
-						return 0;
+					(void)get_line_comment_token();
+					return key;
 				} else
 					return symbols.value(val);
-				break;
 			case Keyword::K_define:
 			case Keyword::K_elif:
 			case Keyword::K_endif:
@@ -297,7 +294,6 @@ CSharpTokenizer::get_token_real()
 					return key;
 				} else
 					return symbols.value(val);
-				break;
 			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);
 			case Keyword::K_class:
