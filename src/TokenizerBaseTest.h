@@ -41,11 +41,23 @@ public:
 		CTokenizer ct5("L'a'");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct5.get_token());
 
-		CTokenizer ct6("'a'");
+		CTokenizer ct6("'\n' 'a' '\n'");
 		ct6.set_all_contents(true);
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct6.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('a'), ct6.get_token());
+		token_type t1 = ct6.get_token();
+		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
 
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct6.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct6.get_token());
+		token_type t2 = ct6.get_token();
+		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT(t1 != t2);
+
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct6.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::CHAR_LITERAL), ct6.get_token());
+		token_type t3 = ct6.get_token();
+		CPPUNIT_ASSERT(t3 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(t1, t3);
 	}
 
 	void testStringLiteral() {

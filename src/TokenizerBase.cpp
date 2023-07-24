@@ -151,9 +151,10 @@ TokenizerBase::process_line_comment()
 bool
 TokenizerBase::process_char_literal()
 {
-	char c = 0;	// The character literal
 	char c0;	// Each character read
 
+	if (all_contents)
+		sequence_hash.reset();
 	for (;;) {
 		if (!src.get(c0)) {
 			error("EOF encountered while processing a character literal");
@@ -163,16 +164,17 @@ TokenizerBase::process_char_literal()
 			// Consume one character after the backslash
 			// ... to deal with the '\'' problem
 			src.get(c0);
-			c = c0;
+			if (all_contents)
+				sequence_hash.add(c0);
 			continue;
 		}
 		if (c0 == '\'')
 			break;
-		else
-			c = c0;
+		if (all_contents)
+			sequence_hash.add(c0);
 	}
 	if (all_contents)
-		push_token(c);
+		push_token(sequence_hash.get());
 	return true;
 }
 
@@ -190,6 +192,8 @@ TokenizerBase::process_string_literal()
 			error("EOF encountered while processing a string literal");
 			return false;
 		}
+		if (all_contents)
+			sequence_hash.add(c0);
 		if (c0 == '\\') {
 			// Consume one character after the backslash
 			src.get(c0);
@@ -198,8 +202,6 @@ TokenizerBase::process_string_literal()
 			continue;
 		} else if (c0 == '"')
 			break;
-		if (all_contents)
-			sequence_hash.add(c0);
 	}
 	if (all_contents)
 		push_token(sequence_hash.get());
