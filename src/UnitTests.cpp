@@ -27,6 +27,7 @@
 #include "JavaScriptTokenizerTest.h"
 #include "PHPTokenizerTest.h"
 #include "PythonTokenizerTest.h"
+#include "RustTokenizerTest.h"
 #include "TokenizerBaseTest.h"
 #include "TypeScriptTokenizerTest.h"
 #include "SymbolTableTest.h"
@@ -48,6 +49,7 @@ main(int argc, char *argv[])
 	runner.addTest(CSharpTokenizerTest::suite());
 	runner.addTest(JavaTokenizerTest::suite());
 	runner.addTest(PythonTokenizerTest::suite());
+	runner.addTest(RustTokenizerTest::suite());
 	runner.addTest(PHPTokenizerTest::suite());
 	runner.addTest(JavaScriptTokenizerTest::suite());
 	runner.addTest(TypeScriptTokenizerTest::suite());

@@ -17,7 +17,7 @@ class CTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testIdentifier);
 	CPPUNIT_TEST(testCharacterToken);
 	CPPUNIT_TEST(testAND_EQUAL);
-	CPPUNIT_TEST(testARROW);
+	CPPUNIT_TEST(testRIGHT_SLIM_ARROW);
 	CPPUNIT_TEST(testBOOLEAN_AND);
 	CPPUNIT_TEST(testBOOLEAN_OR);
 	CPPUNIT_TEST(testDIV_EQUAL);
@@ -65,7 +65,7 @@ public:
 	}
 
 	void testCharacterToken() {
-		CTokenizer ct("+ - * / =\t<\n> %()[]{}^|&~,.;:!#");
+		CTokenizer ct("+ - * / =\t<\n> %()[]{}^|&~,.;:!#?");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('-'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('*'), ct.get_token());
@@ -90,6 +90,7 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(':'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('!'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('#'), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('?'), ct.get_token());
 	}
 
 	void testAND_EQUAL() {
@@ -97,9 +98,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::AND_EQUAL), ct.get_token());
 	}
 
-	void testARROW() {
+	void testRIGHT_SLIM_ARROW() {
 		CTokenizer ct("->a");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::ARROW), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::RIGHT_SLIM_ARROW), ct.get_token());
 	}
 
 	void testBOOLEAN_AND() {

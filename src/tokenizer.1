@@ -124,6 +124,7 @@ Currently the following languages are supported:
 \fIJavaScript\fP,
 \fIPHP\fP,
 \fIPython\fP,
+\fIRust\fP,
 \fITypeScript\fP.
 
 .TP
@@ -240,8 +241,13 @@ sequences, in addition the defined ones.
 .PP
 Continuation lines are not supported.
 .PP
+Non-ASCII identifiers are not supported.
+.PP
 The processing context may get confused by unbalanced braces occurring in
 C preprocessor macro definitions.
 .PP
 The Python tokenizer does not support processing options and identifier
 scoping.
+.PP
+The Rust tokenizer handles tuple indices and literal suffixes as separate
+lexical elements (numbers and identifiers, respectively).

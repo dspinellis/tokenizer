@@ -91,7 +91,7 @@ CTokenizer::get_immediate_token()
 			case '=':
 				return Token::MINUS_EQUAL; // -=
 			case '>':
-				return Token::ARROW; // ->
+				return Token::RIGHT_SLIM_ARROW; // ->
 			default:
 				src.push(c1);
 				return static_cast<token_type>(c0);
@@ -233,9 +233,9 @@ CTokenizer::get_immediate_token()
 			case '=':				/* /= */
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
-				return process_block_comment();
+				return get_block_comment_token();
 			case '/':				/* Line comment */
-				return process_line_comment();
+				return get_line_comment_token();
 			default:				/* / */
 				src.push(c1);
 				return static_cast<token_type>(c0);
@@ -246,7 +246,7 @@ CTokenizer::get_immediate_token()
 			src.get(c1);
 			if (isdigit(c1)) {
 				val = std::string(".") + (char)(c1);
-				return process_number(val);
+				return get_number_token(val);
 			}
 			if (c1 != '.') {
 				src.push(c1);
@@ -344,7 +344,7 @@ CTokenizer::get_immediate_token()
 		case '5': case '6': case '7': case '8': case '9':
 			bol.saw_non_space();
 			val = c0;
-			return process_number(val);
+			return get_number_token(val);
 		default:
 			bol.saw_non_space();
 			return static_cast<token_type>(c0);

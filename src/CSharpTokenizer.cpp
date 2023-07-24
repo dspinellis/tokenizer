@@ -236,9 +236,9 @@ CSharpTokenizer::get_token_real()
 			case '=':				/* /= */
 				return Token::DIV_EQUAL; // /=
 			case '*':				/* Block comment */
-				return process_block_comment();
+				return get_block_comment_token();
 			case '/':				/* Line comment */
-				return process_line_comment();
+				return get_line_comment_token();
 			default:				/* / */
 				src.push(c1);
 				return static_cast<token_type>(c0);
@@ -275,7 +275,7 @@ CSharpTokenizer::get_token_real()
 			case Keyword::K_error:
 				if (scan_cpp_directive) {
 					scan_cpp_directive = false;
-					if (process_line_comment())
+					if (get_line_comment_token())
 						return key;
 					else
 						return 0;
@@ -327,7 +327,7 @@ CSharpTokenizer::get_token_real()
 		case '5': case '6': case '7': case '8': case '9':
 			bol.saw_non_space();
 			val = c0;
-			return process_number(val);
+			return get_number_token(val);
 		default:
 			bol.saw_non_space();
 			return static_cast<token_type>(c0);

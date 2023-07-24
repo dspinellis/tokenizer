@@ -48,7 +48,7 @@ public:
 	void testOperator() {
 		PHPTokenizer ct("<=> -> ?? === == !== != **= ** *= <= <<= << ... .=");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::SPACESHIP), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::ARROW), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::RIGHT_SLIM_ARROW), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::NULL_COALESCE), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::IDENTICAL), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::EQUAL), ct.get_token());

@@ -68,7 +68,7 @@ TokenizerBase::num_token(const std::string &val)
 
 // Process a block comment, returning the token's code
 token_type
-TokenizerBase::process_block_comment()
+TokenizerBase::get_block_comment_token()
 {
 	char c1;
 	token_type ret = Token::BLOCK_COMMENT; // /*...*/
@@ -113,7 +113,7 @@ TokenizerBase::process_block_comment()
 
 // Process a line comment, returning false on EOF
 token_type
-TokenizerBase::process_line_comment()
+TokenizerBase::get_line_comment_token()
 {
 	char c1;
 	token_type ret = Token::LINE_COMMENT; // //...
@@ -210,7 +210,7 @@ TokenizerBase::process_string_literal()
 
 // Process a number starting with the passed string returning its token value
 token_type
-TokenizerBase::process_number(std::string &val)
+TokenizerBase::get_number_token(std::string &val)
 {
 	char c0;
 

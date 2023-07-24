@@ -34,8 +34,9 @@
 #include "JavaScriptTokenizer.h"
 #include "PHPTokenizer.h"
 #include "PythonTokenizer.h"
+#include "RustTokenizer.h"
 
-const char version[] = "2.7.0";
+const char version[] = "2.8.0";
 
 // Command-line option values
 static bool all_contents = false;
@@ -61,22 +62,24 @@ process_file(std::istream &in, std::string filename)
 	CharSource cs(in);
 	TokenizerBase *t;
 
-	if (lang == "Java")
-		t = new JavaTokenizer(cs, filename, processing_opt);
-	else if (lang == "JavaScript")
-		t = new JavaScriptTokenizer(cs, filename, processing_opt);
-	else if (lang == "C")
+	if (lang == "C")
 		t = new CTokenizer(cs, filename, processing_opt);
 	else if (lang == "CSharp" || lang == "C#")
 		t = new CSharpTokenizer(cs, filename, processing_opt);
-	else if (lang == "C++")
-		t = new CppTokenizer(cs, filename, processing_opt);
 	else if (lang == "Go")
 		t = new GoTokenizer(cs, filename, processing_opt);
+	else if (lang == "Java")
+		t = new JavaTokenizer(cs, filename, processing_opt);
+	else if (lang == "JavaScript")
+		t = new JavaScriptTokenizer(cs, filename, processing_opt);
+	else if (lang == "C++")
+		t = new CppTokenizer(cs, filename, processing_opt);
 	else if (lang == "PHP")
 		t = new PHPTokenizer(cs, filename, processing_opt);
 	else if (lang == "Python")
 		t = new PythonTokenizer(cs, filename, processing_opt);
+	else if (lang == "Rust")
+		t = new RustTokenizer(cs, filename, processing_opt);
 	else if (lang == "TypeScript")
 		t = new JavaScriptTokenizer(cs, filename, processing_opt,
 				Keyword::L_TypeScript);
@@ -91,6 +94,7 @@ process_file(std::istream &in, std::string filename)
 		std::cerr << "\tJavaScript" << std::endl;
 		std::cerr << "\tPHP" << std::endl;
 		std::cerr << "\tPython" << std::endl;
+		std::cerr << "\tRust" << std::endl;
 		std::cerr << "\tTypeScript" << std::endl;
 		exit(EXIT_FAILURE);
 	}

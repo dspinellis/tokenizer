@@ -37,9 +37,9 @@ class CppTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testTIMES_EQUAL);
 	CPPUNIT_TEST(testXOR_EQUAL);
 	CPPUNIT_TEST(testMEMBER_PTR_FROM_OBJECT_PTR);
-	CPPUNIT_TEST(testMEMBER_FROM_OBJECT_PTR);
+	CPPUNIT_TEST(testRIGHT_SLIM_ARROW);
 	CPPUNIT_TEST(testMEMBER_PTR_FROM_OBJECT);
-	CPPUNIT_TEST(testSCOPE);
+	CPPUNIT_TEST(testDOUBLE_COLON);
 	CPPUNIT_TEST(testAND);
 	CPPUNIT_TEST(testBITOR);
 	CPPUNIT_TEST(testOR);
@@ -212,9 +212,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::MEMBER_PTR_FROM_OBJECT_PTR), ct.get_token());
 	}
 
-	void testMEMBER_FROM_OBJECT_PTR() {
+	void testRIGHT_SLIM_ARROW() {
 		CppTokenizer ct("->a");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::MEMBER_FROM_OBJECT_PTR), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::RIGHT_SLIM_ARROW), ct.get_token());
 	}
 
 	void testMEMBER_PTR_FROM_OBJECT() {
@@ -222,9 +222,9 @@ public:
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::MEMBER_PTR_FROM_OBJECT), ct.get_token());
 	}
 
-	void testSCOPE() {
+	void testDOUBLE_COLON() {
 		CppTokenizer ct("::a");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::SCOPE), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::DOUBLE_COLON), ct.get_token());
 	}
 
 	void testAND() {

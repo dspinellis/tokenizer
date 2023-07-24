@@ -130,11 +130,11 @@ public:
 	~TokenizerBase();
 
 	static token_type num_token(const std::string &val);
-	token_type process_block_comment();
-	token_type process_line_comment();
+	token_type get_block_comment_token();
+	token_type get_line_comment_token();
 	bool process_char_literal();
 	bool process_string_literal();
-	token_type process_number(std::string &val);
+	token_type get_number_token(std::string &val);
 	const std::string & get_value() const { return val; }
 };
 #endif /* TOKENIZERBASE_H */
