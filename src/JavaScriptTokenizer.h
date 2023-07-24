@@ -30,7 +30,7 @@
 class JavaScriptTokenizer : public TokenizerBase {
 private:
 	Keyword javascript_keyword;
-	Token java_script_token;
+	Token javascript_token;
 	bool expression_context;  // When true / and /= are division operators
 	bool process_string_literal(char c);
 	bool process_regex_literal();
@@ -44,11 +44,11 @@ public:
 	}
 
 	const std::string & token_to_string(token_type k) const {
-		return java_script_token.to_string(k);
+		return javascript_token.to_string(k);
 	}
 
 	const std::string & token_to_symbol(token_type k) const {
-		return java_script_token.to_symbol(k);
+		return javascript_token.to_symbol(k);
 	}
 
 	// Construct from a character source
