@@ -386,12 +386,12 @@ JavaScriptTokenizer::get_immediate_token()
 		case 'D': case 'E': case 'F': case 'G': case 'H': case 'I':
 		case 'J': case 'K': case 'L': case 'M': case 'N': case 'O':
 		case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U':
-		case 'V': case 'W': case 'X': case 'Y': case 'Z':
+		case 'V': case 'W': case 'X': case 'Y': case 'Z': case '$':
 			bol.saw_non_space();
 			val = c0;
 			for (;;) {
 				src.get(c0);
-				if (!isalnum(c0) && c0 != '_')
+				if (!isalnum(c0) && c0 != '_' && c0 != '$')
 					break;
 				val += c0;
 			}

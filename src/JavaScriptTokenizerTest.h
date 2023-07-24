@@ -76,8 +76,9 @@ public:
 	}
 
 	void testIdentifier() {
-		JavaScriptTokenizer ct("foo ");
+		JavaScriptTokenizer ct("$foo +");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('+'), ct.get_token());
 	}
 
 	void testCharacterToken() {
