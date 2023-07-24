@@ -58,9 +58,9 @@ public:
 	// Comment and string hashes start at this value
 	static constexpr token_type HASHED_CONTENT = 0x8000'0000;
 
-	static bool is_character(token_type t) { return t < KEYWORD; }
-	static bool is_keyword(token_type t) { return t >= KEYWORD && t < OTHER_TOKEN; }
-	static bool is_other_token(token_type t) { return t >= OTHER_TOKEN && t < NUMBER_START; }
+	static bool is_character(token_type t) { return t < OTHER_TOKEN; }
+	static bool is_keyword(token_type t) { return t >= KEYWORD && t < ANY_HASH; }
+	static bool is_other_token(token_type t) { return t >= OTHER_TOKEN && t < KEYWORD; }
 	static bool is_zero(token_type t) { return t == NUMBER_ZERO; }
 	static bool is_number(token_type t) { return t >= NUMBER_START && t < NUMBER_END; }
 	static bool is_identifier(token_type t) { return t >= FIRST_IDENTIFIER && t < HASHED_CONTENT; }

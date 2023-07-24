@@ -36,7 +36,7 @@
 #include "PythonTokenizer.h"
 #include "RustTokenizer.h"
 
-const char version[] = "2.8.0";
+const char version[] = "2.8.1";
 
 // Command-line option values
 static bool all_contents = false;
