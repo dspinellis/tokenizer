@@ -54,7 +54,6 @@ class RustTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST(testBLOCK_COMMENT);
 	CPPUNIT_TEST(testCharLiteral);
 	CPPUNIT_TEST(testQuoteLiteral);
-	CPPUNIT_TEST(testQuoteLiteralHashed);
 	CPPUNIT_TEST(testStringLiteral);
 	CPPUNIT_TEST(testOptions);
 	CPPUNIT_TEST(testSameScope);
@@ -316,35 +315,16 @@ public:
 
 	void testQuoteLiteral() {
 		RustTokenizer ct("'a: for");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LABEL_LITERAL), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(':'), ct.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_for), ct.get_token());
 
 		RustTokenizer ct2(" fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {");
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_fn), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('<'), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LIFETIME_LITERAL), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('>'), ct2.get_token());
-	}
-
-	void testQuoteLiteralHashed() {
-		RustTokenizer ct("'a: for");
-		ct.set_all_contents(true);
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LABEL_LITERAL), ct.get_token());
-		token_type t1 = ct.get_token();
-		CPPUNIT_ASSERT(t1 & TokenId::HASHED_CONTENT);
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_for), ct.get_token());
-
-		RustTokenizer ct2("fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {");
-		ct2.set_all_contents(true);
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_fn), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(' '), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('<'), ct2.get_token());
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Token::LIFETIME_LITERAL), ct2.get_token());
-		token_type t2 = ct2.get_token();
-		CPPUNIT_ASSERT(t2 & TokenId::HASHED_CONTENT);
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('\''), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER + 1), ct2.get_token());
 		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>('>'), ct2.get_token());
 	}
 

@@ -25,8 +25,8 @@
 #include "Token.h"
 
 /*
- * Process a single quote literal, returning its token type
- * This can be CHAR_LITERAL, LIFETIME_LITERAL or LABEL_LITERAL.
+ * Process a single quote literal, returning associated tokens
+ * This can be CHAR_LITERAL, '\'' lifetime-id or label-id ':'
  */
 token_type
 RustTokenizer::get_single_quote_literal()
@@ -38,6 +38,7 @@ RustTokenizer::get_single_quote_literal()
 
 	if (all_contents)
 		sequence_hash.reset();
+	val = "";
 	for (;;) {
 		if (!src.get(c0)) {
 			error("EOF encountered while processing a character literal");
@@ -57,30 +58,36 @@ RustTokenizer::get_single_quote_literal()
 		}
 
 		if (c0 == '\'') {
+			// Character literals '.*'
 			ret = Token::CHAR_LITERAL; // '.'
+			if (all_contents)
+				push_token(sequence_hash.get());
 			break;
 		}
 
 		if (starts_with_alnum) {
-			// Label literals \w+:
+			// Label literals '\w+:
 			if (c0 == ':') {
-				ret = Token::LABEL_LITERAL; // '...:
+				// Return ID ':'
+				ret = symbols.value(val);
+				push_token(static_cast<token_type>(':'));
 				break;
 			}
-			// Lifetime literals \w+\W
+			// Lifetime literals '\w+[^'a-zA-Z0-9_]
 			if (!isalnum(c0) && c0 != '_') {
 				src.push(c0);
-				ret = Token::LIFETIME_LITERAL; // '...
+				// Return '\'' ID
+				ret = static_cast<token_type>('\'');
+				push_token(symbols.value(val));
 				break;
 			}
 		}
 		if (index == 0 && (isalnum(c0) || c0 == '_'))
 			starts_with_alnum = true;
 
+		val += c0;
 		++index;
 	}
-	if (all_contents)
-		push_token(sequence_hash.get());
 	return ret;
 }
 
