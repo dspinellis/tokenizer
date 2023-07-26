@@ -49,11 +49,11 @@ class GoTokenizerTest : public CppUnit::TestFixture  {
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void testKeyword() {
-		GoTokenizer ct("do ");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_do), ct.get_token());
+		GoTokenizer ct("fallthrough ");
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_fallthrough), ct.get_token());
 
 		GoTokenizer ct2("while");
-		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(Keyword::K_while), ct2.get_token());
+		CPPUNIT_ASSERT_EQUAL(static_cast<token_type>(TokenId::FIRST_IDENTIFIER), ct2.get_token());
 
 		GoTokenizer ct3(";if");
 		(void)ct3.get_token();

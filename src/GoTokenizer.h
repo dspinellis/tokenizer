@@ -50,11 +50,11 @@ public:
 	// Construct from a character source
 	GoTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), go_keyword(Keyword::L_C) {}
+		TokenizerBase(s, file_name, opt), go_keyword(Keyword::L_Go) {}
 
 	// Construct for a string source
 	GoTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), go_keyword(Keyword::L_C) {}
+		TokenizerBase(s, opt), go_keyword(Keyword::L_Go) {}
 
 	~GoTokenizer();
 };
