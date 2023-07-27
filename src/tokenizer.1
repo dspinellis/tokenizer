@@ -78,12 +78,15 @@ in order to process the code at the level of individual tokens.
 
 .TP
 .B -c
-Compress token values so that all identifiers and numbers are treated
-as the same.
+Compress token values so that all identifiers, numbers, and basic types
+are treated as the same.
 In the numeric output form
 all numbers are represented with the value corresponding to the token symbol
-\fCANY_NUMBER\fP
-and all identifiers with the value corresponding to the token symbol
+\fCANY_NUMBER\fP,
+all basic types and their modifiers (and sequences of them)
+are represented with the value corresponding to the token symbol
+\fCANY_TYPE\fP,
+all identifiers with the value corresponding to the token symbol
 \fCANY_IDENTIFIER\fP.
 This option can be used for Type-2 (near or renamed) clone detection.
 

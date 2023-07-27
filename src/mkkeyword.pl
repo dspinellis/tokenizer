@@ -12,6 +12,7 @@ my @keywords;
 
 my @languages;
 my %keyword_languages;
+my %type_languages;
 
 for my $in_fname (@ARGV) {
 
@@ -23,8 +24,12 @@ for my $in_fname (@ARGV) {
 	while (<$in>) {
 		s/\r//g;
 		chop;
-		$keywords{$_} = 1;
-		push @{$keyword_languages{$_}}, "li == L_$language";
+		my ($keyword, $is_type) = split;
+		$keywords{$keyword} = 1;
+		push @{$keyword_languages{$keyword}}, "li == L_$language";
+		if ($is_type) {
+			push @{$type_languages{$keyword}}, "li == L_$language";
+		}
 	}
 }
 @keywords = keys %keywords;
@@ -39,6 +44,7 @@ print $out qq(
 #define KEYWORD_H
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "TokenId.h"
@@ -73,18 +79,26 @@ private:
 	// Keyword map
 	typedef std::map <std::string, enum IdentifierType> KeywordMap;
 	typedef std::map <token_type, std::string> TokenMap;
+	typedef std::set <token_type> TypeTokens;
 	KeywordMap km;
 	TokenMap tm;
+	TypeTokens tt;
 public:
 	// Create a keyword recognizer for the specified language
-	Keyword(enum LanguageId li) : km() {
+	Keyword(enum LanguageId li) : km(), tt() {
 ";
 
 # Shuffle to avoid presenting sorted data to the map
 for my $k (shuffle @keywords) {
-	my $condition = join(" || ", @{$keyword_languages{$k}});
-	print $out qq(\t\tif ($condition)\n);
+	my $keyword_condition = join(" || ", @{$keyword_languages{$k}});
+	print $out qq(\t\tif ($keyword_condition)\n);
 	print $out qq(\t\t\tkm.emplace("$k", K_$k);\n);
+
+	if (defined($type_languages{$k})) {
+		my $type_condition = join(" || ", @{$type_languages{$k}});
+		print $out qq(\t\tif ($type_condition)\n);
+		print $out qq(\t\t\ttt.insert(K_$k);\n);
+	}
 }
 
 print $out '
@@ -112,6 +126,10 @@ print $out qq|
 
 		auto t = tm.find(k);
 		return t == tm.end() ? UNKNOWN : t->second;
+	}
+
+	bool is_type(token_type k) const {
+		return tt.find(k) != tt.end();
 	}
 
 	// Return an iterator over the keyword symbols

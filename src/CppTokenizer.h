@@ -30,13 +30,12 @@
 class CppTokenizer : public TokenizerBase {
 private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
-	Keyword cpp_keyword;
 	Token cpp_token;
 public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return cpp_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -50,13 +49,11 @@ public:
 	// Construct from a character source
 	CppTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), scan_cpp_directive(false),
-		cpp_keyword(Keyword::L_Cpp) {}
+		TokenizerBase(Keyword::L_Cpp, s, file_name, opt), scan_cpp_directive(false) {}
 
 	// Construct for a string source
 	CppTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), scan_cpp_directive(false),
-		cpp_keyword(Keyword::L_Cpp) {}
+		TokenizerBase(Keyword::L_Cpp, s, opt), scan_cpp_directive(false) {}
 
 	~CppTokenizer();
 

@@ -298,7 +298,7 @@ CTokenizer::get_immediate_token()
 				val += c0;
 			}
 			src.push(c0);
-			key = ckeyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::K_define:
 			case Keyword::K_elif:

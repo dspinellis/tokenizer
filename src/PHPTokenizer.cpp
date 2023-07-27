@@ -367,7 +367,7 @@ PHPTokenizer::get_immediate_token()
 
 			lcase = val;
 			std::transform(lcase.begin(), lcase.end(), lcase.begin(), ::tolower);
-			key = php_keyword.identifier_type(lcase);
+			key = keyword.identifier_type(lcase);
 			if (key == Keyword::FIRST_IDENTIFIER)
 				return symbols.value(val);
 			else

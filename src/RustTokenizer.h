@@ -29,7 +29,6 @@
 /** Split input into language-specific tokens */
 class RustTokenizer : public TokenizerBase {
 private:
-	Keyword rust_keyword;
 	Token rust_token;
 
 	// Process literals and raw identifiers
@@ -40,7 +39,7 @@ public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return rust_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -54,13 +53,11 @@ public:
 	// Construct from a character source
 	RustTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt),
-		rust_keyword(Keyword::L_Rust) {}
+		TokenizerBase(Keyword::L_Rust, s, file_name, opt) {}
 
 	// Construct for a string source
 	RustTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt),
-		rust_keyword(Keyword::L_Rust) {}
+		TokenizerBase(Keyword::L_Rust, s, opt) {}
 
 	~RustTokenizer();
 

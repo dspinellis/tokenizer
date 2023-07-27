@@ -12,22 +12,22 @@ assert
 async
 await
 bin
-bool
+bool t
 break
 breakpoint
-bytearray
-bytes
+bytearray t
+bytes t
 callable
 chr
 class
 classmethod
 compile
-complex
+complex t
 continue
 def
 del
 delattr
-dict
+dict t
 dir
 divmod
 elif
@@ -40,11 +40,11 @@ exec
 False
 filter
 finally
-float
+float t
 for
 format
 from
-frozenset
+frozenset t
 getattr
 global
 globals
@@ -57,18 +57,18 @@ if
 import
 in
 input
-int
+int t
 is
 isinstance
 issubclass
 iter
 lambda
 len
-list
+list t
 locals
 map
 max
-memoryview
+memoryview t
 min
 next
 None
@@ -90,17 +90,17 @@ repr
 return
 reversed
 round
-set
+set t
 setattr
 slice
 sorted
 staticmethod
-str
+str t
 sum
 super
 True
 try
-tuple
+tuple t
 type
 vars
 while

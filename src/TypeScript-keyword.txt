@@ -117,13 +117,13 @@ WeakKey
 WeakKeyTypes
 abstract
 accessor
-any
+any t
 as
 asserts
 async
 await
-bigint
-boolean
+bigint t
+boolean t
 break
 case
 catch
@@ -156,10 +156,10 @@ keyof
 let
 module
 namespace
-never
+never t
 new
 null
-number
+number t
 object
 override
 package
@@ -171,10 +171,10 @@ return
 satisfies
 set
 static
-string
+string t
 super
 switch
-symbol
+symbol t
 this
 throw
 true
@@ -182,9 +182,9 @@ try
 type
 typeof
 unique
-unknown
+unknown t
 var
-void
+void t
 while
 with
 yield

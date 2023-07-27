@@ -1,7 +1,9 @@
 abstract
 and
 array
+Array t
 as
+Boolean t
 break
 callable
 case
@@ -14,6 +16,7 @@ declare
 default
 die
 do
+double t
 echo
 else
 elseif
@@ -29,6 +32,7 @@ exit
 extends
 final
 finally
+Float t
 for
 foreach
 from
@@ -41,11 +45,13 @@ include
 include_once
 instanceof
 insteadof
+Integer t
 interface
 isset
 list
 namespace
 new
+Object t
 or
 print
 private
@@ -53,8 +59,10 @@ protected
 public
 require
 require_once
+Resource t
 return
 static
+String t
 switch
 throw
 trait

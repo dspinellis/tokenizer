@@ -29,7 +29,6 @@
 /** Split input into language-specific tokens */
 class CSharpTokenizer : public TokenizerBase {
 private:
-	Keyword csharp_keyword;
 	Token csharp_token;
 	token_type get_token_real();		// Return a single token
 	token_type previous_token;		// Previously returned token
@@ -39,7 +38,7 @@ public:
 	token_type get_immediate_token();
 
 	const std::string & keyword_to_string(token_type k) const {
-		return csharp_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -54,13 +53,12 @@ public:
 	// Construct from a character source
 	CSharpTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt),
-		csharp_keyword(Keyword::L_CSharp),
+		TokenizerBase(Keyword::L_CSharp, s, file_name, opt),
 		scan_cpp_directive(false) {}
 
 	// Construct for a string source
 	CSharpTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), csharp_keyword(Keyword::L_CSharp),
+		TokenizerBase(Keyword::L_CSharp, s, opt),
 		scan_cpp_directive(false) {}
 
 	~CSharpTokenizer();

@@ -1,20 +1,20 @@
-auto
+auto t
 break
 case
-char
-const
+char t
+const t
 continue
 default
 define
 do
-double
+double t
 elif
 else
 endif
 enum
 error
-extern
-float
+extern t
+float t
 for
 goto
 if
@@ -22,24 +22,24 @@ ifdef
 ifndef
 include
 inline
-int
+int t
 line
-long
-noalias
+long t
+noalias t
 pragma
-register
-restrict
+register t
+restrict t
 return
-short
-signed
+short t
+signed t
 sizeof
-static
+static t
 struct
 switch
 typedef
 undef
 union
-unsigned
-void
-volatile
+unsigned t
+void t
+volatile t
 while

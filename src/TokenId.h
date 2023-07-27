@@ -34,6 +34,7 @@ public:
 	static constexpr token_type KEYWORD = 400;
 
 	// Numbers and identifiers compressed to a single value
+	static constexpr token_type ANY_TYPE = 996;
 	static constexpr token_type ANY_HASH = 997;
 	static constexpr token_type ANY_NUMBER = 998;
 	static constexpr token_type ANY_IDENTIFIER = 999;

@@ -1,17 +1,17 @@
 _
 any
 append
-bool
+bool t
 break
-byte
+byte t
 cap
 case
 chan
 close
 comparable
-complex
-complex128
-complex64
+complex t
+complex128 t
+complex64 t
 const
 continue
 copy
@@ -22,8 +22,8 @@ else
 error
 fallthrough
 false
-float32
-float64
+float32 t
+float64 t
 for
 func
 go
@@ -31,11 +31,11 @@ goto
 if
 imag
 import
-int
-int16
-int32
-int64
-int8
+int t
+int16 t
+int32 t
+int64 t
+int8 t
 interface
 iota
 len
@@ -51,17 +51,17 @@ range
 real
 recover
 return
-rune
+rune t
 select
-string
+string t
 struct
 switch
 true
 type
-uint
-uint16
-uint32
-uint64
-uint8
-uintptr
+uint t
+uint16 t
+uint32 t
+uint64 t
+uint8 t
+uintptr t
 var

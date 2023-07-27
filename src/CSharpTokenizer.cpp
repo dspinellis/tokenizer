@@ -268,7 +268,7 @@ CSharpTokenizer::get_token_real()
 				val += c0;
 			}
 			src.push(c0);
-			key = csharp_keyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::K_region:
 			case Keyword::K_warning:

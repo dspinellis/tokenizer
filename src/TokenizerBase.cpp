@@ -245,7 +245,7 @@ TokenizerBase::lines_synchronize()
 
 /*
  * Output numeric token values.
- * If compress is true, all identifiers and numbers have the same value.
+ * If compress is true, all identifiers, numbers, and types have the same value.
  */
 void
 TokenizerBase::numeric_tokenize(bool compress)
@@ -256,8 +256,18 @@ TokenizerBase::numeric_tokenize(bool compress)
 	while ((c = get_token())) {
 
 		if (compress) {
+			// Merge together a series of type tokens
+			if (keyword.is_type(c)) {
+				token_type c2 = get_token();
+				push_token(c2);
+				if (keyword.is_type(c2))
+					continue; // Ignore c
+			}
+
 			if (TokenId::is_identifier(c))
 				c = TokenId::ANY_IDENTIFIER;
+			else if (keyword.is_type(c))
+				c = TokenId::ANY_TYPE;
 			else if (TokenId::is_number(c))
 				c = TokenId::ANY_NUMBER;
 			else if (TokenId::is_hashed_content(c))

@@ -483,7 +483,7 @@ JavaScriptTokenizer::get_token_for_context()
 				val += c0;
 			}
 			src.push(c0);
-			key = javascript_keyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);

@@ -39,6 +39,9 @@ private:
 
 	std::deque <token_type> token_queue;
 protected:
+	// Language's keywords, initialized in subclass
+	Keyword keyword;
+
 	// When true tokenize strings, comments, whitespace
 	bool all_contents;
 
@@ -108,8 +111,10 @@ public:
 	void set_all_contents(bool v) { all_contents = v; }
 
 	// Construct from a character source
-	TokenizerBase(CharSource &s, const std::string &file_name,
+	TokenizerBase(Keyword::LanguageId lid,
+			CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
+		keyword(lid),
 		all_contents(false),
 		src(s), rle(s), output_line_number(1), saw_comment(false),
 		input_file(file_name), processing_type(PT_FILE) {
@@ -117,8 +122,10 @@ public:
 	}
 
 	// Construct for a string source
-	TokenizerBase(const std::string &s,
+	TokenizerBase(Keyword::LanguageId lid,
+			const std::string &s,
 			std::vector<std::string> opt = {}) :
+		keyword(lid),
 		all_contents(false),
 		string_src(s), src(string_src), rle(src),
 		output_line_number(1),

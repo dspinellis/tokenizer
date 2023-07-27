@@ -6,21 +6,21 @@ asm
 atomic_cancel
 atomic_commit
 atomic_noexcept
-auto
+auto t
 bitand
 bitor
-bool
+bool t
 break
 case
 catch
-char
-char16_t
-char32_t
+char t
+char16_t t
+char32_t t
 class
 co_await
 compl
 concept
-const
+const t
 const_cast
 constexpr
 continue
@@ -31,7 +31,7 @@ default
 define
 delete
 do
-double
+double t
 dynamic_cast
 elif
 else
@@ -40,23 +40,23 @@ enum
 error
 explicit
 export
-extern
+extern t
 false
-float
+float t
 for
-friend
+friend t
 goto
 if
 ifdef
 ifndef
 import
 include
-inline
-int
+inline t
+int t
 line
-long
+long t
 module
-mutable
+mutable t
 namespace
 new
 noexcept
@@ -70,14 +70,14 @@ pragma
 private
 protected
 public
-register
+register t
 reinterpret_cast
 requires
 return
-short
-signed
+short t
+signed t
 sizeof
-static
+static t
 static_assert
 static_cast
 struct
@@ -85,7 +85,7 @@ switch
 synchronized
 template
 this
-thread_local
+thread_local t
 throw
 true
 try
@@ -94,12 +94,12 @@ typeid
 typename
 undef
 union
-unsigned
+unsigned t
 using
-virtual
-void
-volatile
-wchar_t
+virtual t
+void t
+volatile t
+wchar_t t
 while
 xor
 xor_eq

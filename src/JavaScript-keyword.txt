@@ -1,7 +1,9 @@
 abstract
 arguments
 await
+BigInt t
 boolean
+Boolean t
 break
 byte
 case
@@ -39,6 +41,9 @@ long
 native
 new
 null
+Null t
+Number t
+Object t
 package
 private
 protected
@@ -46,8 +51,10 @@ public
 return
 short
 static
+String t
 super
 switch
+Symbol t
 synchronized
 this
 throw
@@ -56,6 +63,7 @@ transient
 true
 try
 typeof
+Undefined t
 var
 void
 volatile

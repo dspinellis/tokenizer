@@ -423,7 +423,7 @@ RustTokenizer::get_immediate_token()
 				return static_cast<token_type>('_');
 
 			src.push(c0);
-			key = rust_keyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			if (key == Keyword::FIRST_IDENTIFIER)
 				return symbols.value(val);
 			return key;

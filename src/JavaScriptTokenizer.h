@@ -29,7 +29,6 @@
 /** Split input into language-specific tokens */
 class JavaScriptTokenizer : public TokenizerBase {
 private:
-	Keyword javascript_keyword;
 	Token javascript_token;
 	bool expression_context;  // When true / and /= are division operators
 	bool process_string_literal(char c);
@@ -40,7 +39,7 @@ public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return javascript_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -55,16 +54,14 @@ public:
 	JavaScriptTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {},
 			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
-		TokenizerBase(s, file_name, opt),
-		javascript_keyword(kw_id),
+		TokenizerBase(kw_id, s, file_name, opt),
 		expression_context(false) {}
 
 	// Construct for a string source
 	JavaScriptTokenizer(const std::string &s,
 			std::vector<std::string> opt = {},
 			Keyword::LanguageId kw_id = Keyword::L_JavaScript) :
-		TokenizerBase(s, opt),
-		javascript_keyword(kw_id),
+		TokenizerBase(kw_id, s, opt),
 		expression_context(false) {}
 
 	~JavaScriptTokenizer();

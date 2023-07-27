@@ -31,13 +31,12 @@ class CTokenizer : public TokenizerBase {
 private:
 	bool scan_cpp_directive;	// Keyword after a C preprocessor #
 	/** True for keywords that don't end with semicolon */
-	Keyword ckeyword;
 	Token ctoken;
 public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return ckeyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -51,13 +50,13 @@ public:
 	// Construct from a character source
 	CTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), scan_cpp_directive(false),
-		ckeyword(Keyword::L_C) {}
+		TokenizerBase(Keyword::L_C, s, file_name, opt),
+		scan_cpp_directive(false) {}
 
 	// Construct for a string source
 	CTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), scan_cpp_directive(false),
-		ckeyword(Keyword::L_C) {}
+		TokenizerBase(Keyword::L_C, s, opt),
+		scan_cpp_directive(false) {}
 
 	~CTokenizer();
 };

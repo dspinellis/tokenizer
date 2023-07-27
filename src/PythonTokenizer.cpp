@@ -384,7 +384,7 @@ PythonTokenizer::get_immediate_token()
 			}
 
 			src.push(c0);
-			key = python_keyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);

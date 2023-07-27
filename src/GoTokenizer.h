@@ -30,13 +30,12 @@
 class GoTokenizer : public TokenizerBase {
 private:
 	/** True for keywords that don't end with semicolon */
-	Keyword go_keyword;
 	Token ctoken;
 public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return go_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -50,11 +49,11 @@ public:
 	// Construct from a character source
 	GoTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), go_keyword(Keyword::L_Go) {}
+		TokenizerBase(Keyword::L_Go, s, file_name, opt) {}
 
 	// Construct for a string source
 	GoTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), go_keyword(Keyword::L_Go) {}
+		TokenizerBase(Keyword::L_Go, s, opt) {}
 
 	~GoTokenizer();
 };

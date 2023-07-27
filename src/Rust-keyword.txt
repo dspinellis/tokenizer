@@ -3,8 +3,11 @@ as
 async
 await
 become
+bool t
 box
+Box
 break
+char t
 const
 continue
 crate
@@ -13,13 +16,21 @@ dyn
 else
 enum
 extern
+f32 t
+f64 t
 false
 final
 fn
 for
+i128 t
+i16 t
+i32 t
+i64 t
+i8 t
 if
 impl
 in
+isize t
 let
 loop
 macro
@@ -28,14 +39,19 @@ match
 mod
 move
 mut
+mut t
+Option
 override
 priv
 pub
 ref
+Result
 return
 self
 Self
 static
+str t
+String t
 struct
 super
 trait
@@ -43,10 +59,17 @@ true
 try
 type
 typeof
+u128 t
+u16 t
+u32 t
+u64 t
+u8 t
 union
 unsafe
 unsized
 use
+usize t
+Vec
 virtual
 where
 while

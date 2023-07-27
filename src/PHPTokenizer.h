@@ -29,14 +29,13 @@
 /** Split input into language-specific tokens */
 class PHPTokenizer : public TokenizerBase {
 private:
-	Keyword php_keyword;
 	Token php_token;
 	bool process_here_document();
 public:
 	token_type get_immediate_token();		// Return a single token
 
 	const std::string & keyword_to_string(token_type k) const {
-		return php_keyword.to_string(k);
+		return keyword.to_string(k);
 	}
 
 	const std::string & token_to_string(token_type k) const {
@@ -50,11 +49,11 @@ public:
 	// Construct from a character source
 	PHPTokenizer(CharSource &s, const std::string &file_name,
 			std::vector<std::string> opt = {}) :
-		TokenizerBase(s, file_name, opt), php_keyword(Keyword::L_PHP) {}
+		TokenizerBase(Keyword::L_PHP, s, file_name, opt) {}
 
 	// Construct for a string source
 	PHPTokenizer(const std::string &s, std::vector<std::string> opt = {}) :
-		TokenizerBase(s, opt), php_keyword(Keyword::L_PHP) {}
+		TokenizerBase(Keyword::L_PHP, s, opt) {}
 
 	~PHPTokenizer();
 

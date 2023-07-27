@@ -272,7 +272,7 @@ JavaTokenizer::get_immediate_token()
 				val += c0;
 			}
 			src.push(c0);
-			key = java_keyword.identifier_type(val);
+			key = keyword.identifier_type(val);
 			switch (key) {
 			case Keyword::FIRST_IDENTIFIER:
 				return symbols.value(val);

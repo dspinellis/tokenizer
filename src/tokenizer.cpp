@@ -142,6 +142,7 @@ list_tokens()
 		std::cout << ki.first << '\t' << ki.second << std::endl;
 
 	// Compressed token identifiers
+	std::cout << TokenId::ANY_TYPE << "\tANY_TYPE" << std::endl;
 	std::cout << TokenId::ANY_HASH << "\tANY_HASH" << std::endl;
 	std::cout << TokenId::ANY_NUMBER << "\tANY_NUMBER" << std::endl;
 	std::cout << TokenId::ANY_IDENTIFIER << "\tANY_IDENTIFIER" << std::endl;
